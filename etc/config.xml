@@ -1,0 +1,28 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Copyright © 2016 Magento. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+-->
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Store:etc/config.xsd">
+    <default>
+        <productslider_setting>
+            <slider>
+                <is_enabled>1</is_enabled>
+                <loop>1</loop>
+                <responsive>1</responsive>
+                <number_items_slider_screen_size_0>1</number_items_slider_screen_size_0>
+                <number_items_slider_screen_size_600>3</number_items_slider_screen_size_600>
+                <number_items_slider_screen_size_1000>5</number_items_slider_screen_size_1000>
+                <margin>10</margin>
+                <autoWidth>0</autoWidth>
+                <nav>0</nav>
+                <navText>[&#x27;next&#x27;,&#x27;prev&#x27;]</navText>
+                <dots>0</dots>
+                <lazyLoad>1</lazyLoad>
+                <autoplay>0</autoplay>
+            </slider>
+        </productslider_setting>
+    </default>
+</config>

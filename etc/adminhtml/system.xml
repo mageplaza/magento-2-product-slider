@@ -1,0 +1,86 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Copyright © 2016 Magento. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+-->
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Config:etc/system_file.xsd">
+    <system>
+        <section id="productslider_setting" translate="label" sortOrder="130" showInDefault="1" showInWebsite="1" showInStore="1">
+            <label>Product Slider</label>
+            <tab>mageplaza</tab>
+            <resource>Mageplaza_Productslider::productslider_config</resource>
+            <group id="slider" translate="label" type="text" sortOrder="500" showInDefault="1" showInWebsite="1" showInStore="1">
+                <label>Product Slider Settings</label>
+                <field id="heading" translate="label" type="button" sortOrder="1" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Heading</label>
+                    <frontend_model>Mageplaza\Productslider\Block\Adminhtml\System\Config\Head</frontend_model>
+                </field>
+                <field id="is_enabled" translate="label" type="select" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Is Enabled Module</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                    <validate>validate-digits</validate>
+                </field>
+                <field id="loop" translate="label" type="select" sortOrder="20" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Loop Slider</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                    <validate>validate-digits</validate>
+                </field>
+                <field id="responsive" translate="label" type="select" sortOrder="30" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Is Responsive</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                    <validate>validate-digits</validate>
+                </field>
+                <field id="number_items_slider_screen_size_0" translate="label" type="text" sortOrder="40" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Max Items Slider (Screen From 0 to 600)</label>
+                    <validate>validate-digits</validate>
+                    <comment>Should be 1 to most style</comment>
+                </field>
+                <field id="number_items_slider_screen_size_600" translate="label" type="text" sortOrder="41" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Max Items Slider (Screen From 600 to 1000)</label>
+                    <validate>validate-digits</validate>
+                    <comment>Should be 3 to most style</comment>
+                </field>
+                <field id="number_items_slider_screen_size_1000" translate="label" type="text" sortOrder="42" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Max Items Slider (Screen Bigger Than 1000)</label>
+                    <validate>validate-digits</validate>
+                    <comment>Should be 5 to most style</comment>
+                </field>
+                <field id="margin" translate="label" type="text" sortOrder="50" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Margin Between Items</label>
+                    <validate>validate-digits</validate>
+                    <comment>Should be 10 to most style</comment>
+                </field>
+                <field id="autoWidth" translate="label" type="select" sortOrder="60" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Auto Width</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                    <validate>validate-digits</validate>
+                </field>
+                <field id="nav" translate="label" type="select" sortOrder="70" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Next/Prev buttons</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                    <validate>validate-digits</validate>
+                </field>
+                <field id="navText" translate="label" type="text" sortOrder="80" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Change name of nav button</label>
+                </field>
+                <field id="dots" translate="label" type="select" sortOrder="90" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Show Dots Navigation</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                    <validate>validate-digits</validate>
+                </field>
+                <field id="lazyLoad" translate="label" type="select" sortOrder="100" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Lazy load images</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                    <validate>validate-digits</validate>
+                </field>
+                <field id="autoplay" translate="label" type="select" sortOrder="110" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Autoplay</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                    <validate>validate-digits</validate>
+                </field>
+            </group>
+        </section>
+    </system>
+</config>

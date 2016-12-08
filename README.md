@@ -15,6 +15,15 @@ Supporting the following Product slider types:
 - Most Viewed Products Slider
 - Featured Products Slider
 
+## Guide
+
+Installation Guide: https://docs.mageplaza.com/kb/installation.html
+
+User Guide: https://www.mageplaza.com/magento-2-product-slider-extension/#user-guide-for-product-slider-m2
+
+License: https://www.mageplaza.com/LICENSE.txt
+
+
 ## How does it work?
 
 When you enable Magento 2 Product Slider module and create the product sliders in the configuration, lists of your products will slide out in the lively and attractive way on the storefront with the animation effects you have chosen before. Along with product image, your clients can also see the price information, rating for the product and even Add to Cart button to proceed to the checkout whenever they need.
