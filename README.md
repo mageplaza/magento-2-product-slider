@@ -1,5 +1,13 @@
 # Magento 2 Product Slider Extension
 
+## Documentations
+
+- Installation Guide: https://docs.mageplaza.com/kb/installation.html
+- User Guide: https://www.mageplaza.com/magento-2-product-slider-extension/
+- Contribute on Github: https://github.com/mageplaza/magento-2-product-slider/
+- License: https://www.mageplaza.com/LICENSE.txt
+
+
 Magento 2 Product Slider module allows showing all suggested products friendly that match to customer’s expectation.
 
 - Support: Featured, On Sale, New Products, Category ID Products
@@ -15,13 +23,6 @@ Supporting the following Product slider types:
 - Most Viewed Products Slider
 - Featured Products Slider
 
-## Guide
-
-Installation Guide: https://docs.mageplaza.com/kb/installation.html
-
-User Guide: https://www.mageplaza.com/magento-2-product-slider-extension/#user-guide-for-product-slider-m2
-
-License: https://www.mageplaza.com/LICENSE.txt
 
 
 ## How does it work?
