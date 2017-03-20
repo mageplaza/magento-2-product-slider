@@ -1,5 +1,5 @@
 {
-  "name": "mageplaza/magento-2-product-slider",
+  "name": "mageplaza/product-slider-m2",
   "description": "Magento 2 Product Slider",
   "require": {
     "php": "~5.5.0|~5.6.0|~7.0.0"
