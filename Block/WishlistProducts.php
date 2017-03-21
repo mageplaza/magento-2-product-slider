@@ -16,15 +16,20 @@ class WishlistProducts extends \Mageplaza\Productslider\Block\AbstractSlider
 	{
 		$objectManager = \Magento\Framework\App\ObjectManager::getInstance();
 		$customer = $objectManager->create('\Magento\Customer\Model\Session');
-		$collection = $objectManager->create('\Magento\Wishlist\Model\ResourceModel\Item\Collection');
-		$collection=$collection->addCustomerIdFilter($customer->getCustomerId());
-		foreach ($collection as $product){
-			$products[]=$product->getProductId();
+		$collection=null;
+		if ($customer->isLoggedIn())
+		{
+			$whishlishCollection = $objectManager->create('\Magento\Wishlist\Model\ResourceModel\Item\Collection');
+			$whishlishCollection=$whishlishCollection->addCustomerIdFilter($customer->getCustomerId());
+			$productIds=null;
+			foreach ($whishlishCollection as $product)
+			{
+				$productIds[]=$product->getProductId();
+			}
+			$collection      = $objectManager->create('\Magento\Catalog\Model\ResourceModel\Product\Collection')->addIdFilter($productIds);
+			$collection     = $this->_addProductAttributesAndPrices($collection)->addStoreFilter($this->getStoreId());
 		}
-		$collection1      = $objectManager->create('\Magento\Catalog\Model\ResourceModel\Product\Collection')->addIdFilter($products);
-		$collection1      = $this->_addProductAttributesAndPrices($collection1)->addStoreFilter($this->getStoreId())//->setPageSize($this->getProductsCount()
-		;
-		return $collection1;
+		return $collection;
 	}
 
 	public function getProductCacheKey()
