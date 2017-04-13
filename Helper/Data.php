@@ -2,7 +2,8 @@
 namespace Mageplaza\Productslider\Helper;
 
 use Magento\Framework\App\Config\ScopeConfigInterface;
-use Mageplaza\Core\Helper\AbstractData;
+use Magento\Framework\ObjectManagerInterface;
+use Mageplaza\Core\Helper\AbstractData as CoreHelper;
 use Magento\Framework\App\Helper\Context;
 use Magento\Framework\Escaper;
 use Magento\Framework\Stdlib\StringUtils;
@@ -14,7 +15,7 @@ use \Psr\Log\LoggerInterface;
 /**
  * Search helper
  */
-class Data extends AbstractData
+class Data extends CoreHelper
 {
 	/**
 	 * @var array
@@ -106,12 +107,15 @@ class Data extends AbstractData
 	 */
 	const GENERAL_IS_ENABLED = 'productslider_setting/slider/is_enabled';
 
+	protected $objectManager;
+
 	public function __construct(
 		Context $context,
 		StringUtils $string,
 		QueryFactory $queryFactory,
 		Escaper $escaper,
 		StoreManagerInterface $storeManager,
+		ObjectManagerInterface $objectManager,
 		LoggerInterface $logger,
 		\Magento\Framework\Pricing\Helper\Data $priceHelper
 	)
@@ -123,7 +127,9 @@ class Data extends AbstractData
 		$this->_storeManager = $storeManager;
 		$this->logger        = $logger;
 		$this->_priceHelper  = $priceHelper;
-		parent::__construct($context);
+		$this->objectManager   = $objectManager;
+
+		parent::__construct($context, $objectManager, $storeManager);
 	}
 
 	/**

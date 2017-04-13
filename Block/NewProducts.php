@@ -39,8 +39,7 @@ class NewProducts extends \Mageplaza\Productslider\Block\AbstractSlider
 
 
 	public function getProductCacheKey()
-	{
-		return 'mageplaza_product_slider_newproducts' ;
+	{return 'mageplaza_product_slider_newproducts' ;
 	}
 
 }

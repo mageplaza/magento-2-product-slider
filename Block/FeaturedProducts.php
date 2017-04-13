@@ -18,9 +18,10 @@ class FeaturedProducts extends \Mageplaza\Productslider\Block\AbstractSlider
 		$collection->addMinimalPrice()
 			->addFinalPrice()
 			->addTaxPercents()
+			->addAttributeToSelect('*')
+			->addStoreFilter($this->getStoreId())
 			->setPageSize($this->getProductsCount())
-			->addAttributeToSelect('*');
-
+		;
 		$collection->addAttributeToFilter('is_featured' , '1');
 		return $collection;
 	}
