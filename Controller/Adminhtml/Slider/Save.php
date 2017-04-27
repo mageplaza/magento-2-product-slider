@@ -34,7 +34,6 @@ class Save extends \Mageplaza\Productslider\Controller\Adminhtml\Slider
     /**
      * constructor
      * 
-     * @param \Magento\Backend\Model\Session $backendSession
      * @param \Magento\Framework\Stdlib\DateTime\Filter\Date $dateFilter
      * @param \Mageplaza\Productslider\Model\SliderFactory $sliderFactory
      * @param \Magento\Framework\Registry $registry
@@ -42,7 +41,6 @@ class Save extends \Mageplaza\Productslider\Controller\Adminhtml\Slider
      * @param \Magento\Backend\App\Action\Context $context
      */
     public function __construct(
-        \Magento\Backend\Model\Session $backendSession,
         \Magento\Framework\Stdlib\DateTime\Filter\Date $dateFilter,
         \Mageplaza\Productslider\Model\SliderFactory $sliderFactory,
         \Magento\Framework\Registry $registry,
@@ -50,7 +48,7 @@ class Save extends \Mageplaza\Productslider\Controller\Adminhtml\Slider
         \Magento\Backend\App\Action\Context $context
     )
     {
-        $this->_backendSession = $backendSession;
+        $this->_backendSession = $context->getSession();
         $this->_dateFilter     = $dateFilter;
         parent::__construct($sliderFactory, $registry, $resultRedirectFactory, $context);
     }

@@ -116,7 +116,6 @@ class Data extends CoreHelper
 		Escaper $escaper,
 		StoreManagerInterface $storeManager,
 		ObjectManagerInterface $objectManager,
-		LoggerInterface $logger,
 		\Magento\Framework\Pricing\Helper\Data $priceHelper
 	)
 	{
@@ -125,7 +124,7 @@ class Data extends CoreHelper
 		$this->_queryFactory = $queryFactory;
 		$this->_escaper      = $escaper;
 		$this->_storeManager = $storeManager;
-		$this->logger        = $logger;
+		$this->logger        = $context->getLogger();
 		$this->_priceHelper  = $priceHelper;
 		$this->objectManager   = $objectManager;
 
