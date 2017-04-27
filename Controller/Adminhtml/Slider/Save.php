@@ -50,7 +50,7 @@ class Save extends \Mageplaza\Productslider\Controller\Adminhtml\Slider
     {
         $this->_backendSession = $context->getSession();
         $this->_dateFilter     = $dateFilter;
-        parent::__construct($sliderFactory, $registry, $resultRedirectFactory, $context);
+        parent::__construct($sliderFactory, $registry, $context);
     }
 
     /**
