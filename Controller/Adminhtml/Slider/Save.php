@@ -37,14 +37,12 @@ class Save extends \Mageplaza\Productslider\Controller\Adminhtml\Slider
      * @param \Magento\Framework\Stdlib\DateTime\Filter\Date $dateFilter
      * @param \Mageplaza\Productslider\Model\SliderFactory $sliderFactory
      * @param \Magento\Framework\Registry $registry
-     * @param \Magento\Backend\Model\View\Result\RedirectFactory $resultRedirectFactory
      * @param \Magento\Backend\App\Action\Context $context
      */
     public function __construct(
         \Magento\Framework\Stdlib\DateTime\Filter\Date $dateFilter,
         \Mageplaza\Productslider\Model\SliderFactory $sliderFactory,
         \Magento\Framework\Registry $registry,
-        \Magento\Backend\Model\View\Result\RedirectFactory $resultRedirectFactory,
         \Magento\Backend\App\Action\Context $context
     )
     {
