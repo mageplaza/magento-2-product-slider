@@ -6,6 +6,8 @@ namespace Mageplaza\Productslider\Block;
  */
 class WishlistProducts extends \Mageplaza\Productslider\Block\AbstractSlider
 {
+
+
 	/**
 	 * get collection of wishlist products
 	 * @return mixed
@@ -14,8 +16,19 @@ class WishlistProducts extends \Mageplaza\Productslider\Block\AbstractSlider
 	{
 		$objectManager = \Magento\Framework\App\ObjectManager::getInstance();
 		$customer = $objectManager->create('\Magento\Customer\Model\Session');
-		$collection = $objectManager->create('\Magento\Wishlist\Model\ResourceModel\Item\Collection');
-		$collection->addCustomerIdFilter($customer->getCustomerId())->setPageSize(5);
+		$collection=null;
+		if ($customer->isLoggedIn())
+		{
+			$whishlishCollection = $objectManager->create('\Magento\Wishlist\Model\ResourceModel\Item\Collection');
+			$whishlishCollection=$whishlishCollection->addCustomerIdFilter($customer->getCustomerId());
+			$productIds=null;
+			foreach ($whishlishCollection as $product)
+			{
+				$productIds[]=$product->getProductId();
+			}
+			$collection      = $objectManager->create('\Magento\Catalog\Model\ResourceModel\Product\Collection')->addIdFilter($productIds);
+			$collection     = $this->_addProductAttributesAndPrices($collection)->addStoreFilter($this->getStoreId());
+		}
 		return $collection;
 	}
 
@@ -23,5 +36,11 @@ class WishlistProducts extends \Mageplaza\Productslider\Block\AbstractSlider
 	{
 		return 'mageplaza_product_slider_wishlist';
 	}
+
+	public function getCacheLifetime()
+	{
+		return 0;
+	}
+
 }
 
