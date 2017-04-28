@@ -41,28 +41,24 @@ class Edit extends \Mageplaza\Productslider\Controller\Adminhtml\Slider
     /**
      * constructor
      * 
-     * @param \Magento\Backend\Model\Session $backendSession
      * @param \Magento\Framework\View\Result\PageFactory $resultPageFactory
      * @param \Magento\Framework\Controller\Result\JsonFactory $resultJsonFactory
      * @param \Mageplaza\Productslider\Model\SliderFactory $sliderFactory
      * @param \Magento\Framework\Registry $registry
-     * @param \Magento\Backend\Model\View\Result\RedirectFactory $resultRedirectFactory
      * @param \Magento\Backend\App\Action\Context $context
      */
     public function __construct(
-        \Magento\Backend\Model\Session $backendSession,
         \Magento\Framework\View\Result\PageFactory $resultPageFactory,
         \Magento\Framework\Controller\Result\JsonFactory $resultJsonFactory,
         \Mageplaza\Productslider\Model\SliderFactory $sliderFactory,
         \Magento\Framework\Registry $registry,
-        \Magento\Backend\Model\View\Result\RedirectFactory $resultRedirectFactory,
         \Magento\Backend\App\Action\Context $context
     )
     {
-        $this->_backendSession    = $backendSession;
+        $this->_backendSession    = $context->getSession();
         $this->_resultPageFactory = $resultPageFactory;
         $this->_resultJsonFactory = $resultJsonFactory;
-        parent::__construct($sliderFactory, $registry, $resultRedirectFactory, $context);
+        parent::__construct($sliderFactory, $registry, $context);
     }
 
     /**
