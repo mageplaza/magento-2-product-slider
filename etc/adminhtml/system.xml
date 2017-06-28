@@ -13,10 +13,19 @@
             <resource>Mageplaza_Productslider::productslider_config</resource>
             <group id="slider" translate="label" type="text" sortOrder="500" showInDefault="1" showInWebsite="1" showInStore="1">
                 <label>Product Slider Settings</label>
-                <field id="heading" translate="label" type="button" sortOrder="1" showInDefault="1" showInWebsite="1" showInStore="1">
-                    <label>Heading</label>
-                    <frontend_model>Mageplaza\Productslider\Block\Adminhtml\System\Config\Head</frontend_model>
+
+                <field id="head" translate="label" type="button" sortOrder="1" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <frontend_model>Mageplaza\Core\Block\Adminhtml\System\Config\Head</frontend_model>
+                    <comment><![CDATA[
+                        <ul class="mageplaza-head">
+                            <li><a href="https://docs.mageplaza.com/product-slider-m2/" target="_blank">User Guide</a>  </li>
+                            <li><a href="https://mageplaza.freshdesk.com/" target="_blank">Helpdesk</a> </li>
+                            <li><a href="https://www.mageplaza.com/magento-2-seo-extension/?utm_source=magento2&utm_medium=documents&utm_campaign=m2-product-slider" target="_blank">SEO Ultimate</a> </li>
+                            <li>Increase 25% conversion rate with <a href="https://goo.gl/6chU3c" target="_blank">Layered Navigation</a></li>
+                        </ul>
+                        ]]></comment>
                 </field>
+
                 <field id="is_enabled" translate="label" type="select" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
                     <label>Is Enabled Module</label>
                     <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
