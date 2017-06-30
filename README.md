@@ -4,13 +4,14 @@
 
 - Installation Guide: https://docs.mageplaza.com/kb/installation.html
 - User Guide: https://www.mageplaza.com/magento-2-product-slider-extension/
+- Download from our Live site: https://www.mageplaza.com/magento-2-product-slider-extension/
+- Get Support: https://github.com/mageplaza/magento-2-product-slider/issues
 - Contribute on Github: https://github.com/mageplaza/magento-2-product-slider/
-- Get premium support from Mageplaza: Purchase Support package https://www.mageplaza.com/magento-2-extension-support-package/
 - License: https://www.mageplaza.com/LICENSE.txt
 
 ## How to install
 
-### 1. via composer
+### Method 1: via composer
 
 ```
 composer require mageplaza/magento-2-product-slider
@@ -18,9 +19,17 @@ php bin/magento setup:upgrade
 php bin/magento setup:static-content:deploy
 ```
 
-### 2. Copy and paste
+### Method 2: Copy and paste
 
 Download latest version at [Mageplaza](https://www.mageplaza.com/magento-2-product-slider-extension/)
+
+## FAQs
+
+#### Q: I got error: `Mageplaza_Core has been already defined`
+A: Read solution: https://github.com/mageplaza/module-core/issues/3
+
+
+## Introduction
 
 Magento 2 Product Slider module allows showing all suggested products friendly that match to customer’s expectation.
 
