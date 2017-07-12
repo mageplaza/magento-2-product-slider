@@ -1,6 +1,6 @@
 ## Documentation
 
-- Installation Guide: https://docs.mageplaza.com/kb/installation.html
+- Installation Guide: https://www.mageplaza.com/install-magento-2-extension/
 - User Guide: https://www.mageplaza.com/magento-2-product-slider-extension/
 - Download from our Live site: https://www.mageplaza.com/magento-2-product-slider-extension/
 - Get Support: https://github.com/mageplaza/magento-2-product-slider/issues
