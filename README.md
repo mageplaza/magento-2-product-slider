@@ -29,6 +29,9 @@ Download latest version at [Mageplaza](https://www.mageplaza.com/magento-2-produ
 #### Q: I got error: `Mageplaza_Core has been already defined`
 A: Read solution: https://github.com/mageplaza/module-core/issues/3
 
+#### Q: My site is down
+A: Please follow this guide: https://www.mageplaza.com/blog/magento-site-down.html
+
 
 ## Introduction
 
