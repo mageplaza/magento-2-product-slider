@@ -1,5 +1,8 @@
 # Magento 2 Product Slider by Mageplaza
 
+[![Latest Stable Version](https://poser.pugx.org/mageplaza/magento-2-product-slider/v/stable)](https://packagist.org/packages/mageplaza/magento-2-product-slider)
+[![Total Downloads](https://poser.pugx.org/mageplaza/magento-2-product-slider/downloads)](https://packagist.org/packages/mageplaza/magento-2-product-slider)
+
 ## Documentation
 
 - Installation Guide: https://www.mageplaza.com/install-magento-2-extension/
