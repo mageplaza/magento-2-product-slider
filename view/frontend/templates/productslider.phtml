@@ -19,7 +19,7 @@ if ($exist = ($block->getProductCollection() && $block->getProductCollection()->
 	$type = $type . '-' . $mode;
 
 	$image = 'recently_viewed_products_grid_content_widget';
-	$title = __('Recently Viewed');
+	$title = $block->getConfigValue('heading');
 	$items = $block->getProductCollection();
 	$info  = $block->getConfigValue('description');
 
