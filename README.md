@@ -3,6 +3,12 @@
 [![Latest Stable Version](https://poser.pugx.org/mageplaza/magento-2-product-slider/v/stable)](https://packagist.org/packages/mageplaza/magento-2-product-slider)
 [![Total Downloads](https://poser.pugx.org/mageplaza/magento-2-product-slider/downloads)](https://packagist.org/packages/mageplaza/magento-2-product-slider)
 
+## IMPORTANT
+
+**All features of Product Slider now includes in [Auto Related Products](https://www.mageplaza.com/magento-2-automatic-related-products/)**
+
+*THIS EXTENSION DEVELOPED FOR DEVELOPERS, IT REQUIRES INSERT A SNIPPET INTO LAYOUTS, TEMPLATE FILES. IF YOU ARE ADMIN, YOU NEED HELPS FROM YOUR DEVELOPERS.* Consider to learn more about [Auto Related Products here](https://www.mageplaza.com/magento-2-automatic-related-products/)
+
 ## 1. Documentation
 
 - Installation Guide: https://www.mageplaza.com/install-magento-2-extension/
