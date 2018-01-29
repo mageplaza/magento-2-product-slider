@@ -36,7 +36,7 @@ class Collection extends \Mageplaza\Productslider\Model\ResourceModel\Slider\Col
      * @param $eventObject
      * @param $resourceModel
      * @param $model
-     * @param $connection
+     * @param \Magento\Framework\DB\Adapter\AdapterInterface $connection
      * @param \Magento\Framework\Model\ResourceModel\Db\AbstractDb $resource
      */
     public function __construct(
@@ -49,7 +49,7 @@ class Collection extends \Mageplaza\Productslider\Model\ResourceModel\Slider\Col
         $eventObject,
         $resourceModel,
         $model = 'Magento\Framework\View\Element\UiComponent\DataProvider\Document',
-        $connection = null,
+        \Magento\Framework\DB\Adapter\AdapterInterface $connection = null,
         \Magento\Framework\Model\ResourceModel\Db\AbstractDb $resource = null
     )
     {
