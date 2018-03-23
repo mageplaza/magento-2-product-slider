@@ -46,8 +46,8 @@ class BestSellerProducts extends \Mageplaza\Productslider\Block\AbstractSlider
 	public function getProductCollection()
 	{
 		$objectManager = \Magento\Framework\App\ObjectManager::getInstance();
-		$reportCollection = $objectManager->create('\Magento\Reports\Model\ResourceModel\Report\Collection\Factory');
-		$productCollection = $reportCollection->create('Magento\Sales\Model\ResourceModel\Report\Bestsellers\Collection');
+//		$reportCollection = $objectManager->create('\Magento\Reports\Model\ResourceModel\Report\Collection\Factory');
+		$productCollection = $objectManager->create('Magento\Sales\Model\ResourceModel\Report\Bestsellers\Collection');
         $productCollection->setPeriod('month');
         foreach ($productCollection as $product) {
             $productIds[]=$this->getProductData($product->getProductId());
