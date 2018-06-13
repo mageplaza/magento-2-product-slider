@@ -1,5 +1,28 @@
 <?php
+/**
+ * Mageplaza
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the Mageplaza.com license that is
+ * available through the world-wide-web at this URL:
+ * https://www.mageplaza.com/LICENSE.txt
+ *
+ * DISCLAIMER
+ *
+ * Do not edit or add to this file if you wish to upgrade this extension to newer
+ * version in the future.
+ *
+ * @category    Mageplaza
+ * @package     Mageplaza_Core
+ * @copyright   Copyright (c) Mageplaza (http://www.mageplaza.com/)
+ * @license     https://www.mageplaza.com/LICENSE.txt
+ */
+
 namespace Mageplaza\Productslider\Block;
+
+use Magento\Catalog\Block\Product\Context;
+
 /**
  * Class BestSellerProducts
  * @package Mageplaza\Productslider\Block
@@ -11,48 +34,40 @@ class BestSellerProducts extends \Mageplaza\Productslider\Block\AbstractSlider
      */
     protected $_catalogProductTypeConfigurable;
 
-    /**
-     * BestSellerProducts constructor.
-     * @param \Magento\Catalog\Block\Product\Context $context
-     * @param \Magento\Catalog\Model\ResourceModel\Product\CollectionFactory $productCollectionFactory
-     * @param \Magento\Catalog\Model\Product\Visibility $catalogProductVisibility
-     * @param \Magento\Framework\App\Http\Context $httpContext
-     * @param \Magento\Rule\Model\Condition\Sql\Builder $sqlBuilder
-     * @param \Magento\CatalogWidget\Model\Rule $rule
-     * @param \Magento\Widget\Helper\Conditions $conditionsHelper
-     * @param \Magento\ConfigurableProduct\Model\ResourceModel\Product\Type\Configurable $catalogProductTypeConfigurable
-     * @param array $data
-     */
+    protected $bestSellersCollection;
+
+    protected $productCollection;
+
     public function __construct(
-        \Magento\Catalog\Block\Product\Context $context,
-        \Magento\Catalog\Model\ResourceModel\Product\CollectionFactory $productCollectionFactory,
-        \Magento\Catalog\Model\Product\Visibility $catalogProductVisibility,
-        \Magento\Framework\App\Http\Context $httpContext,
-        \Magento\Rule\Model\Condition\Sql\Builder $sqlBuilder,
-        \Magento\CatalogWidget\Model\Rule $rule,
-        \Magento\Widget\Helper\Conditions $conditionsHelper,
-        \Magento\ConfigurableProduct\Model\ResourceModel\Product\Type\Configurable $catalogProductTypeConfigurable,
+        \Magento\Sales\Model\ResourceModel\Report\Bestsellers\Collection $bestSellersCollection,
+        \Magento\Catalog\Model\ResourceModel\Product\Collection $productCollection,
+        \Magento\Store\Model\StoreManagerInterface $storeManager,
+        \Magento\Framework\Stdlib\DateTime\DateTime $getDayDate,
+        Context $context,
         array $data = []
     )
     {
-        $this->_catalogProductTypeConfigurable = $catalogProductTypeConfigurable;
-        parent::__construct($context, $productCollectionFactory, $catalogProductVisibility, $httpContext, $sqlBuilder, $rule, $conditionsHelper, $data);
+        parent::__construct($storeManager, $getDayDate, $context, $data);
+
+        $this->bestSellersCollection = $bestSellersCollection;
+        $this->productCollection = $productCollection;
     }
 
     /**
-	 * get collection of best-seller products
-	 * @return mixed
-	 */
-	public function getProductCollection()
-	{
-		$objectManager = \Magento\Framework\App\ObjectManager::getInstance();
-//		$reportCollection = $objectManager->create('\Magento\Reports\Model\ResourceModel\Report\Collection\Factory');
-		$productCollection = $objectManager->create('Magento\Sales\Model\ResourceModel\Report\Bestsellers\Collection');
-        $productCollection->setPeriod('month');
-        foreach ($productCollection as $product) {
-            $productIds[]=$this->getProductData($product->getProductId());
+     * get collection of best-seller products
+     * @return mixed
+     */
+    public function getProductCollection()
+    {
+        $productIds = [];
+
+        $bestSellers = $this->bestSellersCollection->setPeriod('month');
+
+        foreach ($bestSellers as $product) {
+            $productIds[] = $product->getProductId();
         }
-        $collection      = $objectManager->create('\Magento\Catalog\Model\ResourceModel\Product\Collection')->addIdFilter($productIds);
+
+        $collection = $this->productCollection->addIdFilter($productIds);
         $collection->addMinimalPrice()
             ->addFinalPrice()
             ->addTaxPercents()
@@ -64,27 +79,14 @@ class BestSellerProducts extends \Mageplaza\Productslider\Block\AbstractSlider
         } else {
             return $collection->setPageSize($this->getProductsCount());
         }
-	}
+    }
 
     /**
      * @return string
      */
-	public function getProductCacheKey()
-	{
-		return 'mageplaza_product_slider_bestseller';
-	}
-
-    /**
-     * Get Parent Product ID
-     * @param $productID
-     * @return mixed
-     */
-    public function getProductData($id){
-        $parentByChild = $this->_catalogProductTypeConfigurable->getParentIdsByChild($id);
-        if(isset($parentByChild[0])){
-            //set id as parent product id...
-            $id = $parentByChild[0];
-        }
-        return $id;
+    public function getProductCacheKey()
+    {
+        return 'mageplaza_product_slider_bestseller';
     }
+
 }

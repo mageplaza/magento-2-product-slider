@@ -4,6 +4,7 @@
     <head>
         <css src="Mageplaza_Productslider::css/product-item.css"/>
         <css src="Mageplaza_Productslider::css/owl.carousel.min.css"/>
+        <css src="Mageplaza_Productslider::css/owl.theme.default.min.css"/>
     </head>
     <body>
         <referenceContainer name="content">

@@ -1,20 +1,41 @@
 <?php
 namespace Mageplaza\Productslider\Block;
+use Magento\Catalog\Block\Product\Context;
+
 /**
  * Class FeaturedProducts
  * @package Mageplaza\Productslider\Block
  */
 class FeaturedProducts extends \Mageplaza\Productslider\Block\AbstractSlider
 {
-	/**
+    protected $catalogProductVisibility;
+
+    protected $productCollection;
+
+    public function __construct(
+        \Magento\Catalog\Model\Product\Visibility $catalogProductVisibility,
+        \Magento\Catalog\Model\ResourceModel\Product\Collection $productCollection,
+        \Magento\Store\Model\StoreManagerInterface $storeManager,
+        \Magento\Framework\Stdlib\DateTime\DateTime $getDayDate,
+        Context $context,
+        array $data = []
+    )
+    {
+        parent::__construct($storeManager, $getDayDate, $context, $data);
+
+        $this->catalogProductVisibility = $catalogProductVisibility;
+        $this->productCollection = $productCollection;
+    }
+
+    /**
 	 * get collection of feature products
 	 * @return mixed
 	 */
 	public function getProductCollection()
 	{
-		$objectManager = \Magento\Framework\App\ObjectManager::getInstance();
-		$visibleProducts = $objectManager->create('\Magento\Catalog\Model\Product\Visibility')->getVisibleInCatalogIds();
-		$collection = $objectManager->create('\Magento\Catalog\Model\ResourceModel\Product\Collection')->setVisibility($visibleProducts);
+		$visibleProducts = $this->catalogProductVisibility->getVisibleInCatalogIds();
+
+		$collection = $this->productCollection->setVisibility($visibleProducts);
 		$collection->addMinimalPrice()
 			->addFinalPrice()
 			->addTaxPercents()
@@ -23,6 +44,7 @@ class FeaturedProducts extends \Mageplaza\Productslider\Block\AbstractSlider
 			->setPageSize($this->getProductsCount())
 		;
 		$collection->addAttributeToFilter('is_featured' , '1');
+
 		return $collection;
 	}
 
