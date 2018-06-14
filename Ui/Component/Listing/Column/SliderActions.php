@@ -80,19 +80,6 @@ class SliderActions extends \Magento\Ui\Component\Listing\Columns\Column
                                 ]
                             ),
                             'label' => __('Edit')
-                        ],
-                        'delete' => [
-                            'href' => $this->_urlBuilder->getUrl(
-                                static::URL_PATH_DELETE,
-                                [
-                                    'slider_id' => $item['slider_id']
-                                ]
-                            ),
-                            'label' => __('Delete'),
-                            'confirm' => [
-                                'title' => __('Delete "${ $.$data.name }"'),
-                                'message' => __('Are you sure you wan\'t to delete the Slider "${ $.$data.name }" ?')
-                            ]
                         ]
                     ];
                 }

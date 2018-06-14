@@ -2,45 +2,46 @@
 /**
  * Mageplaza_Productslider extension
  *                     NOTICE OF LICENSE
- * 
+ *
  *                     This source file is subject to the MIT License
  *                     that is bundled with this package in the file LICENSE.txt.
  *                     It is also available through the world-wide-web at this URL:
  *                     https://www.mageplaza.com/LICENSE.txt
- * 
- *                     @category  Mageplaza
- *                     @package   Mageplaza_Productslider
- *                     @copyright Copyright (c) 2016
- *                     @license   https://www.mageplaza.com/LICENSE.txt
+ *
+ * @category  Mageplaza
+ * @package   Mageplaza_Productslider
+ * @copyright Copyright (c) 2016
+ * @license   https://www.mageplaza.com/LICENSE.txt
  */
+
 namespace Mageplaza\Productslider\Controller\Adminhtml\Slider;
 
 class Edit extends \Mageplaza\Productslider\Controller\Adminhtml\Slider
 {
     /**
      * Backend session
-     * 
+     *
      * @var \Magento\Backend\Model\Session
      */
     protected $_backendSession;
 
     /**
      * Page factory
-     * 
+     *
      * @var \Magento\Framework\View\Result\PageFactory
      */
     protected $_resultPageFactory;
 
     /**
      * Result JSON factory
-     * 
+     *
      * @var \Magento\Framework\Controller\Result\JsonFactory
      */
     protected $_resultJsonFactory;
 
     /**
      * constructor
-     * 
+     *
      * @param \Magento\Framework\View\Result\PageFactory $resultPageFactory
      * @param \Magento\Framework\Controller\Result\JsonFactory $resultJsonFactory
      * @param \Mageplaza\Productslider\Model\SliderFactory $sliderFactory
@@ -55,7 +56,7 @@ class Edit extends \Mageplaza\Productslider\Controller\Adminhtml\Slider
         \Magento\Backend\App\Action\Context $context
     )
     {
-        $this->_backendSession    = $context->getSession();
+        $this->_backendSession = $context->getSession();
         $this->_resultPageFactory = $resultPageFactory;
         $this->_resultJsonFactory = $resultJsonFactory;
         parent::__construct($sliderFactory, $registry, $context);
@@ -77,9 +78,8 @@ class Edit extends \Mageplaza\Productslider\Controller\Adminhtml\Slider
     public function execute()
     {
         $id = $this->getRequest()->getParam('slider_id');
-        /** @var \Mageplaza\Productslider\Model\Slider $slider */
         $slider = $this->_initSlider();
-        /** @var \Magento\Backend\Model\View\Result\Page|\Magento\Framework\View\Result\Page $resultPage */
+
         $resultPage = $this->_resultPageFactory->create();
         $resultPage->setActiveMenu('Mageplaza_Productslider::slider');
         $resultPage->getConfig()->getTitle()->set(__('Sliders'));
@@ -98,6 +98,7 @@ class Edit extends \Mageplaza\Productslider\Controller\Adminhtml\Slider
                 return $resultRedirect;
             }
         }
+
         $title = $slider->getId() ? $slider->getName() : __('New Slider');
         $resultPage->getConfig()->getTitle()->prepend($title);
         $data = $this->_backendSession->getData('mageplaza_productslider_slider_data', true);

@@ -22,7 +22,7 @@
         </referenceContainer>
         <referenceContainer name="left">
             <block class="Mageplaza\Productslider\Block\Adminhtml\Slider\Edit\Tabs" name="mageplaza_productslider_slider_tabs">
-                <block class="Mageplaza\Productslider\Block\Adminhtml\Slider\Edit\Tab\Slider" name="mageplaza_productslider_slider_edit_tab_slider"/>
+                <block class="Mageplaza\Productslider\Block\Adminhtml\Slider\Edit\Tab\General\General" name="mageplaza_productslider_slider_edit_tab_slider"/>
                 <action method="addTab">
                     <argument name="name" xsi:type="string">slider</argument>
                     <argument name="block" xsi:type="string">mageplaza_productslider_slider_edit_tab_slider</argument>

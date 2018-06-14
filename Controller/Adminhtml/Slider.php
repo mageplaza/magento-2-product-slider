@@ -65,12 +65,13 @@ abstract class Slider extends \Magento\Backend\App\Action
     protected function _initSlider()
     {
         $sliderId  = (int) $this->getRequest()->getParam('slider_id');
-        /** @var \Mageplaza\Productslider\Model\Slider $slider */
         $slider    = $this->_sliderFactory->create();
+
         if ($sliderId) {
             $slider->load($sliderId);
         }
         $this->_coreRegistry->register('mageplaza_productslider_slider', $slider);
+
         return $slider;
     }
 }

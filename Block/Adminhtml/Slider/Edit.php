@@ -2,31 +2,32 @@
 /**
  * Mageplaza_Productslider extension
  *                     NOTICE OF LICENSE
- * 
+ *
  *                     This source file is subject to the MIT License
  *                     that is bundled with this package in the file LICENSE.txt.
  *                     It is also available through the world-wide-web at this URL:
  *                     https://www.mageplaza.com/LICENSE.txt
- * 
- *                     @category  Mageplaza
- *                     @package   Mageplaza_Productslider
- *                     @copyright Copyright (c) 2016
- *                     @license   https://www.mageplaza.com/LICENSE.txt
+ *
+ * @category  Mageplaza
+ * @package   Mageplaza_Productslider
+ * @copyright Copyright (c) 2016
+ * @license   https://www.mageplaza.com/LICENSE.txt
  */
+
 namespace Mageplaza\Productslider\Block\Adminhtml\Slider;
 
 class Edit extends \Magento\Backend\Block\Widget\Form\Container
 {
     /**
      * Core registry
-     * 
+     *
      * @var \Magento\Framework\Registry
      */
     protected $_coreRegistry;
 
     /**
      * constructor
-     * 
+     *
      * @param \Magento\Framework\Registry $coreRegistry
      * @param \Magento\Backend\Block\Widget\Context $context
      * @param array $data
@@ -52,7 +53,6 @@ class Edit extends \Magento\Backend\Block\Widget\Form\Container
         $this->_blockGroup = 'Mageplaza_Productslider';
         $this->_controller = 'adminhtml_slider';
         parent::_construct();
-        $this->buttonList->update('save', 'label', __('Save Slider'));
         $this->buttonList->add(
             'save-and-continue',
             [
@@ -69,8 +69,8 @@ class Edit extends \Magento\Backend\Block\Widget\Form\Container
             ],
             -100
         );
-        $this->buttonList->update('delete', 'label', __('Delete Slider'));
     }
+
     /**
      * Retrieve text for header element depending on loaded Slider
      *
@@ -78,11 +78,15 @@ class Edit extends \Magento\Backend\Block\Widget\Form\Container
      */
     public function getHeaderText()
     {
-        /** @var \Mageplaza\Productslider\Model\Slider $slider */
-        $slider = $this->_coreRegistry->registry('mageplaza_productslider_slider');
+        $slider = $this->getSlider();
         if ($slider->getId()) {
             return __("Edit Slider '%1'", $this->escapeHtml($slider->getName()));
         }
+
         return __('New Slider');
+    }
+
+    public function getSlider(){
+        return $this->_coreRegistry->registry('mageplaza_productslider_slider');
     }
 }

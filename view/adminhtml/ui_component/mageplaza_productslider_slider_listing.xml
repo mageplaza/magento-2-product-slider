@@ -1,20 +1,5 @@
 <?xml version="1.0"?>
-<!--
-/**
- * Mageplaza_Productslider extension
- *                     NOTICE OF LICENSE
- * 
- *                     This source file is subject to the MIT License
- *                     that is bundled with this package in the file LICENSE.txt.
- *                     It is also available through the world-wide-web at this URL:
- *                     https://www.mageplaza.com/LICENSE.txt
- * 
- *                     @category  Mageplaza
- *                     @package   Mageplaza_Productslider
- *                     @copyright Copyright (c) 2016
- *                     @license   https://www.mageplaza.com/LICENSE.txt
- */
--->
+
 <listing xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Ui:etc/ui_configuration.xsd">
     <argument name="data" xsi:type="array">
         <item name="js_config" xsi:type="array">
@@ -76,53 +61,6 @@
                 </item>
             </argument>
         </component>
-        <exportButton name="export_button">
-            <argument name="data" xsi:type="array">
-                <item name="config" xsi:type="array">
-                    <item name="selectProvider" xsi:type="string">mageplaza_productslider_slider_listing.mageplaza_productslider_slider_listing.mageplaza_productslider_slider_columns.ids</item>
-                </item>
-            </argument>
-        </exportButton>
-        <filterSearch name="fulltext">
-            <argument name="data" xsi:type="array">
-                <item name="config" xsi:type="array">
-                    <item name="provider" xsi:type="string">mageplaza_productslider_slider_listing.mageplaza_productslider_slider_listing_data_source</item>
-                    <item name="chipsProvider" xsi:type="string">mageplaza_productslider_slider_listing.mageplaza_productslider_slider_listing.listing_top.listing_filters_chips</item>
-                    <item name="storageConfig" xsi:type="array">
-                        <item name="provider" xsi:type="string">mageplaza_productslider_slider_listing.mageplaza_productslider_slider_listing.listing_top.bookmarks</item>
-                        <item name="namespace" xsi:type="string">current.search</item>
-                    </item>
-                </item>
-            </argument>
-        </filterSearch>
-        <filters name="listing_filters">
-            <argument name="data" xsi:type="array">
-                <item name="config" xsi:type="array">
-                    <item name="columnsProvider" xsi:type="string">mageplaza_productslider_slider_listing.mageplaza_productslider_slider_listing.mageplaza_productslider_slider_columns</item>
-                    <item name="storageConfig" xsi:type="array">
-                        <item name="provider" xsi:type="string">mageplaza_productslider_slider_listing.mageplaza_productslider_slider_listing.listing_top.bookmarks</item>
-                        <item name="namespace" xsi:type="string">current.filters</item>
-                    </item>
-                    <item name="templates" xsi:type="array">
-                        <item name="filters" xsi:type="array">
-                            <item name="select" xsi:type="array">
-                                <item name="component" xsi:type="string">Magento_Ui/js/form/element/ui-select</item>
-                                <item name="template" xsi:type="string">ui/grid/filters/elements/ui-select</item>
-                            </item>
-                        </item>
-                    </item>
-                    <item name="childDefaults" xsi:type="array">
-                        <item name="provider" xsi:type="string">mageplaza_productslider_slider_listing.mageplaza_productslider_slider_listing.listing_top.listing_filters</item>
-                        <item name="imports" xsi:type="array">
-                            <item name="visible" xsi:type="string">mageplaza_productslider_slider_listing.mageplaza_productslider_slider_listing.mageplaza_productslider_slider_columns.${ $.index }:visible</item>
-                        </item>
-                    </item>
-                </item>
-                <item name="observers" xsi:type="array">
-                    <item name="column" xsi:type="string">column</item>
-                </item>
-            </argument>
-        </filters>
         <massaction name="listing_massaction">
             <argument name="data" xsi:type="array">
                 <item name="config" xsi:type="array">
@@ -212,24 +150,6 @@
                 </item>
             </argument>
         </column>
-        <column name="active_from">
-            <argument name="data" xsi:type="array">
-                <item name="config" xsi:type="array">
-                    <item name="label" xsi:type="string" translate="true">Active From</item>
-                    <item name="component" xsi:type="string">Magento_Ui/js/grid/columns/date</item>
-                    <item name="dataType" xsi:type="string">date</item>
-                </item>
-            </argument>
-        </column>
-        <column name="active_to">
-            <argument name="data" xsi:type="array">
-                <item name="config" xsi:type="array">
-                    <item name="filter" xsi:type="string">text</item>
-                    <item name="label" xsi:type="string" translate="true">Active To</item>
-                    <item name="dataType" xsi:type="string">text</item>
-                </item>
-            </argument>
-        </column>
         <column name="status">
             <argument name="data" xsi:type="array">
                 <item name="options" xsi:type="object">Magento\Config\Model\Config\Source\Yesno</item>
@@ -241,23 +161,49 @@
                 </item>
             </argument>
         </column>
-        <column name="created_at" class="Magento\Ui\Component\Listing\Columns\Date">
+        <column name="product_type">
             <argument name="data" xsi:type="array">
                 <item name="config" xsi:type="array">
-                    <item name="filter" xsi:type="string">dateRange</item>
-                    <item name="component" xsi:type="string">Magento_Ui/js/grid/columns/date</item>
-                    <item name="dataType" xsi:type="string">date</item>
-                    <item name="label" xsi:type="string" translate="true">Created</item>
+                    <item name="filter" xsi:type="string">text</item>
+                    <item name="editor" xsi:type="array">
+                        <item name="editorType" xsi:type="string">text</item>
+                        <item name="validation" xsi:type="array">
+                            <item name="required-entry" xsi:type="boolean">true</item>
+                        </item>
+                    </item>
+                    <item name="label" xsi:type="string" translate="true">Slider Type</item>
                 </item>
             </argument>
         </column>
-        <column name="updated_at" class="Magento\Ui\Component\Listing\Columns\Date">
+        <column name="location">
             <argument name="data" xsi:type="array">
                 <item name="config" xsi:type="array">
-                    <item name="filter" xsi:type="string">dateRange</item>
+                    <item name="filter" xsi:type="string">text</item>
+                    <item name="editor" xsi:type="array">
+                        <item name="editorType" xsi:type="string">text</item>
+                        <item name="validation" xsi:type="array">
+                            <item name="required-entry" xsi:type="boolean">true</item>
+                        </item>
+                    </item>
+                    <item name="label" xsi:type="string" translate="true">Slider Location</item>
+                </item>
+            </argument>
+        </column>
+        <column name="from_date">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="label" xsi:type="string" translate="true">Start Date</item>
                     <item name="component" xsi:type="string">Magento_Ui/js/grid/columns/date</item>
                     <item name="dataType" xsi:type="string">date</item>
-                    <item name="label" xsi:type="string" translate="true">Modified</item>
+                </item>
+            </argument>
+        </column>
+        <column name="to_date">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="label" xsi:type="string" translate="true">End Date</item>
+                    <item name="component" xsi:type="string">Magento_Ui/js/grid/columns/date</item>
+                    <item name="dataType" xsi:type="string">date</item>
                 </item>
             </argument>
         </column>

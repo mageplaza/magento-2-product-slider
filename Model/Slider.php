@@ -85,7 +85,7 @@ class Slider extends \Magento\Framework\Model\AbstractModel
     public function getDefaultValues()
     {
         $values = [];
-        $values['status'] = '1';
+//        $values['status'] = '1';
         return $values;
     }
 }

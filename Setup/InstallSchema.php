@@ -1,121 +1,130 @@
 <?php
 /**
- * Mageplaza_Productslider extension
- *                     NOTICE OF LICENSE
- * 
- *                     This source file is subject to the MIT License
- *                     that is bundled with this package in the file LICENSE.txt.
- *                     It is also available through the world-wide-web at this URL:
- *                     https://www.mageplaza.com/LICENSE.txt
- * 
- *                     @category  Mageplaza
- *                     @package   Mageplaza_Productslider
- *                     @copyright Copyright (c) 2016
- *                     @license   https://www.mageplaza.com/LICENSE.txt
+ * Mageplaza
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the mageplaza.com license that is
+ * available through the world-wide-web at this URL:
+ * https://www.mageplaza.com/LICENSE.txt
+ *
+ * DISCLAIMER
+ *
+ * Do not edit or add to this file if you wish to upgrade this extension to newer
+ * version in the future.
+ *
+ * @category    Mageplaza
+ * @package     Mageplaza_AutoRelated
+ * @copyright   Copyright (c) 2017-2018 Mageplaza (https://www.mageplaza.com/)
+ * @license     https://www.mageplaza.com/LICENSE.txt
  */
+
 namespace Mageplaza\Productslider\Setup;
 
-class InstallSchema implements \Magento\Framework\Setup\InstallSchemaInterface
+use Magento\Framework\Setup\InstallSchemaInterface;
+use Magento\Framework\Setup\ModuleContextInterface;
+use Magento\Framework\Setup\SchemaSetupInterface;
+use Magento\Framework\DB\Ddl\Table;
+
+class InstallSchema implements InstallSchemaInterface
 {
+
     /**
-     * install tables
-     *
-     * @param \Magento\Framework\Setup\SchemaSetupInterface $setup
-     * @param \Magento\Framework\Setup\ModuleContextInterface $context
-     * @return void
-     * @SuppressWarnings(PHPMD.ExcessiveMethodLength)
+     * @param SchemaSetupInterface $setup
+     * @param ModuleContextInterface $context
+     * @throws \Zend_Db_Exception
      */
-    public function install(\Magento\Framework\Setup\SchemaSetupInterface $setup, \Magento\Framework\Setup\ModuleContextInterface $context)
+    public function install(SchemaSetupInterface $setup, ModuleContextInterface $context)
     {
         $installer = $setup;
         $installer->startSetup();
         if (!$installer->tableExists('mageplaza_productslider_slider')) {
-            $table = $installer->getConnection()->newTable(
-                $installer->getTable('mageplaza_productslider_slider')
-            )
-            ->addColumn(
-                'slider_id',
-                \Magento\Framework\DB\Ddl\Table::TYPE_INTEGER,
-                null,
-                [
+            $table = $installer->getConnection()
+                ->newTable($installer->getTable('mageplaza_productslider_slider'))
+                ->addColumn('slider_id', Table::TYPE_INTEGER, null, [
                     'identity' => true,
-                    'nullable' => false,
-                    'primary'  => true,
                     'unsigned' => true,
-                ],
-                'Slider ID'
-            )
-            ->addColumn(
-                'name',
-                \Magento\Framework\DB\Ddl\Table::TYPE_TEXT,
-                255,
-                [],
-                'Slider Name'
-            )
-            ->addColumn(
-                'store_views',
-                \Magento\Framework\DB\Ddl\Table::TYPE_TEXT,
-                '64k',
-                [],
-                'Slider Store View'
-            )
-            ->addColumn(
-                'active_from',
-                \Magento\Framework\DB\Ddl\Table::TYPE_DATETIME,
-                null,
-                [],
-                'Slider Active From'
-            )
-            ->addColumn(
-                'active_to',
-                \Magento\Framework\DB\Ddl\Table::TYPE_TEXT,
-                255,
-                ['nullable => false'],
-                'Slider Active To'
-            )
-            ->addColumn(
-                'status',
-                \Magento\Framework\DB\Ddl\Table::TYPE_INTEGER,
-                1,
-                [],
-                'Slider Status'
-            )
-            ->addColumn(
-                'serialized_data',
-                \Magento\Framework\DB\Ddl\Table::TYPE_TEXT,
-                '64k',
-                [],
-                'Slider Data'
-            )
+                    'nullable' => false,
+                    'primary'  => true
+                ], 'Rule Id')
+                ->addColumn('name', Table::TYPE_TEXT, 255, [], 'Name')
+                ->addColumn('status', Table::TYPE_SMALLINT, null, ['nullable' => false, 'default' => '0'], 'Status')
+                ->addColumn('location', Table::TYPE_TEXT, 255, [], 'Location')
+                ->addColumn('time_cache', Table::TYPE_INTEGER,  null, 'Name')
+                ->addColumn('from_date', Table::TYPE_DATE, null, ['nullable' => true, 'default' => null], 'From')
+                ->addColumn('to_date', Table::TYPE_DATE, null, ['nullable' => true, 'default' => null], 'To')
+                ->addColumn('block_name', Table::TYPE_TEXT, 255, [], 'Block Name')
+                ->addColumn('product_type', Table::TYPE_TEXT, 255, [], 'Type')
+                ->addColumn('display_additional', Table::TYPE_TEXT, 255, [], 'Display additional Information')
+                ->addColumn('is_responsive', Table::TYPE_TEXT, 255, [], 'Responsive')
+                ->addColumn('created_at', Table::TYPE_TIMESTAMP, null, ['nullable' => false, 'default' => Table::TIMESTAMP_INIT], 'Creation Time')
+                ->addColumn('updated_at', Table::TYPE_TIMESTAMP, null, ['nullable' => false, 'default' => Table::TIMESTAMP_INIT_UPDATE], 'Update Time')
+                ->setComment('Product Slider Block');
 
-            ->addColumn(
-                'created_at',
-                \Magento\Framework\DB\Ddl\Table::TYPE_TIMESTAMP,
-                null,
-                [],
-                'Slider Created At'
-            )
-            ->addColumn(
-                'updated_at',
-                \Magento\Framework\DB\Ddl\Table::TYPE_TIMESTAMP,
-                null,
-                [],
-                'Slider Updated At'
-            )
-            ->setComment('Slider Table');
             $installer->getConnection()->createTable($table);
-
-            $installer->getConnection()->addIndex(
-                $installer->getTable('mageplaza_productslider_slider'),
-                $setup->getIdxName(
-                    $installer->getTable('mageplaza_productslider_slider'),
-                    ['name','active_to','serialized_data'],
-                    \Magento\Framework\DB\Adapter\AdapterInterface::INDEX_TYPE_FULLTEXT
-                ),
-                ['name','active_to','serialized_data'],
-                \Magento\Framework\DB\Adapter\AdapterInterface::INDEX_TYPE_FULLTEXT
-            );
         }
+
+        if (!$installer->tableExists('mageplaza_productslider_slider_store')) {
+            $table = $installer->getConnection()
+                ->newTable($installer->getTable('mageplaza_productslider_slider_store'))
+                ->addColumn('slider_id', Table::TYPE_INTEGER, null, [
+                    'unsigned' => true,
+                    'nullable' => false,
+                    'primary'  => true
+                ], 'Slider Id')
+                ->addColumn('store_id', Table::TYPE_SMALLINT, null, ['unsigned' => true, 'nullable' => false, 'primary' => true], 'Store Id')
+                ->addIndex($installer->getIdxName('mageplaza_productslider_slider_store', ['store_id']), ['store_id'])
+                ->addForeignKey(
+                    $installer->getFkName('mageplaza_productslider_slider_store', 'slider_id', 'mageplaza_productslider_slider', 'slider_id'),
+                    'slider_id',
+                    $installer->getTable('mageplaza_productslider_slider'),
+                    'slider_id',
+                    Table::ACTION_CASCADE
+                )
+                ->addForeignKey(
+                    $installer->getFkName('mageplaza_productslider_slider_store', 'store_id', 'store', 'store_id'),
+                    'store_id',
+                    $installer->getTable('store'),
+                    'store_id',
+                    Table::ACTION_CASCADE
+                )
+                ->setComment('Product Slider To Stores Relations');
+
+            $installer->getConnection()->createTable($table);
+        }
+
+        if (!$installer->tableExists('mageplaza_productslider_slider_customer_group')) {
+            $table = $installer->getConnection()
+                ->newTable($installer->getTable('mageplaza_productslider_slider_customer_group'))
+                ->addColumn('slider_id', Table::TYPE_INTEGER, null, [
+                    'unsigned' => true,
+                    'nullable' => false,
+                    'primary'  => true
+                ], 'Rule Id'
+                )->addColumn('customer_group_id', Table::TYPE_INTEGER, null, [
+                    'unsigned' => true,
+                    'nullable' => false,
+                    'primary'  => true
+                ], 'Customer Group Id'
+                )->addIndex(
+                    $installer->getIdxName('mageplaza_productslider_slider_customer_group', ['customer_group_id']),
+                    ['customer_group_id']
+                )->addForeignKey(
+                    $installer->getFkName('mageplaza_productslider_slider_customer_group', 'slider_id', 'mageplaza_productslider_slider', 'slider_id'),
+                    'slider_id',
+                    $installer->getTable('mageplaza_productslider_slider'),
+                    'slider_id',
+                    Table::ACTION_CASCADE
+                )->addForeignKey(
+                    $installer->getFkName('mageplaza_productslider_slider_customer_group', 'customer_group_id', 'customer_group', 'customer_group_id'),
+                    'customer_group_id',
+                    $installer->getTable('customer_group'),
+                    'customer_group_id',
+                    Table::ACTION_CASCADE
+                )->setComment('Product Slider To Customer Groups Relations');
+            $installer->getConnection()->createTable($table);
+        }
+
         $installer->endSetup();
     }
 }
