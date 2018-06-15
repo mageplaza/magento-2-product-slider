@@ -16,16 +16,27 @@
  */
 -->
 <page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" layout="admin-2columns-left" xsi:noNamespaceSchemaLocation="../../../../../../../lib/internal/Magento/Framework/View/Layout/etc/page_configuration.xsd">
+    <update handle="editor"/>
     <body>
         <referenceContainer name="content">
             <block class="Mageplaza\Productslider\Block\Adminhtml\Slider\Edit" name="mageplaza_productslider_slider_edit"/>
         </referenceContainer>
         <referenceContainer name="left">
             <block class="Mageplaza\Productslider\Block\Adminhtml\Slider\Edit\Tabs" name="mageplaza_productslider_slider_tabs">
-                <block class="Mageplaza\Productslider\Block\Adminhtml\Slider\Edit\Tab\General\General" name="mageplaza_productslider_slider_edit_tab_slider"/>
+                <block class="Mageplaza\Productslider\Block\Adminhtml\Slider\Edit\Tab\General\General" name="mageplaza_productslider_slider_edit_tab_general"/>
+                <block class="Mageplaza\Productslider\Block\Adminhtml\Slider\Edit\Tab\Type\Type" name="mageplaza_productslider_slider_edit_tab_type"/>
+                <block class="Mageplaza\Productslider\Block\Adminhtml\Slider\Edit\Tab\Design\Design" name="mageplaza_productslider_slider_edit_tab_design"/>
                 <action method="addTab">
-                    <argument name="name" xsi:type="string">slider</argument>
-                    <argument name="block" xsi:type="string">mageplaza_productslider_slider_edit_tab_slider</argument>
+                    <argument name="name" xsi:type="string">slider_general</argument>
+                    <argument name="general" xsi:type="string">mageplaza_productslider_slider_edit_tab_general</argument>
+                </action>
+                <action method="addTab">
+                    <argument name="name" xsi:type="string">slider_type</argument>
+                    <argument name="block" xsi:type="string">mageplaza_productslider_slider_edit_tab_type</argument>
+                </action>
+                <action method="addTab">
+                    <argument name="name" xsi:type="string">slider_design</argument>
+                    <argument name="block" xsi:type="string">mageplaza_productslider_slider_edit_tab_design</argument>
                 </action>
             </block>
         </referenceContainer>

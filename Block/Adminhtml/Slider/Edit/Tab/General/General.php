@@ -2,16 +2,16 @@
 /**
  * Mageplaza_Productslider extension
  *                     NOTICE OF LICENSE
- * 
+ *
  *                     This source file is subject to the MIT License
  *                     that is bundled with this package in the file LICENSE.txt.
  *                     It is also available through the world-wide-web at this URL:
  *                     https://www.mageplaza.com/LICENSE.txt
- * 
- *                     @category  Mageplaza
- *                     @package   Mageplaza_Productslider
- *                     @copyright Copyright (c) 2016
- *                     @license   https://www.mageplaza.com/LICENSE.txt
+ *
+ * @category  Mageplaza
+ * @package   Mageplaza_Productslider
+ * @copyright Copyright (c) 2016
+ * @license   https://www.mageplaza.com/LICENSE.txt
  */
 
 namespace Mageplaza\Productslider\Block\Adminhtml\Slider\Edit\Tab\General;
@@ -33,7 +33,7 @@ class General extends \Magento\Backend\Block\Widget\Form\Generic implements \Mag
 
     /**
      * Country options
-     * 
+     *
      * @var \Magento\Config\Model\Config\Source\Yesno
      */
     protected $_booleanOptions;
@@ -73,12 +73,12 @@ class General extends \Magento\Backend\Block\Widget\Form\Generic implements \Mag
     )
     {
         $this->resourceModelSliderFactory = $resourceModelSliderFactory;
-        $this->_groupRepository         = $groupRepository;
-        $this->_searchCriteriaBuilder   = $searchCriteriaBuilder;
-        $this->_objectConverter         = $objectConverter;
-        $this->systemStore              = $systemStore;
+        $this->_groupRepository = $groupRepository;
+        $this->_searchCriteriaBuilder = $searchCriteriaBuilder;
+        $this->_objectConverter = $objectConverter;
+        $this->systemStore = $systemStore;
         $this->location = $location;
-        $this->_booleanOptions    = $booleanOptions;
+        $this->_booleanOptions = $booleanOptions;
         parent::__construct($context, $registry, $formFactory, $data);
     }
 
@@ -99,7 +99,7 @@ class General extends \Magento\Backend\Block\Widget\Form\Generic implements \Mag
             'base_fieldset',
             [
                 'legend' => __('General Information'),
-                'class'  => 'fieldset-wide'
+                'class' => 'fieldset-wide'
             ]
         );
         if ($slider->getId()) {
@@ -110,17 +110,17 @@ class General extends \Magento\Backend\Block\Widget\Form\Generic implements \Mag
             );
         }
         $fieldset->addField('name', 'text', [
-                'name'  => 'name',
+                'name' => 'name',
                 'label' => __('Name'),
                 'title' => __('Name'),
             ]
         );
         $fieldset->addField('status', 'select', [
-                'name'  => 'status',
+                'name' => 'status',
                 'label' => __('Status'),
                 'title' => __('Status'),
                 'required' => true,
-                'options'  => [
+                'options' => [
                     '1' => __('Active'),
                     '0' => __('Inactive')
                 ],
@@ -134,83 +134,61 @@ class General extends \Magento\Backend\Block\Widget\Form\Generic implements \Mag
             /** @var \Magento\Framework\Data\Form\Element\Renderer\RendererInterface $rendererBlock */
             $rendererBlock = $this->getLayout()->createBlock('Magento\Backend\Block\Store\Switcher\Form\Renderer\Fieldset\Element');
             $fieldset->addField('store_ids', 'multiselect', [
-                'name'     => 'store_ids',
-                'label'    => __('Store Views'),
-                'title'    => __('Store Views'),
+                'name' => 'store_ids',
+                'label' => __('Store Views'),
+                'title' => __('Store Views'),
                 'required' => true,
-                'values'   => $this->systemStore->getStoreValuesForForm(false, true)
+                'values' => $this->systemStore->getStoreValuesForForm(false, true)
             ])->setRenderer($rendererBlock);
         } else {
             $fieldset->addField('store_ids', 'hidden', [
-                'name'  => 'store_ids',
+                'name' => 'store_ids',
                 'value' => $this->_storeManager->getStore()->getId()
             ]);
         }
         $slider->setData('store_ids', $resourceModel->getStoresByRuleId($slider->getId()));
         $slider->setData('customer_group_ids', $resourceModel->getCustomerGroupByRuleId($slider->getId()));
 
-
         $customerGroups = $this->_groupRepository->getList($this->_searchCriteriaBuilder->create())->getItems();
         $fieldset->addField('customer_group_ids', 'multiselect', [
-                'name'     => 'customer_group_ids[]',
-                'label'    => __('Customer Groups'),
-                'title'    => __('Customer Groups'),
+                'name' => 'customer_group_ids[]',
+                'label' => __('Customer Groups'),
+                'title' => __('Customer Groups'),
                 'required' => true,
-                'values'   => $this->_objectConverter->toOptionArray($customerGroups, 'id', 'code'),
-                'note'     => __('Select customer group(s) to display the block to')
+                'values' => $this->_objectConverter->toOptionArray($customerGroups, 'id', 'code'),
+                'note' => __('Select customer group(s) to display the block to')
             ]
         );
-
-
-
-
-        $fieldset->addField('location', 'multiselect', [
-            'name'     => 'location',
-            'label'    => __('Position'),
-            'title'    => __('Position'),
-            'values'   => $this->location->toOptionArray()
+        $fieldset->addField('location', 'select', [
+            'name' => 'location',
+            'label' => __('Position'),
+            'title' => __('Position'),
+            'values' => $this->location->toOptionArray()
         ]);
-
-
-
-
         $fieldset->addField('time_cache', 'text', [
-                'name'  => 'time_cache',
+                'name' => 'time_cache',
                 'label' => __('Cache Lifetime (Seconds)'),
                 'title' => __('Cache Lifetime (Seconds)'),
-                'note'     => __('86400 by default, if not set. To refresh instantly, clear the Blocks HTML Output cache.')
+                'note' => __('86400 by default, if not set. To refresh instantly, clear the Blocks HTML Output cache.')
             ]
         );
-
         $dateFormat = $this->_localeDate->getDateFormat(\IntlDateFormatter::SHORT);
         $fieldset->addField('from_date', 'date', [
-                'name'         => 'from_date',
-                'label'        => __('From Date'),
-                'title'        => __('From'),
+                'name' => 'from_date',
+                'label' => __('From Date'),
+                'title' => __('From'),
                 'input_format' => DateTime::DATE_INTERNAL_FORMAT,
-                'date_format'  => $dateFormat
+                'date_format' => $dateFormat
             ]
         );
         $fieldset->addField('to_date', 'date', [
-                'name'         => 'to_date',
-                'label'        => __('To Date'),
-                'title'        => __('To'),
+                'name' => 'to_date',
+                'label' => __('To Date'),
+                'title' => __('To'),
                 'input_format' => DateTime::DATE_INTERNAL_FORMAT,
-                'date_format'  => $dateFormat
+                'date_format' => $dateFormat
             ]
         );
-
-
-
-
-
-
-
-
-
-
-
-
 
         $sliderData = $this->_session->getData('mageplaza_productslider_slider_data', true);
         if ($sliderData) {
@@ -220,8 +198,9 @@ class General extends \Magento\Backend\Block\Widget\Form\Generic implements \Mag
                 $slider->addData($slider->getDefaultValues());
             }
         }
-        $form->addValues($slider->getData());
+        $form->setValues($slider->getData());
         $this->setForm($form);
+
         return parent::_prepareForm();
     }
 
@@ -246,9 +225,10 @@ class General extends \Magento\Backend\Block\Widget\Form\Generic implements \Mag
     }
 
     /**
-     * Can show tab in tabs
+     * Returns status flag about this tab can be showed or not
      *
-     * @return boolean
+     * @return bool
+     * @codeCoverageIgnore
      */
     public function canShowTab()
     {
@@ -256,9 +236,10 @@ class General extends \Magento\Backend\Block\Widget\Form\Generic implements \Mag
     }
 
     /**
-     * Tab is hidden
+     * Returns status flag about this tab hidden or not
      *
-     * @return boolean
+     * @return bool
+     * @codeCoverageIgnore
      */
     public function isHidden()
     {

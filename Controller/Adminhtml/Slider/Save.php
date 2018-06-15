@@ -64,13 +64,7 @@ class Save extends \Mageplaza\Productslider\Controller\Adminhtml\Slider
             $data = $this->_filterData($data);
             $slider = $this->_initSlider();
             $slider->setData($data);
-            $this->_eventManager->dispatch(
-                'mageplaza_productslider_slider_prepare_save',
-                [
-                    'slider' => $slider,
-                    'request' => $this->getRequest()
-                ]
-            );
+
             try {
                 $slider->save();
                 $this->messageManager->addSuccess(__('The Slider has been saved.'));
@@ -92,6 +86,7 @@ class Save extends \Mageplaza\Productslider\Controller\Adminhtml\Slider
             } catch (\RuntimeException $e) {
                 $this->messageManager->addError($e->getMessage());
             } catch (\Exception $e) {
+                \Zend_Debug::dump($e->getMessage());
                 $this->messageManager->addException($e, __('Something went wrong while saving the Slider.'));
             }
             $this->_getSession()->setMageplazaProductsliderSliderData($data);
@@ -116,13 +111,7 @@ class Save extends \Mageplaza\Productslider\Controller\Adminhtml\Slider
      */
     protected function _filterData($data)
     {
-        $inputFilter = new \Zend_Filter_Input(
-            [
-                'active_from' => $this->_dateFilter,
-            ],
-            [],
-            $data
-        );
+        $inputFilter = new \Zend_Filter_Input(['from_date' => $this->_dateFilter,], [], $data);
         $data = $inputFilter->getUnescaped();
         if (isset($data['store_views'])) {
             if (is_array($data['store_views'])) {
