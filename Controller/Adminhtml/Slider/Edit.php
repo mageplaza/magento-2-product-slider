@@ -102,6 +102,7 @@ class Edit extends \Mageplaza\Productslider\Controller\Adminhtml\Slider
         $title = $slider->getId() ? $slider->getName() : __('New Slider');
         $resultPage->getConfig()->getTitle()->prepend($title);
         $data = $this->_backendSession->getData('mageplaza_productslider_slider_data', true);
+
         if (!empty($data)) {
             $slider->setData($data);
         }

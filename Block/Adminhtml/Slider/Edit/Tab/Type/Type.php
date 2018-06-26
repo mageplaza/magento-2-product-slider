@@ -44,6 +44,7 @@ class Type extends \Magento\Backend\Block\Widget\Form\Generic implements \Magent
 
     protected $additional;
 
+    protected $helper;
 
 
     /**
@@ -56,6 +57,7 @@ class Type extends \Magento\Backend\Block\Widget\Form\Generic implements \Magent
      * @param array $data
      */
     public function __construct(
+        \Mageplaza\Productslider\Helper\Data $helper,
         Additional $additional,
         SliderFactory $resourceModelSliderFactory,
         GroupRepositoryInterface $groupRepository,
@@ -70,7 +72,7 @@ class Type extends \Magento\Backend\Block\Widget\Form\Generic implements \Magent
         array $data = []
     )
     {
-
+        $this->helper = $helper;
         $this->additional = $additional;
         $this->resourceModelSliderFactory = $resourceModelSliderFactory;
         $this->_groupRepository = $groupRepository;
@@ -85,12 +87,12 @@ class Type extends \Magento\Backend\Block\Widget\Form\Generic implements \Magent
     /**
      * @return \Magento\Backend\Block\Widget\Form\Generic
      * @throws \Magento\Framework\Exception\LocalizedException
+     * @throws \Zend_Serializer_Exception
      */
     protected function _prepareForm()
     {
         /** @var \Mageplaza\Productslider\Model\Slider $slider */
         $slider = $this->_coreRegistry->registry('mageplaza_productslider_slider');
-        $resourceModel = $this->resourceModelSliderFactory->create();
 
         $form = $this->_formFactory->create();
         $form->setHtmlIdPrefix('slider_');
@@ -102,32 +104,26 @@ class Type extends \Magento\Backend\Block\Widget\Form\Generic implements \Magent
                 'class' => 'fieldset-wide'
             ]
         );
-
         $fieldset->addField('product_type', 'select', [
             'name' => 'product_type',
             'label' => __('Type'),
             'title' => __('Type'),
             'values' => $this->productType->toOptionArray()
         ]);
-
-
-
-        $fieldset->addField('categories_ids', '\Mageplaza\Productslider\Block\Adminhtml\Slider\Edit\Tab\Type\Category', [
+        $fieldset->addField('categories_ids', '\Mageplaza\Productslider\Block\Adminhtml\Slider\Edit\Tab\Type\Renderer\Category', [
                 'name' => 'categories_ids',
                 'label' => __('Categories'),
                 'title' => __('Categories'),
             ]
         );
 
-
-
-
-
-
-
-
-
-
+        $productListBlock = $this->getLayout()->createBlock('\Mageplaza\Productslider\Block\Adminhtml\Slider\Edit\Tab\Type\Products');
+        $fieldset->addField('product_ids', 'multiselect', [
+                'name' => 'product_ids',
+                'label' => __('Products'),
+                'title' => __('Products'),
+            ]
+        )->setRenderer($productListBlock);
         $fieldset->addField('display_additional', 'multiselect', [
                 'name'   => 'display_additional',
                 'label'  => __('Display additional information'),
@@ -136,28 +132,9 @@ class Type extends \Magento\Backend\Block\Widget\Form\Generic implements \Magent
                 'note'   => __('Select information or button(s) to display with products.')
             ]
         );
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+        if ($displayData = $slider->getDisplayAdditional()) {
+            $slider->setData('display_additional', $this->helper->unserialize($displayData));
+        }
 
         $sliderData = $this->_session->getData('mageplaza_productslider_slider_data', true);
         if ($sliderData) {

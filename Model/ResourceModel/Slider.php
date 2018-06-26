@@ -53,15 +53,75 @@ class Slider extends \Magento\Framework\Model\ResourceModel\Db\AbstractDb
      * @param string $ruleId
      * @return array
      */
-    public function getStoresByRuleId($ruleId)
+    public function getStoresByRuleId($sliderId)
     {
         $tableName = $this->getTable('mageplaza_productslider_slider_store');
         $select    = $this->getConnection()->select()
             ->from($tableName, 'store_id')
-            ->where('slider_id = ?', $ruleId);
+            ->where('slider_id = ?', $sliderId);
 
         return $this->getConnection()->fetchCol($select);
     }
+
+
+    public function updateStore($data = [], $sliderId)
+    {
+        $dataInsert = [];
+        foreach ($data as $storeId) {
+            $dataInsert[] = [
+                'slider_id'  => $sliderId,
+                'store_id' => $storeId
+            ];
+        }
+        $this->updateMultipleData('mageplaza_productslider_slider_store', $dataInsert);
+    }
+
+    public function updateCustomerGroup($data = [], $sliderId)
+    {
+        $dataInsert = [];
+        foreach ($data as $customerGroupId) {
+            $dataInsert[] = [
+                'slider_id'           => $sliderId,
+                'customer_group_id' => $customerGroupId
+            ];
+        }
+        $this->updateMultipleData('mageplaza_productslider_slider_customer_group', $dataInsert);
+    }
+
+    public function deleteOldData($sliderId)
+    {
+        if ($sliderId) {
+            $where = ['slider_id = ?' => $sliderId];
+            $this->deleteMultipleData('mageplaza_productslider_slider_store', $where);
+            $this->deleteMultipleData('mageplaza_productslider_slider_customer_group', $where);
+        }
+    }
+
+    public function deleteMultipleData($tableName, $where = [])
+    {
+        $table = $this->getTable($tableName);
+        if ($table && !empty($where)) {
+            $this->getConnection()->delete($table, $where);
+        }
+    }
+
+    public function updateMultipleData($tableName, $data = [])
+    {
+        $table = $this->getTable($tableName);
+        if ($table && !empty($data)) {
+            $this->getConnection()->insertMultiple($table, $data);
+        }
+    }
+
+
+
+
+
+
+
+
+
+
 
 //    public function getSliderNameById($id)
 //    {

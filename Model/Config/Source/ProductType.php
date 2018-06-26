@@ -1,9 +1,22 @@
 <?php
 /**
- * Created by PhpStorm.
- * User: nk
- * Date: 15/06/2018
- * Time: 14:17
+ * Mageplaza
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the mageplaza.com license that is
+ * available through the world-wide-web at this URL:
+ * https://www.mageplaza.com/LICENSE.txt
+ *
+ * DISCLAIMER
+ *
+ * Do not edit or add to this file if you wish to upgrade this extension to newer
+ * version in the future.
+ *
+ * @category    Mageplaza
+ * @package     Mageplaza_AutoRelated
+ * @copyright   Copyright (c) 2017-2018 Mageplaza (https://www.mageplaza.com/)
+ * @license     https://www.mageplaza.com/LICENSE.txt
  */
 
 namespace Mageplaza\Productslider\Model\Config\Source;
@@ -12,6 +25,15 @@ use Magento\Framework\Option\ArrayInterface;
 
 class ProductType implements ArrayInterface
 {
+    const NEW_PRODUCTS = 'new';
+    const BEST_SELLER_PRODUCTS = 'best-seller';
+    const FEATURED_PRODUCTS = 'featured';
+    const MOSTVIEWED_PRODUCTS = 'mostviewed';
+    const ONSALE_PRODUCTS = 'onsale';
+    const RECENT_PRODUCT = 'recent';
+    const WISHLIST_PRODUCT = 'wishlist';
+    const CATEGORYID = 'categoryId';
+    const CUSTOM_PRODUCTS = 'custom';
 
     /**
      * Return array of options as value-label pairs
@@ -21,15 +43,15 @@ class ProductType implements ArrayInterface
     public function toOptionArray()
     {
         $options = [
-            ['value' => 'new-products', 'label' => __('New Products')],
-            ['value' => 'best-seller-products', 'label' => __('Best Seller Products')],
-            ['value' => 'featured-products', 'label' => __('Featured Products')],
-            ['value' => 'most-viewed-products', 'label' => __('Most Viewed Products')],
-            ['value' => 'onsale-products', 'label' => __('OnSale Products')],
-            ['value' => 'recent-products', 'label' => __('Recent Products')],
-            ['value' => 'wishlist-products', 'label' => __('WishList Products')],
-            ['value' => 'category', 'label' => __('Select By Category')],
-            ['value' => 'custom-products', 'label' => __('Custom Specific Products')]
+            ['value' => self::NEW_PRODUCTS, 'label' => __('New Products')],
+            ['value' => self::BEST_SELLER_PRODUCTS, 'label' => __('Best Seller Products')],
+            ['value' => self::FEATURED_PRODUCTS, 'label' => __('Featured Products')],
+            ['value' => self::MOSTVIEWED_PRODUCTS, 'label' => __('Most Viewed Products')],
+            ['value' => self::ONSALE_PRODUCTS, 'label' => __('OnSale Products')],
+            ['value' => self::RECENT_PRODUCT, 'label' => __('Recent Products')],
+            ['value' => self::WISHLIST_PRODUCT, 'label' => __('WishList Products')],
+            ['value' => self::CATEGORYID, 'label' => __('Select By Category')],
+            ['value' => self::CUSTOM_PRODUCTS, 'label' => __('Custom Specific Products')]
         ];
 
         return $options;

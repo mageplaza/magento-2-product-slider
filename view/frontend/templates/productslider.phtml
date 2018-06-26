@@ -1,19 +1,29 @@
 <?php
 /**
- * Copyright � 2016 Magento. All rights reserved.
- * See COPYING.txt for license details.
+ * Mageplaza
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the mageplaza.com license that is
+ * available through the world-wide-web at this URL:
+ * https://www.mageplaza.com/LICENSE.txt
+ *
+ * DISCLAIMER
+ *
+ * Do not edit or add to this file if you wish to upgrade this extension to newer
+ * version in the future.
+ *
+ * @category    Mageplaza
+ * @package     Mageplaza_AutoRelated
+ * @copyright   Copyright (c) 2017-2018 Mageplaza (https://www.mageplaza.com/)
+ * @license     https://www.mageplaza.com/LICENSE.txt
  */
 
-// @codingStandardsIgnoreFile
+use Mageplaza\Productslider\Model\Config\Source\Additional;
 ?>
-<?php
-/**
- * @var $block \Magento\Reports\Block\Product\Viewed
- */
-?>
+
 <?php
 $helper = $this->helper('Mageplaza\Productslider\Helper\Data');
-
     $type = 'widget-viewed';
     $mode = 'grid';
     $productsliderId = $block->getUniqueSliderKey();
@@ -24,19 +34,18 @@ $helper = $this->helper('Mageplaza\Productslider\Helper\Data');
     $items = $block->getProductCollection();
     $info  = $block->getConfigValue('description');
 
-    $showWishlist = true;
-    $showCompare = true;
-    $showCart = true;
-    $rating = 'short';
     $description = ($mode == 'list') ? true : false;
 
+    $title = $block->getTitle() ? $block->getTitle() : 'Mageplaza ProductSlider';
+    $showPrice = $block->getShowList(Additional::SHOW_PRICE);
+    $showCart = $block->getShowList(Additional::SHOW_CART);
+    $showReview = $block->getShowList(Additional::SHOW_REVIEW);
 ?>
 
 <?php if ($items->getSize()):?>
-    <?php if ($title): ?>
+
     <div class="mp-product-slider-block block widget block-products-list <?php echo $mode; ?>">
         <h2 class="mp-product-slider-title"><?php echo $title; ?></h2>
-        <?php endif;?>
         <p class="mp-ps-info"><?php echo $info; ?></p>
     </div>
     <div class="block-content">
@@ -44,9 +53,9 @@ $helper = $this->helper('Mageplaza\Productslider\Helper\Data');
         <div class="products-<?php /* @escapeNotVerified */ echo $mode; ?> <?php /* @escapeNotVerified */ echo $mode; ?>">
             <ol class="product-items <?php /* @escapeNotVerified */ echo $type; ?>">
                 <?php $iterator = 1; ?>
-                <div class="owl-carousel owl-theme" id="mageplaza-product-slider-<?php echo $productsliderId; ?>">
+                <div class="owl-carousel owl-theme">
                     <?php foreach ($items as $_item): ?>
-                        <?php /* @escapeNotVerified */ echo($iterator++ == 1) ? '<li class="product-item product-slider"">' : '</li><li class="product-item product-slider"">' ?>
+                        <?php /* @escapeNotVerified */ echo($iterator++ == 1) ? '<li class="product-item product-slider"">' : '</li><li class="product-item product-slider"">'  ?>
                         <div class="product-item-info">
                             <a href="<?php /* @escapeNotVerified */ echo $block->getProductUrl($_item) ?>" class="product-item-photo">
                                 <?php echo $block->getImage($_item, $image)->toHtml(); ?>
@@ -58,73 +67,44 @@ $helper = $this->helper('Mageplaza\Productslider\Helper\Data');
                                         <?php echo $block->escapeHtml($_item->getName()) ?>
                                     </a>
                                 </strong>
-                                <?php /* @escapeNotVerified */
-                                //								    echo $block->getProductPriceHtml(
-                                //                                        $_item,
-                                //                                        \Magento\Catalog\Pricing\Price\FinalPrice::PRICE_CODE,
-                                //                                        \Magento\Framework\Pricing\Render::ZONE_ITEM_LIST,
-                                //                                        [
-                                //                                            'price_id_suffix' => '-' . $type
-                                //                                        ])
-                                echo $block->getProductPrice($_item);
-                                ?>
-                                <?php if ($rating): ?>
-                                    <?php echo $block->getReviewsSummaryHtml($_item, $rating) ?>
+                                <?php if ($showPrice): ?>
+                                    <?php echo $block->getProductPrice($_item); ?>
+                                <?php endif; ?>
+                                <?php if ($showReview): ?>
+                                    <?php echo $block->getReviewsSummaryHtml($_item, 'short') ?>
                                 <?php endif; ?>
 
-                                <?php if ($showWishlist || $showCompare || $showCart): ?>
-                                    <div class="product-item-actions">
-                                        <?php if ($showCart): ?>
-                                            <div class="actions-primary">
-                                                <?php if ($_item->isSaleable()): ?>
-                                                    <?php if ($_item->getTypeInstance()->hasRequiredOptions($_item)): ?>
-                                                        <button class="action tocart primary"
-                                                                data-mage-init='{"redirectUrl": {"url": "<?php /* @escapeNotVerified */ echo $block->getAddToCartUrl($_item) ?>"}}'
-                                                                type="button" title="<?php /* @escapeNotVerified */ echo __('Add to Cart') ?>">
-                                                            <span><?php /* @escapeNotVerified */ echo __('Add to Cart') ?></span>
-                                                        </button>
-                                                    <?php else: ?>
-                                                        <?php
+                                <div class="product-item-actions">
+                                    <?php if ($showCart): ?>
+                                        <div class="actions-primary">
+                                            <?php if ($_item->isSaleable()): ?>
+                                                <?php if ($_item->getTypeInstance()->hasRequiredOptions($_item)): ?>
+                                                    <button class="action tocart primary"
+                                                            data-mage-init='{"redirectUrl": {"url": "<?php /* @escapeNotVerified */ echo $block->getAddToCartUrl($_item) ?>"}}'
+                                                            type="button" title="<?php /* @escapeNotVerified */ echo __('Add to Cart') ?>">
+                                                        <span><?php /* @escapeNotVerified */ echo __('Add to Cart') ?></span>
+                                                    </button>
+                                                <?php else: ?>
+                                                    <?php
                                                         $postDataHelper = $this->helper('Magento\Framework\Data\Helper\PostHelper');
                                                         $postData = $postDataHelper->getPostData($block->getAddToCartUrl($_item), ['product' => $_item->getEntityId()])
-                                                        ?>
-                                                        <button class="action tocart primary"
-                                                                data-post='<?php /* @escapeNotVerified */ echo $postData; ?>'
-                                                                type="button" title="<?php /* @escapeNotVerified */ echo __('Add to Cart') ?>">
-                                                            <span><?php /* @escapeNotVerified */ echo __('Add to Cart') ?></span>
-                                                        </button>
-                                                    <?php endif; ?>
+                                                    ?>
+                                                    <button class="action tocart primary"
+                                                            data-post='<?php /* @escapeNotVerified */ echo $postData; ?>'
+                                                            type="button" title="<?php /* @escapeNotVerified */ echo __('Add to Cart') ?>">
+                                                        <span><?php /* @escapeNotVerified */ echo __('Add to Cart') ?></span>
+                                                    </button>
+                                                <?php endif; ?>
+                                            <?php else: ?>
+                                                <?php if ($_item->getIsSalable()): ?>
+                                                    <div class="stock available"><span><?php /* @escapeNotVerified */ echo __('In stock') ?></span></div>
                                                 <?php else: ?>
-                                                    <?php if ($_item->getIsSalable()): ?>
-                                                        <div class="stock available"><span><?php /* @escapeNotVerified */ echo __('In stock') ?></span></div>
-                                                    <?php else: ?>
-                                                        <div class="stock unavailable"><span><?php /* @escapeNotVerified */ echo __('Out of stock') ?></span></div>
-                                                    <?php endif; ?>
+                                                    <div class="stock unavailable"><span><?php /* @escapeNotVerified */ echo __('Out of stock') ?></span></div>
                                                 <?php endif; ?>
-                                            </div>
-                                        <?php endif; ?>
-                                        <?php if ($showWishlist || $showCompare): ?>
-                                            <div class="actions-secondary" data-role="add-to-links">
-                                                <?php if ($this->helper('Magento\Wishlist\Helper\Data')->isAllow() && $showWishlist): ?>
-                                                    <a href="#"
-                                                       class="action towishlist" data-action="add-to-wishlist"
-                                                       data-post='<?php /* @escapeNotVerified */ echo $block->getAddToWishlistParams($_item); ?>'
-                                                       title="<?php /* @escapeNotVerified */ echo __('Add to Wish List') ?>">
-                                                        <span><?php /* @escapeNotVerified */ echo __('Add to Wish List') ?></span>
-                                                    </a>
-                                                <?php endif; ?>
-                                                <?php if ($block->getAddToCompareUrl() && $showCompare): ?>
-                                                    <?php $compareHelper = $this->helper('Magento\Catalog\Helper\Product\Compare');?>
-                                                    <a href="#" class="action tocompare"
-                                                       data-post='<?php /* @escapeNotVerified */ echo $compareHelper->getPostDataParams($_item);?>'
-                                                       title="<?php /* @escapeNotVerified */ echo __('Add to Compare') ?>">
-                                                        <span><?php /* @escapeNotVerified */ echo __('Add to Compare') ?></span>
-                                                    </a>
-                                                <?php endif; ?>
-                                            </div>
-                                        <?php endif; ?>
-                                    </div>
-                                <?php endif; ?>
+                                            <?php endif; ?>
+                                        </div>
+                                    <?php endif; ?>
+                                </div>
                             </div>
                         </div>
                         <?php echo($iterator == count($items)+1) ? '</li>' : '' ?>
@@ -139,9 +119,8 @@ $helper = $this->helper('Mageplaza\Productslider\Helper\Data');
             'jquery',
             'Mageplaza_Productslider/js/owl.carousel.min'
         ], function ($) {
-            $('#mageplaza-product-slider-<?php echo $productsliderId;?>').owlCarousel(<?php echo ($helper->getAllOptions())?>);
-            //$('#mageplaza-product-slider-<?php //echo $productsliderId;?>//').owlCarousel(<?php //echo '{is_enabled:1,loop:1,responsive:{ 0:{ items:1},600:{ items:3},1000:{ items:5}},lazyLoad:1,autoplay:1}'?>//);
+            $('.owl-carousel.owl-theme').owlCarousel(<?php echo ($block->getAllOptions())?>);
+            //$('#mageplaza-product-slider-<?php //echo $productsliderId;?>//').owlCarousel(<?php //echo '{is_enabled:1,loop:1,responsive:{ 0:{ items:1},600:{ items:3},1000:{ items:5}},lazyLoad:1,autoplay:1,nav:1}'?>//);
         });
     </script>
 <?php endif;?>
-

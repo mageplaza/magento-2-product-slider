@@ -33,6 +33,7 @@ use Magento\Framework\Stdlib\DateTime\DateTime;
  */
 class NewProducts extends AbstractSlider
 {
+    protected $_template = 'Mageplaza_Productslider::productslider.phtml';
     /**
      * @var CollectionFactory
      */

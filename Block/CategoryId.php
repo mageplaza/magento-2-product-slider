@@ -22,27 +22,62 @@
 namespace Mageplaza\Productslider\Block;
 
 use Magento\Catalog\Block\Product\Context;
+use Mageplaza\Productslider\Model\SliderFactory;
+use Magento\Store\Model\StoreManagerInterface;
+use Magento\Framework\Stdlib\DateTime\DateTime;
+use Magento\Catalog\Model\ResourceModel\Product\CollectionFactory;
+use Magento\Catalog\Model\CategoryFactory;
+use Mageplaza\Productslider\Helper\Data;
 
-class CategoryId extends \Mageplaza\Productslider\Block\AbstractSlider
+class CategoryId extends AbstractSlider
 {
-	/**
-	 * default category id
-	 */
-	const DEFAULT_CATEGORY = 2;
+    /**
+     * Default category id
+     */
+    const DEFAULT_CATEGORY = 2;
 
-	protected $category;
+    /**
+     * @var \Mageplaza\Productslider\Model\SliderFactory
+     */
+    protected $_sliderFactory;
 
-	public function __construct(
-        \Magento\Catalog\Model\Category $category,
-	    \Magento\Store\Model\StoreManagerInterface $storeManager,
-        \Magento\Framework\Stdlib\DateTime\DateTime $getDayDate,
+    /**
+     * @var \Magento\Catalog\Model\ResourceModel\Product\CollectionFactory
+     */
+    protected $_productCollectionFactory;
+
+    /**
+     * @var \Magento\Catalog\Model\CategoryFactory
+     */
+    protected $_categoryFactory;
+
+    /**
+     * CategoryId constructor.
+     * @param SliderFactory $sliderFactory
+     * @param StoreManagerInterface $storeManager
+     * @param DateTime $getDayDate
+     * @param CollectionFactory $productCollectionFactory
+     * @param CategoryFactory $categoryFactory
+     * @param Data $helperData
+     * @param Context $context
+     * @param array $data
+     */
+    public function __construct(
+        SliderFactory $sliderFactory,
+        StoreManagerInterface $storeManager,
+        DateTime $getDayDate,
+        CollectionFactory $productCollectionFactory,
+        CategoryFactory $categoryFactory,
+        Data $helperData,
         Context $context,
         array $data = []
     )
     {
-        parent::__construct($storeManager, $getDayDate, $context, $data);
+        parent::__construct($storeManager, $getDayDate, $helperData, $context, $data);
 
-        $this->category = $category;
+        $this->_sliderFactory = $sliderFactory;
+        $this->_categoryFactory = $categoryFactory;
+        $this->_productCollectionFactory = $productCollectionFactory;
     }
 
 //	protected function _construct()
@@ -51,22 +86,53 @@ class CategoryId extends \Mageplaza\Productslider\Block\AbstractSlider
 //		parent::_construct();
 //	}
 
-	public function getProductCategoryId()
-	{
-		return $this->getData('category_id') ? $this->getData('category_id') : self::DEFAULT_CATEGORY;
-	}
+    public function getSliderCategoryIds()
+    {
+        if ($this->getData('category_id')) {
+            return $this->getData('category_id');
+        }
+        if ($this->getSlider()) {
+            $catIds = explode(',', $this->getSlider()->getCategoriesIds());
 
-	public function getProductCollection()
-	{
-		$category   = $this->category->load($this->getProductCategoryId());
-		$collection = $category->getProductCollection()->setPageSize($this->getProductsCount())->addAttributeToSelect('*');
+            return $catIds;
+        }
 
-		return $collection;
-	}
+        return self::DEFAULT_CATEGORY;
+    }
 
-	public function getProductCacheKey()
-	{
-		return 'mageplaza_product_slider_category_' . $this->getData('category_id');
-	}
+    public function getProductIds()
+    {
+        $productIds = [];
+        $catIds = $this->getSliderCategoryIds();
+        foreach ($catIds as $catId) {
+            $category = $this->_categoryFactory->create()->load($catId);
+            $collection = $this->_productCollectionFactory->create()
+                ->addAttributeToSelect('*')
+                ->addCategoryFilter($category);
+
+            foreach ($collection as $item) {
+                $productIds[] = $item->getData('entity_id');
+            }
+        }
+
+        return $productIds;
+    }
+
+    public function getProductCollection()
+    {
+        $productIds = $this->getProductIds();
+        $collection = [];
+        if (!empty($productIds)) {
+            $collection = $this->_productCollectionFactory->create()->addIdFilter($productIds);
+            $this->_addProductAttributesAndPrices($collection);
+        }
+
+        return $collection;
+    }
+
+    public function getProductCacheKey()
+    {
+        return 'mageplaza_product_slider_category_' . $this->getData('category_id');
+    }
 
 }

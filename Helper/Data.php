@@ -158,76 +158,6 @@ class Data extends AbstractData
         );
     }
 
-
-//	public function getSliderDesignConfig($field, $storeId = null){
-//	    return $this->getModuleConfig($field ,$storeId);
-//    }
-
-
-
-    /**
-     * @return string
-     * @throws \Zend_Serializer_Exception
-     */
-    public function getAllOptions(){
-        $sliderOptions = '';
-        $allConfig = $this->getModuleConfig('slider_design');
-
-        foreach($allConfig as $key => $value){
-            if($key == 'item_slider'){
-                $sliderOptions = $sliderOptions . $this->getResponsiveConfig();
-
-            } else if($key != 'responsive'){
-                $sliderOptions = $sliderOptions . $key . ':' . $value . ',';
-            }
-        }
-
-        return '{' . $sliderOptions . '}';
-    }
-
-    /**
-     * @throws \Zend_Serializer_Exception
-     */
-    public function getResponsiveConfig()
-    {
-        $config = $this->unserialize($this->getModuleConfig('slider_design/item_slider'));
-        $responsiveOptions = '';
-        foreach ($config as $value){
-            $responsiveOptions = $responsiveOptions . $value['col_1'] . ':{items:' . $value['col_2'] . '},';
-        }
-
-        $responsiveOptions = rtrim($responsiveOptions,',');
-
-        return  'responsive:{' . $responsiveOptions . '}';
-    }
-
-
-
-
-//	public function getSliderConfig($configPath, $store = null)
-//	{
-//		return $this->_scopeConfig->getValue(
-//			$configPath,
-//			\Magento\Store\Model\ScopeInterface::SCOPE_STORE,
-//			$store
-//		);
-//	}
-
-//	public function isEnabled($store = null)
-//	{
-//		$isModuleEnabled       = $this->isModuleEnabled();
-//		$isModuleOutputEnabled = $this->isModuleOutputEnabled();
-//
-//		return $isModuleOutputEnabled && $isModuleEnabled && $this->getSliderConfig(self::GENERAL_IS_ENABLED, $store);
-//	}
-
-//	public function isModuleEnabled()
-//	{
-//		$moduleName = "Mageplaza_Productslider";
-//
-//		return $this->_moduleManager->isEnabled($moduleName);
-//	}
-
     /**
      * @return string
      */
@@ -235,5 +165,7 @@ class Data extends AbstractData
     {
         return QueryFactory::QUERY_VAR_NAME;
     }
+
+
 
 }

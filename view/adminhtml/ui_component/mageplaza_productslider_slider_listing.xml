@@ -161,9 +161,10 @@
                 </item>
             </argument>
         </column>
-        <column name="product_type">
+        <column name="product_type" class="Mageplaza\Productslider\Ui\Component\Listing\Columns\SliderType">
             <argument name="data" xsi:type="array">
                 <item name="config" xsi:type="array">
+                    <item name="bodyTmpl" xsi:type="string">ui/grid/cells/html</item>
                     <item name="filter" xsi:type="string">text</item>
                     <item name="editor" xsi:type="array">
                         <item name="editorType" xsi:type="string">text</item>
@@ -175,10 +176,11 @@
                 </item>
             </argument>
         </column>
-        <column name="location">
+        <column name="location" class="Mageplaza\Productslider\Ui\Component\Listing\Columns\SliderLocation">
             <argument name="data" xsi:type="array">
                 <item name="config" xsi:type="array">
                     <item name="filter" xsi:type="string">text</item>
+                    <item name="bodyTmpl" xsi:type="string">ui/grid/cells/html</item>
                     <item name="editor" xsi:type="array">
                         <item name="editorType" xsi:type="string">text</item>
                         <item name="validation" xsi:type="array">

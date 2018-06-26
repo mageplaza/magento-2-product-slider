@@ -1,9 +1,22 @@
 <?php
 /**
- * Created by PhpStorm.
- * User: nk
- * Date: 14/06/2018
- * Time: 18:16
+ * Mageplaza
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the mageplaza.com license that is
+ * available through the world-wide-web at this URL:
+ * https://www.mageplaza.com/LICENSE.txt
+ *
+ * DISCLAIMER
+ *
+ * Do not edit or add to this file if you wish to upgrade this extension to newer
+ * version in the future.
+ *
+ * @category    Mageplaza
+ * @package     Mageplaza_AutoRelated
+ * @copyright   Copyright (c) 2017-2018 Mageplaza (https://www.mageplaza.com/)
+ * @license     https://www.mageplaza.com/LICENSE.txt
  */
 
 namespace Mageplaza\Productslider\Model\Config\Source;
@@ -12,6 +25,20 @@ use Magento\Framework\Option\ArrayInterface;
 
 class Location implements ArrayInterface
 {
+    const ALLPAGE_CONTENT_TOP = 'allpage.content-top';
+    const ALLPAGE_CONTENT_BOTTOM = 'allpage.content-bottom';
+    const ALLPAGE_SIDEBAR_TOP = 'allpage.sidebar-top';
+    const ALLPAGE_SIDEBAR_BOTTOM = 'allpage.sidebar-bottom';
+    const HOMEPAGE_CONTENT_TOP = 'cms_index_index.content-top';
+    const HOMEPAGE_CONTENT_BOTTOM = 'cms_index_index.content-bottom';
+    const CATEGORY_CONTENT_TOP = 'catalog_category_view.content-top';
+    const CATEGORY_CONTENT_BOTTOM = 'catalog_category_view.content-bottom';
+    const CATEGORY_SIDEBAR_TOP = 'catalog_category_view.sidebar-top';
+    const CATEGORY_SIDEBAR_BOTTOM = 'catalog_category_view.sidebar-bottom';
+    const PRODUCT_CONTENT_TOP = 'catalog_product_view.content-top';
+    const PRODUCT_CONTENT_BOTTOM = 'catalog_product_view.content-bottom';
+    const CHECKOUT_CONTENT_TOP = 'checkout_cart_index.content-top';
+    const CHECKOUT_CONTENT_BOTTOM = 'checkout_cart_index.content-bottom';
 
     /**
      * Return array of options as value-label pairs
@@ -20,23 +47,88 @@ class Location implements ArrayInterface
      */
     public function toOptionArray()
     {
-        $values = [
-            ['value' => 'top-of-content', 'label' => __('Top of content')],
-            ['value' => 'bottom-of-content', 'label' => __('Bottom of content')],
-        ];
-
-        $allValues = array_merge($values, [
-            ['value' => 'top-of-sidebar', 'label' => __('Top of sidebar')],
-            ['value' => 'bottom-of-sidebar', 'label' => __('Bottom of sidebar')]
-        ]);
-
-
         $options = [
-            ['value' => $allValues, 'label' => 'All Page'],
-            ['value' => $values, 'label' => 'Home Page'],
-            ['value' => $allValues, 'label' => 'Category Page'],
-            ['value' => $values, 'label' => 'Product Page'],
-            ['value' => $values, 'label' => 'Checkout Cart Page'],
+            [
+                'label' => __('All Page'),
+                'value' => [
+                    [
+                        'label' => __('Top of content'),
+                        'value' => self::ALLPAGE_CONTENT_TOP
+                    ],
+                    [
+                        'label' => __('Bottom of content'),
+                        'value' => self::ALLPAGE_CONTENT_BOTTOM
+                    ],
+                    [
+                        'label' => __('Top of sidebar'),
+                        'value' => self::ALLPAGE_SIDEBAR_TOP
+                    ],
+                    [
+                        'label' => __('Bottom of sidebar'),
+                        'value' => self::ALLPAGE_SIDEBAR_BOTTOM
+                    ]
+                ]
+            ],
+            [
+                'label' => __('Home Page'),
+                'value' => [
+                    [
+                        'label' => __('Top of content'),
+                        'value' => self::HOMEPAGE_CONTENT_TOP
+                    ],
+                    [
+                        'label' => __('Bottom of content'),
+                        'value' => self::HOMEPAGE_CONTENT_BOTTOM
+                    ]
+                ]
+            ],
+            [
+                'label' => __('Category page'),
+                'value' => [
+                    [
+                        'label' => __('Top of content'),
+                        'value' => self::CATEGORY_CONTENT_TOP
+                    ],
+                    [
+                        'label' => __('Bottom of content'),
+                        'value' => self::CATEGORY_CONTENT_BOTTOM
+                    ],
+                    [
+                        'label' => __('Top of sidebar'),
+                        'value' => self::CATEGORY_SIDEBAR_TOP
+                    ],
+                    [
+                        'label' => __('Bottom of sidebar'),
+                        'value' => self::CATEGORY_SIDEBAR_BOTTOM
+                    ],
+                ]
+            ],
+            [
+                'label' => __('Product page'),
+                'value' => [
+                    [
+                        'label' => __('Top of content'),
+                        'value' => self::PRODUCT_CONTENT_TOP
+                    ],
+                    [
+                        'label' => __('Bottom of content'),
+                        'value' => self::PRODUCT_CONTENT_BOTTOM
+                    ]
+                ]
+            ],
+            [
+                'label' => __('Checkout Cart Page'),
+                'value' => [
+                    [
+                        'label' => __('Top of content'),
+                        'value' => self::CHECKOUT_CONTENT_TOP
+                    ],
+                    [
+                        'label' => __('Bottom of content'),
+                        'value' => self::CHECKOUT_CONTENT_BOTTOM
+                    ]
+                ]
+            ]
         ];
 
         return $options;

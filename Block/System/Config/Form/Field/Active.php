@@ -19,4 +19,5 @@ class Active extends \Magento\Config\Block\System\Config\Form\Field\FieldArray\A
 //        $this->_addAfter = false;
 //        $this->_addButtonLabel = __('Add');
     }
+
 }

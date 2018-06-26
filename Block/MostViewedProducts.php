@@ -25,17 +25,19 @@ use Magento\Catalog\Block\Product\Context;
 
 class MostViewedProducts extends AbstractSlider
 {
+    protected $_template = 'Mageplaza_Productslider::productslider.phtml';
+
     protected $_productsFactory;
 
     public function __construct(
         \Magento\Store\Model\StoreManagerInterface $storeManager,
         \Magento\Framework\Stdlib\DateTime\DateTime $getDayDate,
-        Context $context,
+        \Mageplaza\Productslider\Helper\Data $helperData,
         \Magento\Reports\Model\ResourceModel\Product\Collection $productsFactory,
-        array $data = []
-    )
+        Context $context,
+        array $data = [])
     {
-        parent::__construct($storeManager, $getDayDate, $context, $data);
+        parent::__construct($storeManager, $getDayDate, $helperData, $context, $data);
 
         $this->_productsFactory = $productsFactory;
     }

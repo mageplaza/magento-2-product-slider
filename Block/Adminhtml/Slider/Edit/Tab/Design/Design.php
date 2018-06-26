@@ -12,7 +12,6 @@ use Magento\Store\Model\System\Store;
 use Mageplaza\Productslider\Model\ResourceModel\SliderFactory;
 use Magento\Framework\Api\SearchCriteriaBuilder;
 use Magento\Framework\Convert\DataObject;
-use Magento\Framework\Stdlib\DateTime;
 use Magento\Customer\Api\GroupRepositoryInterface;
 use Mageplaza\Productslider\Model\Config\Source\ProductType;
 use Mageplaza\Productslider\Model\Config\Source\Additional;
@@ -20,7 +19,6 @@ use Mageplaza\Productslider\Model\Config\Source\Additional;
 
 class Design extends \Magento\Backend\Block\Widget\Form\Generic implements \Magento\Backend\Block\Widget\Tab\TabInterface
 {
-
     /**
      * @var \Magento\Store\Model\System\Store
      */
@@ -32,7 +30,6 @@ class Design extends \Magento\Backend\Block\Widget\Form\Generic implements \Mage
      * @var \Magento\Config\Model\Config\Source\Yesno
      */
     protected $_booleanOptions;
-
 
     protected $resourceModelSliderFactory;
 
@@ -46,8 +43,17 @@ class Design extends \Magento\Backend\Block\Widget\Form\Generic implements \Mage
 
     protected $additional;
 
+    protected $_helperData;
+
     /**
-     * General constructor.
+     * Design constructor.
+     * @param \Mageplaza\Productslider\Helper\Data $helperData
+     * @param Additional $additional
+     * @param SliderFactory $resourceModelSliderFactory
+     * @param GroupRepositoryInterface $groupRepository
+     * @param SearchCriteriaBuilder $searchCriteriaBuilder
+     * @param DataObject $objectConverter
+     * @param ProductType $productType
      * @param \Magento\Config\Model\Config\Source\Yesno $booleanOptions
      * @param \Magento\Backend\Block\Template\Context $context
      * @param \Magento\Framework\Registry $registry
@@ -56,6 +62,7 @@ class Design extends \Magento\Backend\Block\Widget\Form\Generic implements \Mage
      * @param array $data
      */
     public function __construct(
+        \Mageplaza\Productslider\Helper\Data $helperData,
         Additional $additional,
         SliderFactory $resourceModelSliderFactory,
         GroupRepositoryInterface $groupRepository,
@@ -70,6 +77,7 @@ class Design extends \Magento\Backend\Block\Widget\Form\Generic implements \Mage
         array $data = []
     )
     {
+        $this->_helperData = $helperData;
         $this->additional = $additional;
         $this->resourceModelSliderFactory = $resourceModelSliderFactory;
         $this->_groupRepository = $groupRepository;
@@ -84,12 +92,12 @@ class Design extends \Magento\Backend\Block\Widget\Form\Generic implements \Mage
     /**
      * @return \Magento\Backend\Block\Widget\Form\Generic
      * @throws \Magento\Framework\Exception\LocalizedException
+     * @throws \Zend_Serializer_Exception
      */
     protected function _prepareForm()
     {
         /** @var \Mageplaza\Productslider\Model\Slider $slider */
         $slider = $this->_coreRegistry->registry('mageplaza_productslider_slider');
-        $resourceModel = $this->resourceModelSliderFactory->create();
 
         $form = $this->_formFactory->create();
         $form->setHtmlIdPrefix('slider_');
@@ -101,42 +109,26 @@ class Design extends \Magento\Backend\Block\Widget\Form\Generic implements \Mage
                 'class' => 'fieldset-wide'
             ]
         );
-
         $fieldset->addField('is_responsive', 'select', [
-                'name'    => 'is_responsive',
-                'label'   => __('Is Responsive'),
-                'title'   => __('Is Responsive'),
+                'name' => 'is_responsive',
+                'label' => __('Is Responsive'),
+                'title' => __('Is Responsive'),
                 'options' => [
                     '1' => __('Yes'),
                     '0' => __('No')
                 ]
             ]
         );
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+        $tableResponsiveBlock = $this->getLayout()->createBlock('\Mageplaza\Productslider\Block\System\Config\Form\Field\Active');
+        $fieldset->addField('responsive_items', 'multiselect', [
+                'name' => 'responsive_items',
+                'label' => __('Max Items slider'),
+                'title' => __('Max Items slider'),
+            ]
+        )->setRenderer($tableResponsiveBlock);
+        if ($responsiveData = $slider->getResponsiveItems()) {
+            $slider->setData('responsive_items', $this->_helperData->unserialize($responsiveData));
+        }
 
         $sliderData = $this->_session->getData('mageplaza_productslider_slider_data', true);
         if ($sliderData) {
@@ -146,6 +138,7 @@ class Design extends \Magento\Backend\Block\Widget\Form\Generic implements \Mage
                 $slider->addData($slider->getDefaultValues());
             }
         }
+
         $form->setValues($slider->getData());
         $this->setForm($form);
 

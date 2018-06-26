@@ -88,4 +88,25 @@ class Slider extends \Magento\Framework\Model\AbstractModel
 //        $values['status'] = '1';
         return $values;
     }
+
+    public function afterSave()
+    {
+        if ($this->getCustomerGroupIds() || $this->getStoreIds()) {
+            $this->getResource()->deleteOldData($this->getId());
+            if ($storeIds = $this->getStoreIds()) {
+                $this->getResource()->updateStore($storeIds, $this->getId());
+            }
+            if ($groupIds = $this->getCustomerGroupIds()) {
+                $this->getResource()->updateCustomerGroup($groupIds, $this->getId());
+            }
+        }
+//
+//        $this->getMatchingProductIds();
+//        $this->getResource()->deleteMultipleData('mageplaza_autorelated_actions_index', ['rule_id = ?' => $this->getId()]);
+//        if (!empty($this->dataProductIds) && is_array($this->dataProductIds)) {
+//            $this->getResource()->updateMultipleData('mageplaza_autorelated_actions_index', $this->dataProductIds);
+//        }
+
+        return parent::afterSave();
+    }
 }

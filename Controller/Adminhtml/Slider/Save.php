@@ -31,36 +31,47 @@ class Save extends \Mageplaza\Productslider\Controller\Adminhtml\Slider
      */
     protected $_dateFilter;
 
+    protected $helper;
+
     /**
-     * constructor
-     * 
+     * Save constructor.
+     * @param \Mageplaza\Productslider\Helper\Data $helper
      * @param \Magento\Framework\Stdlib\DateTime\Filter\Date $dateFilter
      * @param \Mageplaza\Productslider\Model\SliderFactory $sliderFactory
      * @param \Magento\Framework\Registry $registry
      * @param \Magento\Backend\App\Action\Context $context
      */
     public function __construct(
+        \Mageplaza\Productslider\Helper\Data $helper,
         \Magento\Framework\Stdlib\DateTime\Filter\Date $dateFilter,
         \Mageplaza\Productslider\Model\SliderFactory $sliderFactory,
         \Magento\Framework\Registry $registry,
         \Magento\Backend\App\Action\Context $context
     )
     {
+        $this->helper = $helper;
         $this->_backendSession = $context->getSession();
         $this->_dateFilter     = $dateFilter;
         parent::__construct($sliderFactory, $registry, $context);
     }
 
-    /**
-     * run the action
-     *
-     * @return \Magento\Backend\Model\View\Result\Redirect
-     */
+
     public function execute()
     {
         $data = $this->getRequest()->getPost('slider');
+//        \Zend_Debug::dump($this->getRequest()->getParams());die;
+//        \Zend_Debug::dump($data);die;
+
         $resultRedirect = $this->resultRedirectFactory->create();
         if ($data) {
+            if (isset($data['display_additional'])) {
+                $data['display_additional'] = $this->helper->serialize($data['display_additional']);
+            }
+            if (isset($data['responsive_items'])) {
+                unset($data['responsive_items'][count($data['responsive_items']) -1]);
+                $data['responsive_items'] =  $this->helper->serialize($this->formatResponsiveItems($data['responsive_items']));
+            }
+
             $data = $this->_filterData($data);
             $slider = $this->_initSlider();
             $slider->setData($data);
@@ -86,7 +97,6 @@ class Save extends \Mageplaza\Productslider\Controller\Adminhtml\Slider
             } catch (\RuntimeException $e) {
                 $this->messageManager->addError($e->getMessage());
             } catch (\Exception $e) {
-                \Zend_Debug::dump($e->getMessage());
                 $this->messageManager->addException($e, __('Something went wrong while saving the Slider.'));
             }
             $this->_getSession()->setMageplazaProductsliderSliderData($data);
@@ -120,4 +130,19 @@ class Save extends \Mageplaza\Productslider\Controller\Adminhtml\Slider
         }
         return $data;
     }
+
+    public function formatResponsiveItems($data){
+        $resData = [];
+
+        foreach ($data as $items){
+            foreach ($items as $id => $item){
+                foreach ($item as $col => $value){
+                    $resData[$id][$col]= $value;
+                }
+            }
+        }
+
+        return $resData;
+    }
+
 }

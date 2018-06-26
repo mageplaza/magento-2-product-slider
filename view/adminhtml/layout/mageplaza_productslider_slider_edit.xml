@@ -24,7 +24,9 @@
         <referenceContainer name="left">
             <block class="Mageplaza\Productslider\Block\Adminhtml\Slider\Edit\Tabs" name="mageplaza_productslider_slider_tabs">
                 <block class="Mageplaza\Productslider\Block\Adminhtml\Slider\Edit\Tab\General\General" name="mageplaza_productslider_slider_edit_tab_general"/>
-                <block class="Mageplaza\Productslider\Block\Adminhtml\Slider\Edit\Tab\Type\Type" name="mageplaza_productslider_slider_edit_tab_type"/>
+                <block class="Mageplaza\Productslider\Block\Adminhtml\Slider\Edit\Tab\Type\Type" name="mageplaza_productslider_slider_edit_tab_type">
+                    <block class="Mageplaza\Productslider\Block\Adminhtml\Slider\Edit\Tab\Type\Products" name="mageplaza_productslider_slider_edit_tab_products" />
+                </block>
                 <block class="Mageplaza\Productslider\Block\Adminhtml\Slider\Edit\Tab\Design\Design" name="mageplaza_productslider_slider_edit_tab_design"/>
                 <action method="addTab">
                     <argument name="name" xsi:type="string">slider_general</argument>

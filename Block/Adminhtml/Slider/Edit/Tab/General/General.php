@@ -1,17 +1,22 @@
 <?php
 /**
- * Mageplaza_Productslider extension
- *                     NOTICE OF LICENSE
+ * Mageplaza
  *
- *                     This source file is subject to the MIT License
- *                     that is bundled with this package in the file LICENSE.txt.
- *                     It is also available through the world-wide-web at this URL:
- *                     https://www.mageplaza.com/LICENSE.txt
+ * NOTICE OF LICENSE
  *
- * @category  Mageplaza
- * @package   Mageplaza_Productslider
- * @copyright Copyright (c) 2016
- * @license   https://www.mageplaza.com/LICENSE.txt
+ * This source file is subject to the mageplaza.com license that is
+ * available through the world-wide-web at this URL:
+ * https://www.mageplaza.com/LICENSE.txt
+ *
+ * DISCLAIMER
+ *
+ * Do not edit or add to this file if you wish to upgrade this extension to newer
+ * version in the future.
+ *
+ * @category    Mageplaza
+ * @package     Mageplaza_AutoRelated
+ * @copyright   Copyright (c) 2017-2018 Mageplaza (https://www.mageplaza.com/)
+ * @license     https://www.mageplaza.com/LICENSE.txt
  */
 
 namespace Mageplaza\Productslider\Block\Adminhtml\Slider\Edit\Tab\General;
@@ -127,7 +132,7 @@ class General extends \Magento\Backend\Block\Widget\Form\Generic implements \Mag
             ]
         );
         if (!$slider->getId()) {
-            $slider->setData('is_active', 1);
+            $slider->setData('status', 1);
         }
 
         if (!$this->_storeManager->isSingleStoreMode()) {
@@ -147,8 +152,8 @@ class General extends \Magento\Backend\Block\Widget\Form\Generic implements \Mag
             ]);
         }
         $slider->setData('store_ids', $resourceModel->getStoresByRuleId($slider->getId()));
-        $slider->setData('customer_group_ids', $resourceModel->getCustomerGroupByRuleId($slider->getId()));
 
+        $slider->setData('customer_group_ids', $resourceModel->getCustomerGroupByRuleId($slider->getId()));
         $customerGroups = $this->_groupRepository->getList($this->_searchCriteriaBuilder->create())->getItems();
         $fieldset->addField('customer_group_ids', 'multiselect', [
                 'name' => 'customer_group_ids[]',

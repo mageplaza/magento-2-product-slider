@@ -14,12 +14,12 @@
  * version in the future.
  *
  * @category    Mageplaza
- * @package     Mageplaza_Blog
- * @copyright   Copyright (c) 2018 Mageplaza (http://www.mageplaza.com/)
+ * @package     Mageplaza_Core
+ * @copyright   Copyright (c) Mageplaza (http://www.mageplaza.com/)
  * @license     https://www.mageplaza.com/LICENSE.txt
  */
 
-namespace Mageplaza\Productslider\Block\Adminhtml\Slider\Edit\Tab\Type;
+namespace Mageplaza\Productslider\Block\Adminhtml\Slider\Edit\Tab\Type\Renderer;
 
 use Magento\Catalog\Model\Category as CategoryModel;
 use Magento\Framework\AuthorizationInterface;
@@ -28,16 +28,17 @@ use Magento\Framework\Data\Form\Element\Factory;
 use Magento\Framework\Data\Form\Element\Multiselect;
 use Magento\Framework\Escaper;
 use Magento\Framework\UrlInterface;
-use Mageplaza\Blog\Model\ResourceModel\Category\CollectionFactory as BlogCategoryCollectionFactory;
+use Magento\Catalog\Model\ResourceModel\Category\CollectionFactory as CategoryCollectionFactory;
+use Magento\Catalog\Ui\Component\Product\Form\Categories\Options;
 
 /**
  * Class Category
- * @package Mageplaza\Blog\Block\Adminhtml\Post\Edit\Tab\Renderer
+ * @package Mageplaza\Productslider\Block\Adminhtml\Slider\Edit\Tab\Type\Renderer
  */
 class Category extends Multiselect
 {
     /**
-     * @var \Mageplaza\Blog\Model\ResourceModel\Category\CollectionFactory
+     * @var \Magento\Catalog\Model\ResourceModel\Category\CollectionFactory
      */
     public $collectionFactory;
 
@@ -51,35 +52,37 @@ class Category extends Multiselect
      */
     protected $_urlBuilder;
 
-    protected $option;
+
+    protected $_option;
 
     /**
      * Category constructor.
-     * @param \Magento\Framework\Data\Form\Element\Factory $factoryElement
-     * @param \Magento\Framework\Data\Form\Element\CollectionFactory $factoryCollection
-     * @param \Magento\Framework\Escaper $escaper
-     * @param \Mageplaza\Blog\Model\ResourceModel\Category\CollectionFactory $collectionFactory
-     * @param \Magento\Framework\AuthorizationInterface $authorization
-     * @param \Magento\Framework\UrlInterface $urlBuilder
+     * @param Options $options
+     * @param Factory $factoryElement
+     * @param CollectionFactory $factoryCollection
+     * @param Escaper $escaper
+     * @param CategoryCollectionFactory $collectionFactory
+     * @param AuthorizationInterface $authorization
+     * @param UrlInterface $urlBuilder
      * @param array $data
      */
     public function __construct(
-        \Magento\Catalog\Ui\Component\Product\Form\Categories\Options $options,
+        Options $options,
         Factory $factoryElement,
         CollectionFactory $factoryCollection,
         Escaper $escaper,
-        BlogCategoryCollectionFactory $collectionFactory,
+        CategoryCollectionFactory $collectionFactory,
         AuthorizationInterface $authorization,
         UrlInterface $urlBuilder,
         array $data = []
     )
     {
-        $this->option = $options;
+        parent::__construct($factoryElement, $factoryCollection, $escaper, $data);
+
+        $this->_option = $options;
         $this->collectionFactory = $collectionFactory;
         $this->authorization = $authorization;
         $this->_urlBuilder = $urlBuilder;
-
-        parent::__construct($factoryElement, $factoryCollection, $escaper, $data);
     }
 
     /**
@@ -88,9 +91,9 @@ class Category extends Multiselect
     public function getElementHtml()
     {
         $html = '<div class="admin__field-control admin__control-grouped">';
-        $html .= '<div id="blog-category-select" class="admin__field" data-bind="scope:\'blogCategory\'" data-index="index">';
+        $html .= '<div id="slider-category-select" class="admin__field" data-bind="scope:\'sliderCategory\'" data-index="index">';
         $html .= '<!-- ko foreach: elems() -->';
-        $html .= '<input name="post[categories_ids]" data-bind="value: value" style="display: none"/>';
+        $html .= '<input name="slider[categories_ids]" data-bind="value: value" style="display: none"/>';
         $html .= '<!-- ko template: elementTmpl --><!-- /ko -->';
         $html .= '<!-- /ko -->';
         $html .= '</div>';
@@ -114,7 +117,7 @@ class Category extends Multiselect
      */
     public function getNoDisplay()
     {
-        $isNotAllowed = !$this->authorization->isAllowed('Mageplaza_Blog::category');
+        $isNotAllowed = !$this->authorization->isAllowed('Mageplaza_Productslider::category');
 
         return $this->getData('no_display') || $isNotAllowed;
     }
@@ -126,7 +129,6 @@ class Category extends Multiselect
     {
         /* @var $collection \Magento\Catalog\Model\ResourceModel\Category\Collection */
         $collection = $this->collectionFactory->create();
-
         $categoryById = [
             CategoryModel::TREE_ROOT_ID => [
                 'value' => CategoryModel::TREE_ROOT_ID,
@@ -165,7 +167,6 @@ class Category extends Multiselect
             return [];
         }
 
-        /* @var $collection \Mageplaza\Blog\Model\ResourceModel\Category\Collection */
         $collection = $this->collectionFactory->create()
             ->addIdFilter($values);
 
@@ -178,7 +179,7 @@ class Category extends Multiselect
     }
 
     /**
-     * Attach Blog Category suggest widget initialization
+     * Attach Slider Category suggest widget initialization
      *
      * @return string
      */
@@ -189,7 +190,7 @@ class Category extends Multiselect
                 "*": {
                     "Magento_Ui/js/core/app": {
                         "components": {
-                            "blogCategory": {
+                            "sliderCategory": {
                                 "component": "uiComponent",
                                 "children": {
                                     "slider_select_category": {
@@ -200,7 +201,7 @@ class Category extends Multiselect
                                             "chipsEnabled": true,
                                             "levelsVisibility": "1",
                                             "elementTmpl": "ui/grid/filters/elements/ui-select",
-                                            "options": ' . json_encode($this->option->toOptionArray()) . ',
+                                            "options": ' . json_encode($this->_option->toOptionArray()) . ',
                                             "value": ' . json_encode($this->getValues()) . ',
                                             "listens": {
                                                 "index=create_category:responseData": "setParsed",

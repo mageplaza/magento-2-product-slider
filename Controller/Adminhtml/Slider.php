@@ -70,6 +70,7 @@ abstract class Slider extends \Magento\Backend\App\Action
         if ($sliderId) {
             $slider->load($sliderId);
         }
+
         $this->_coreRegistry->register('mageplaza_productslider_slider', $slider);
 
         return $slider;
