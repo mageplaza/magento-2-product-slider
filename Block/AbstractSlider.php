@@ -135,9 +135,32 @@ class AbstractSlider extends AbstractProduct implements BlockInterface
         return in_array($type, $this->_displayTypes);
     }
 
+    public function getSliderId(){
+    	if($this->getSlider()){
+			return $this->getSlider()->getSliderId();
+		}
+
+		return '';
+	}
+
     public function getTitle(){
-        return $this->getSlider()->getName();
+    	if($this->getSlider()){
+			return $this->getSlider()->getTitle();
+		}
+		if ($this->hasData('heading')) {
+			return $this->getData('heading');
+		}
+
+		return 'Mageplaza ProductSlider';
     }
+
+    public function getDescription(){
+		if ($this->hasData('description')) {
+			return $this->getData('description');
+		}
+
+		return '';
+	}
 
     /**
      * @return string
@@ -171,12 +194,9 @@ class AbstractSlider extends AbstractProduct implements BlockInterface
         $responsiveConfig = $this->_helperData->unserialize($this->_helperData->getModuleConfig('slider_design/item_slider'));
         $config = (count($inSliderResponsiveConfig) && $slider->getIsResponsive()) ? $inSliderResponsiveConfig : $responsiveConfig;
 
-//        var_dump($config);
-
         foreach ($config as $value){
             $responsiveOptions = $responsiveOptions . $value['col_1'] . ':{items:' . $value['col_2'] . '},';
         }
-
         $responsiveOptions = rtrim($responsiveOptions,',');
 
         return  'responsive:{' . $responsiveOptions . '}';

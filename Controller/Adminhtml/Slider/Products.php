@@ -10,6 +10,7 @@ namespace Mageplaza\Productslider\Controller\Adminhtml\Slider;
 
 use Magento\Framework\View\Result\LayoutFactory;
 use Mageplaza\Productslider\Controller\Adminhtml\Slider;
+use Magento\Framework\Controller\Result\JsonFactory;
 
 /**
  * Class Products
@@ -17,32 +18,48 @@ use Mageplaza\Productslider\Controller\Adminhtml\Slider;
  */
 class Products extends Slider
 {
-    /**
-     * @var \Magento\Framework\View\Result\LayoutFactory
-     */
-    protected $resultLayoutFactory;
+	/**
+	 * @var \Magento\Framework\View\Result\LayoutFactory
+	 */
+	protected $resultLayoutFactory;
 
-    public function __construct(
-        \Mageplaza\Productslider\Model\SliderFactory $sliderFactory,
-        \Magento\Framework\Registry $coreRegistry,
-        \Magento\Backend\App\Action\Context $context,
-        LayoutFactory $resultLayoutFactory
-    )
-    {
-        parent::__construct($sliderFactory, $coreRegistry, $context);
+	protected $resultJsonFactory;
 
-        $this->resultLayoutFactory = $resultLayoutFactory;
-    }
+	public function __construct(
+		\Mageplaza\Productslider\Model\SliderFactory $sliderFactory,
+		\Magento\Framework\Registry $coreRegistry,
+		\Magento\Backend\App\Action\Context $context,
+		JsonFactory $resultJsonFactory,
+		LayoutFactory $resultLayoutFactory
+	)
+	{
+		parent::__construct($sliderFactory, $coreRegistry, $context);
 
-    /**
-     * Save action
-     *
-     * @return \Magento\Framework\Controller\ResultInterface
-     */
-    public function execute()
-    {
-        $this->_initSlider(true);
+		$this->resultLayoutFactory = $resultLayoutFactory;
+		$this->resultJsonFactory = $resultJsonFactory;
+	}
 
-        return $this->resultLayoutFactory->create();
-    }
+	/**
+	 * {@inheritdoc}
+	 */
+	protected function _isAllowed()
+	{
+		return true;
+	}
+
+	/**
+	 * Save action
+	 *
+	 * @return \Magento\Framework\Controller\ResultInterface
+	 */
+	public function execute()
+	{
+		$result = $this->resultJsonFactory->create();
+		$resultLayout = $this->resultLayoutFactory->create();
+		$block = $resultLayout->getLayout()->getBlock('slider.edit.tab.product')->toHtml();
+		$block .= $resultLayout->getLayout()->getBlock('product_grid_serializer')->toHtml();
+		$result->setData(['output' => $block]);
+
+		return $result;
+	}
 }

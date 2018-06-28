@@ -15,13 +15,13 @@
  * version in the future.
  *
  * @category    Mageplaza
- * @package     Mageplaza_Blog
+ * @package     Mageplaza_Productslider
  * @copyright   Copyright (c) 2018 Mageplaza (http://www.mageplaza.com/)
  * @license     https://www.mageplaza.com/LICENSE.txt
  */
 -->
 <layout xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/layout_generic.xsd">
     <container name="root" label="Root">
-        <block class="Mageplaza\Productslider\Block\Adminhtml\Post\Edit\Tab\Type\Renderer\Products" name="slider.edit.tab.product"/>
+        <block class="Mageplaza\Productslider\Block\Adminhtml\Slider\Edit\Tab\Type\Renderer\Products" name="slider.edit.tab.product"/>
     </container>
 </layout>

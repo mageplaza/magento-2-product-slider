@@ -120,6 +120,12 @@ class General extends \Magento\Backend\Block\Widget\Form\Generic implements \Mag
                 'title' => __('Name'),
             ]
         );
+		$fieldset->addField('title', 'text', [
+				'name' => 'title',
+				'label' => __('Title'),
+				'title' => __('Title'),
+			]
+		);
         $fieldset->addField('status', 'select', [
                 'name' => 'status',
                 'label' => __('Status'),

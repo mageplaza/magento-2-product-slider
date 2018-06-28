@@ -58,11 +58,12 @@ class NewProducts extends AbstractSlider
         DateTime $getDayDate,
         CollectionFactory $productCollectionFactory,
         Visibility $catalogProductVisibility,
+		\Mageplaza\Productslider\Helper\Data $helperData,
         Context $context,
         array $data = []
     )
     {
-        parent::__construct($storeManager, $getDayDate, $context, $data);
+        parent::__construct($storeManager, $getDayDate, $helperData, $context, $data);
 
         $this->productCollectionFactory = $productCollectionFactory;
         $this->catalogProductVisibility = $catalogProductVisibility;

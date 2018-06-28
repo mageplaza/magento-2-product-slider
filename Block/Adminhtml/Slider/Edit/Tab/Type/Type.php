@@ -19,6 +19,13 @@ use Mageplaza\Productslider\Model\Config\Source\Additional;
 
 class Type extends \Magento\Backend\Block\Widget\Form\Generic implements \Magento\Backend\Block\Widget\Tab\TabInterface
 {
+	/**
+	 * Path to template file.
+	 *
+	 * @var string
+	 */
+	protected $_template = 'slider/tab/type.phtml';
+
     /**
      * @var \Magento\Store\Model\System\Store
      */
@@ -93,6 +100,7 @@ class Type extends \Magento\Backend\Block\Widget\Form\Generic implements \Magent
     {
         /** @var \Mageplaza\Productslider\Model\Slider $slider */
         $slider = $this->_coreRegistry->registry('mageplaza_productslider_slider');
+        $this->getRequest()->setParam('slider_products','12');
 
         $form = $this->_formFactory->create();
         $form->setHtmlIdPrefix('slider_');
@@ -117,25 +125,6 @@ class Type extends \Magento\Backend\Block\Widget\Form\Generic implements \Magent
             ]
         );
 
-        $productListBlock = $this->getLayout()->createBlock('\Mageplaza\Productslider\Block\Adminhtml\Slider\Edit\Tab\Type\Products');
-        $fieldset->addField('product_ids', 'multiselect', [
-                'name' => 'product_ids',
-                'label' => __('Products'),
-                'title' => __('Products'),
-            ]
-        )->setRenderer($productListBlock);
-        $fieldset->addField('display_additional', 'multiselect', [
-                'name'   => 'display_additional',
-                'label'  => __('Display additional information'),
-                'title'  => __('Display additional information'),
-                'values' => $this->additional->toOptionArray(),
-                'note'   => __('Select information or button(s) to display with products.')
-            ]
-        );
-        if ($displayData = $slider->getDisplayAdditional()) {
-            $slider->setData('display_additional', $this->helper->unserialize($displayData));
-        }
-
         $sliderData = $this->_session->getData('mageplaza_productslider_slider_data', true);
         if ($sliderData) {
             $slider->addData($sliderData);
@@ -144,8 +133,10 @@ class Type extends \Magento\Backend\Block\Widget\Form\Generic implements \Magent
                 $slider->addData($slider->getDefaultValues());
             }
         }
+
         $form->setValues($slider->getData());
         $this->setForm($form);
+        $this->setData('products','12&13');
 
         return parent::_prepareForm();
     }

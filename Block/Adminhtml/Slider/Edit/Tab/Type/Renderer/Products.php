@@ -13,263 +13,233 @@ use Magento\Framework\Registry;
  * Class Product
  * @package Mageplaza\Blog\Block\Adminhtml\Post\Edit\Tab
  */
-class Products extends Extended implements TabInterface
+class Products extends Extended
 {
-    /**
-     * @var \Magento\Catalog\Model\ResourceModel\Product\CollectionFactory
-     */
-    public $productCollectionFactory;
+	/**
+	 * @var \Magento\Catalog\Model\ResourceModel\Product\CollectionFactory
+	 */
+	protected $productCollectionFactory;
 
-    /**
-     * @var \Magento\Framework\Registry
-     */
-    public $coreRegistry;
+	/**
+	 * @var \Mageplaza\Productslider\Model\SliderFactory
+	 */
+	protected $_sliderFactory;
 
-    /**
-     * Product constructor.
-     * @param \Magento\Catalog\Model\ResourceModel\Product\CollectionFactory $productCollectionFactory
-     * @param \Magento\Framework\Registry $coreRegistry
-     * @param \Magento\Backend\Block\Template\Context $context
-     * @param \Magento\Backend\Helper\Data $backendHelper
-     * @param array $data
-     */
-    public function __construct(
-        Context $context,
-        Registry $coreRegistry,
-        Data $backendHelper,
-        CollectionFactory $productCollectionFactory,
-        array $data = []
-    )
-    {
-        $this->productCollectionFactory = $productCollectionFactory;
-        $this->coreRegistry = $coreRegistry;
-        parent::__construct($context, $backendHelper, $data);
-    }
+	/**
+	 * @var  \Magento\Framework\Registry
+	 */
+	protected $registry;
 
-    /**
-     * Set grid params
-     */
-    public function _construct()
-    {
-        parent::_construct();
+	protected $_objectManager = null;
 
-        $this->setId('productsGrid');
-        $this->setDefaultSort('position');
-        $this->setDefaultDir('ASC');
-        $this->setSaveParametersInSession(false);
-        $this->setUseAjax(true);
+	protected $_helperData;
 
-        if ($this->getSlider()->getId()) {
-            $this->setDefaultFilter(['in_products' => 1]);
-        }
-    }
+	/**
+	 * Products constructor.
+	 * @param \Magento\Backend\Block\Template\Context $context
+	 * @param \Magento\Backend\Helper\Data $backendHelper
+	 * @param \Magento\Framework\Registry $registry
+	 * @param \Magento\Framework\ObjectManagerInterface $objectManager
+	 * @param \Mageplaza\Productslider\Model\SliderFactory $sliderFactory
+	 * @param \Magento\Catalog\Model\ResourceModel\Product\CollectionFactory $productCollectionFactory
+	 * @param array $data
+	 */
+	public function __construct(
+		\Mageplaza\Productslider\Helper\Data $helperData,
+		\Magento\Backend\Block\Template\Context $context,
+		\Magento\Backend\Helper\Data $backendHelper,
+		\Magento\Framework\Registry $registry,
+		\Magento\Framework\ObjectManagerInterface $objectManager,
+		\Mageplaza\Productslider\Model\SliderFactory $sliderFactory,
+		\Magento\Catalog\Model\ResourceModel\Product\CollectionFactory $productCollectionFactory,
+		array $data = []
+	) {
+		$this->_helperData = $helperData;
+		$this->_sliderFactory = $sliderFactory;
+		$this->productCollectionFactory = $productCollectionFactory;
+		$this->_objectManager = $objectManager;
+		$this->registry = $registry;
+		parent::__construct($context, $backendHelper, $data);
+	}
 
-    /**
-     * @inheritdoc
-     */
-    protected function _prepareCollection()
-    {
-        $collection = $this->productCollectionFactory->create();
-        $collection->addAttributeToSelect('name');
-        $collection->addAttributeToSelect('sku');
-        $collection->addAttributeToSelect('price');
-        $this->setCollection($collection);
+	/**
+	 * _construct
+	 * @return void
+	 */
+	protected function _construct()
+	{
+		parent::_construct();
+		$this->setId('productsGrid');
+		$this->setDefaultSort('entity_id');
+		$this->setDefaultDir('DESC');
+		$this->setSaveParametersInSession(true);
+		$this->setUseAjax(true);
+		if ($this->getRequest()->getParam('slider_id')) {
+			$this->setDefaultFilter(array('in_product' => 1));
+		}
+	}
 
-        return parent::_prepareCollection();
-    }
+	/**
+	 * add Column Filter To Collection
+	 */
+	protected function _addColumnFilterToCollection($column)
+	{
+		if ($column->getId() == 'in_product') {
+			$productIds = $this->_getSelectedProducts();
 
-    /**
-     * @return $this
-     * @throws \Exception
-     */
-    protected function _prepareColumns()
-    {
-        $this->addColumn('in_products', [
-                'header_css_class' => 'a-center',
-                'type' => 'checkbox',
-                'name' => 'in_product',
-//                'values' => $this->_getSelectedProducts(),
-                'value' => [1,2,3,4],
-                'align' => 'center',
-                'index' => 'entity_id'
-            ]
-        );
-        $this->addColumn('entity_id',
-            [
-                'header' => __('ID'),
-                'sortable' => true,
-                'index' => 'entity_id',
-                'type' => 'number',
-                'header_css_class' => 'col-id',
-                'column_css_class' => 'col-id'
-            ]
-        );
-        $this->addColumn(
-            'names',
-            [
-                'header' => __('Name'),
-                'index' => 'name',
-                'class' => 'xxx',
-                'width' => '50px',
-            ]
-        );
-        $this->addColumn('title', [
-                'header' => __('Sku'),
-                'index' => 'sku',
-                'header_css_class' => 'col-name',
-                'column_css_class' => 'col-name'
-            ]
-        );
-        $this->addColumn(
-            'price',
-            [
-                'header' => __('Price'),
-                'type' => 'currency',
-                'index' => 'price',
-                'width' => '50px',
-            ]
-        );
+			if (empty($productIds)) {
+				$productIds = 0;
+			}
+			if ($column->getFilter()->getValue()) {
+				$this->getCollection()->addFieldToFilter('entity_id', array('in' => $productIds));
+			} else {
+				if ($productIds) {
+					$this->getCollection()->addFieldToFilter('entity_id', array('nin' => $productIds));
+				}
+			}
+		} else {
+			parent::_addColumnFilterToCollection($column);
+		}
 
-        return $this;
+		return $this;
+	}
 
+	/**
+	 * prepare collection
+	 */
+	protected function _prepareCollection()
+	{
+		$collection = $this->productCollectionFactory->create();
+		$collection->addAttributeToSelect('name');
+		$collection->addAttributeToSelect('sku');
+		$collection->addAttributeToSelect('price');
+		$this->setCollection($collection);
+		return parent::_prepareCollection();
+	}
 
+	/**
+	 * @return $this
+	 */
+	protected function _prepareColumns()
+	{
+		$this->addColumn(
+			'in_product',
+			[
+				'header_css_class' => 'a-center',
+				'type' => 'checkbox',
+				'name' => 'in_product',
+				'align' => 'center',
+				'index' => 'entity_id',
+				'values' => $this->_getSelectedProducts(),
+			]
+		);
+		$this->addColumn(
+			'entity_id',
+			[
+				'header' => __('Product ID'),
+				'type' => 'number',
+				'index' => 'entity_id',
+				'header_css_class' => 'col-id',
+				'column_css_class' => 'col-id',
+			]
+		);
+		$this->addColumn(
+			'name',
+			[
+				'header' => __('Name'),
+				'index' => 'name',
+				'class' => 'xxx',
+				'width' => '50px',
+			]
+		);
+		$this->addColumn(
+			'sku',
+			[
+				'header' => __('Sku'),
+				'index' => 'sku',
+				'class' => 'xxx',
+				'width' => '50px',
+			]
+		);
+		$this->addColumn(
+			'price',
+			[
+				'header' => __('Price'),
+				'type' => 'currency',
+				'index' => 'price',
+				'width' => '50px',
+			]
+		);
 
-//        return parent::_prepareColumns();
+		return parent::_prepareColumns();
+	}
 
+	/**
+	 * @return string
+	 */
+	public function getGridUrl()
+	{
+		return $this->getUrl('*/*/productsgrid', ['_current' => true]);
+	}
 
-    }
+	/**
+	 * @param  object $row
+	 * @return string
+	 */
+	public function getRowUrl($row)
+	{
+		return '';
+	}
 
-    /**
-     * Retrieve selected Tags
-     * @return array
-     */
-    protected function _getSelectedProducts()
-    {
-        $productIds = [];
-        foreach ($this->_collection as $item){
-            $productIds[] = $item->getData('entity_id');
-        }
+	protected function _getSelectedProducts()
+	{
+		$slider = $this->getSlider();
+		$productIds = $this->_helperData->unserialize($slider->getProductIds());
 
-        return $productIds;
-    }
+		return $productIds;
+	}
 
+	/**
+	 * Retrieve selected products
+	 *
+	 * @return array
+	 */
+	public function getSelectedProducts()
+	{
+		$slider = $this->getSlider();
+		$selected = $this->_helperData->unserialize($slider->getProductIds());
 
-    /**
-     * Retrieve selected Tags
-     * @return array
-     */
-    public function getSelectedProducts()
-    {
-        $selected = $this->getPost()->getProductsPosition();
-        if (!is_array($selected)) {
-            $selected = [];
-        } else {
-            foreach ($selected as $key => $value) {
-                $selected[$key] = ['position' => $value];
-            }
-        }
+		if (!is_array($selected)) {
+			$selected = [];
+		}
+		return $selected;
+	}
 
-        return $selected;
-    }
+	protected function getSlider()
+	{
+		$sliderId = $this->getRequest()->getParam('slider_id');
+		$slider   = $this->_sliderFactory->create();
+		if ($sliderId) {
+			$slider->load($sliderId);
+		}
 
-    /**
-     * @param \Mageplaza\Blog\Model\Tag|\Magento\Framework\Object $item
-     * @return string
-     */
-    public function getRowUrl($item)
-    {
-        return '#';
-    }
+		return $slider;
+	}
 
-    /**
-     * get grid url
-     *
-     * @return string
-     */
-    public function getGridUrl()
-    {
-//        var_dump($this->getSlider()->getId());
-//        die('xxx');
-        return $this->getUrl('*/*/productsGrid', ['slider_id' => $this->getSlider()->getId()]);
-//        return $this->getUrl('*/*/productsgrid', ['_current' => true]);
-    }
+	/**
+	 * {@inheritdoc}
+	 */
+	public function canShowTab()
+	{
+		return true;
+	}
 
-    /**
-     * @return \Mageplaza\Blog\Model\Post
-     */
-    public function getSlider()
-    {
-        return $this->coreRegistry->registry('mageplaza_productslider_slider');
-    }
+	/**
+	 * {@inheritdoc}
+	 */
+	public function isHidden()
+	{
+		return true;
+	}
 
-    /**
-     * @param \Magento\Backend\Block\Widget\Grid\Column $column
-     * @return $this
-     * @throws \Magento\Framework\Exception\LocalizedException
-     */
-    protected function _addColumnFilterToCollection($column)
-    {
-        if ($column->getId() == 'in_products') {
-            $productIds = $this->_getSelectedProducts();
-            if (empty($productIds)) {
-                $productIds = 0;
-            }
-            if ($column->getFilter()->getValue()) {
-                $this->getCollection()->addFieldToFilter('entity_id', ['in' => $productIds]);
-            } else {
-                if ($productIds) {
-                    $this->getCollection()->addFieldToFilter('entity_id', ['nin' => $productIds]);
-                }
-            }
-        } else {
-            parent::_addColumnFilterToCollection($column);
-        }
-
-        return $this;
-    }
-
-    public function getTabUrl()
-    {
-        return $this->getUrl('mageplaza_productslider/slider/products', ['_current' => true]);
-    }
-
-    /**
-     * @return string
-     */
-    public function getTabLabel()
-    {
-        return __('Products');
-    }
-
-    /**
-     * @return bool
-     */
-    public function isHidden()
-    {
-        return false;
-    }
-
-    /**
-     * @return string
-     */
-    public function getTabTitle()
-    {
-        return $this->getTabLabel();
-    }
-
-    /**
-     * @return bool
-     */
-    public function canShowTab()
-    {
-        return true;
-    }
-
-    /**
-     * @return string
-     */
-    public function getTabClass()
-    {
-        return 'ajax only';
-    }
 }

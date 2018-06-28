@@ -39,10 +39,11 @@ class OnSaleProduct extends \Mageplaza\Productslider\Block\AbstractSlider
         \Mageplaza\Productslider\Helper\Data $helper,
         \Magento\Store\Model\StoreManagerInterface $storeManager,
         \Magento\Framework\Stdlib\DateTime\DateTime $getDayDate,
+		\Mageplaza\Productslider\Helper\Data $helperData,
         Context $context,
         array $data = [])
     {
-        parent::__construct($storeManager, $getDayDate, $context, $data);
+        parent::__construct($storeManager, $getDayDate, $helperData, $context, $data);
 
         $this->productCollectionFactory = $productCollectionFactory;
         $this->catalogProductVisibility = $catalogProductVisibility;

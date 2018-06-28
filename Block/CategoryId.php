@@ -14,7 +14,7 @@
  * version in the future.
  *
  * @category    Mageplaza
- * @package     Mageplaza_Core
+ * @package     Mageplaza_Productslider
  * @copyright   Copyright (c) Mageplaza (http://www.mageplaza.com/)
  * @license     https://www.mageplaza.com/LICENSE.txt
  */
@@ -22,7 +22,6 @@
 namespace Mageplaza\Productslider\Block;
 
 use Magento\Catalog\Block\Product\Context;
-use Mageplaza\Productslider\Model\SliderFactory;
 use Magento\Store\Model\StoreManagerInterface;
 use Magento\Framework\Stdlib\DateTime\DateTime;
 use Magento\Catalog\Model\ResourceModel\Product\CollectionFactory;
@@ -53,7 +52,6 @@ class CategoryId extends AbstractSlider
 
     /**
      * CategoryId constructor.
-     * @param SliderFactory $sliderFactory
      * @param StoreManagerInterface $storeManager
      * @param DateTime $getDayDate
      * @param CollectionFactory $productCollectionFactory
@@ -63,7 +61,6 @@ class CategoryId extends AbstractSlider
      * @param array $data
      */
     public function __construct(
-        SliderFactory $sliderFactory,
         StoreManagerInterface $storeManager,
         DateTime $getDayDate,
         CollectionFactory $productCollectionFactory,
@@ -75,7 +72,6 @@ class CategoryId extends AbstractSlider
     {
         parent::__construct($storeManager, $getDayDate, $helperData, $context, $data);
 
-        $this->_sliderFactory = $sliderFactory;
         $this->_categoryFactory = $categoryFactory;
         $this->_productCollectionFactory = $productCollectionFactory;
     }
@@ -85,38 +81,6 @@ class CategoryId extends AbstractSlider
 //		$this->productCacheKey = $this->getProductCacheKey();
 //		parent::_construct();
 //	}
-
-    public function getSliderCategoryIds()
-    {
-        if ($this->getData('category_id')) {
-            return $this->getData('category_id');
-        }
-        if ($this->getSlider()) {
-            $catIds = explode(',', $this->getSlider()->getCategoriesIds());
-
-            return $catIds;
-        }
-
-        return self::DEFAULT_CATEGORY;
-    }
-
-    public function getProductIds()
-    {
-        $productIds = [];
-        $catIds = $this->getSliderCategoryIds();
-        foreach ($catIds as $catId) {
-            $category = $this->_categoryFactory->create()->load($catId);
-            $collection = $this->_productCollectionFactory->create()
-                ->addAttributeToSelect('*')
-                ->addCategoryFilter($category);
-
-            foreach ($collection as $item) {
-                $productIds[] = $item->getData('entity_id');
-            }
-        }
-
-        return $productIds;
-    }
 
     public function getProductCollection()
     {
@@ -129,6 +93,38 @@ class CategoryId extends AbstractSlider
 
         return $collection;
     }
+
+	public function getProductIds()
+	{
+		$productIds = [];
+		$catIds = $this->getSliderCategoryIds();
+		foreach ($catIds as $catId) {
+			$category = $this->_categoryFactory->create()->load($catId);
+			$collection = $this->_productCollectionFactory->create()
+				->addAttributeToSelect('*')
+				->addCategoryFilter($category);
+
+			foreach ($collection as $item) {
+				$productIds[] = $item->getData('entity_id');
+			}
+		}
+
+		return $productIds;
+	}
+
+	public function getSliderCategoryIds()
+	{
+		if ($this->getData('category_id')) {
+			return $this->getData('category_id');
+		}
+		if ($this->getSlider()) {
+			$catIds = explode(',', $this->getSlider()->getCategoriesIds());
+
+			return $catIds;
+		}
+
+		return self::DEFAULT_CATEGORY;
+	}
 
     public function getProductCacheKey()
     {

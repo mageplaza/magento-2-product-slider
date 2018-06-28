@@ -1,0 +1,56 @@
+<?php
+/**
+ * Mageplaza
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the mageplaza.com license that is
+ * available through the world-wide-web at this URL:
+ * https://www.mageplaza.com/LICENSE.txt
+ *
+ * DISCLAIMER
+ *
+ * Do not edit or add to this file if you wish to upgrade this extension to newer
+ * version in the future.
+ *
+ * @category    Mageplaza
+ * @package     Mageplaza_Productslider
+ * @copyright   Copyright (c) 2017-2018 Mageplaza (https://www.mageplaza.com/)
+ * @license     https://www.mageplaza.com/LICENSE.txt
+ */
+?>
+
+<div class="entry-edit">
+    <?php echo $block->getForm()->getHtml() ?>
+</div>
+
+<script type="text/javascript">
+    require([
+        'jquery',
+    ], function ($) {
+        $('.slider_responsive_items').hide();
+            $('.design_theme_ua_regexp').hide();
+
+        if($('#slider_is_responsive').val() == '1'){
+            $('.design_theme_ua_regexp').show();
+        }
+
+        $('#slider_is_responsive').change(function () {
+            var optionSelected = $(this).find("option:selected");
+            var valueSelected  = optionSelected.val();
+
+            if(valueSelected == '1'){
+                $('.design_theme_ua_regexp').show();
+            } else {
+                $('.design_theme_ua_regexp').hide();
+            }
+        });
+    });
+</script>
+
+<style>
+    .design_theme_ua_regexp {
+        width:  50%
+
+    }
+</style>

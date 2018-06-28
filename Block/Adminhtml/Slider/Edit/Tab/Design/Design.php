@@ -19,6 +19,13 @@ use Mageplaza\Productslider\Model\Config\Source\Additional;
 
 class Design extends \Magento\Backend\Block\Widget\Form\Generic implements \Magento\Backend\Block\Widget\Tab\TabInterface
 {
+	/**
+	 * Path to template file.
+	 *
+	 * @var string
+	 */
+	protected $_template = 'slider/tab/design.phtml';
+
     /**
      * @var \Magento\Store\Model\System\Store
      */
@@ -122,13 +129,25 @@ class Design extends \Magento\Backend\Block\Widget\Form\Generic implements \Mage
         $tableResponsiveBlock = $this->getLayout()->createBlock('\Mageplaza\Productslider\Block\System\Config\Form\Field\Active');
         $fieldset->addField('responsive_items', 'multiselect', [
                 'name' => 'responsive_items',
-                'label' => __('Max Items slider'),
-                'title' => __('Max Items slider'),
+				'label'  => __('Max Items slider'),
+				'title'  => __('Max Items slider'),
             ]
         )->setRenderer($tableResponsiveBlock);
-        if ($responsiveData = $slider->getResponsiveItems()) {
-            $slider->setData('responsive_items', $this->_helperData->unserialize($responsiveData));
-        }
+		if ($responsiveData = $slider->getResponsiveItems()) {
+			$slider->setData('responsive_items', $this->_helperData->unserialize($responsiveData));
+		}
+
+		$fieldset->addField('display_additional', 'multiselect', [
+				'name'   => 'display_additional',
+				'label'  => __('Display additional information'),
+				'title'  => __('Display additional information'),
+				'values' => $this->additional->toOptionArray(),
+				'note'   => __('Select information or button(s) to display with products.')
+			]
+		);
+		if ($displayData = $slider->getDisplayAdditional()) {
+			$slider->setData('display_additional', $this->_helperData->unserialize($displayData));
+		}
 
         $sliderData = $this->_session->getData('mageplaza_productslider_slider_data', true);
         if ($sliderData) {
