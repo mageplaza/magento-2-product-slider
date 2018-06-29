@@ -14,7 +14,7 @@
  * version in the future.
  *
  * @category    Mageplaza
- * @package     Mageplaza_Core
+ * @package     Mageplaza_Productslider
  * @copyright   Copyright (c) Mageplaza (http://www.mageplaza.com/)
  * @license     https://www.mageplaza.com/LICENSE.txt
  */
@@ -24,137 +24,256 @@ namespace Mageplaza\Productslider\Block;
 use Magento\Catalog\Block\Product\AbstractProduct;
 use Magento\Widget\Block\BlockInterface;
 use Magento\Catalog\Block\Product\Context;
+use Magento\Catalog\Model\ResourceModel\Product\CollectionFactory;
+use Magento\Catalog\Model\Product\Visibility;
+use Magento\Catalog\Model\CategoryFactory;
+use Magento\Customer\Model\Session;
+use Magento\Sales\Model\ResourceModel\Report\Bestsellers\Collection;
+use Magento\Wishlist\Model\ResourceModel\Item\Collection as WishlistCollection;
+use Magento\Store\Model\StoreManagerInterface;
+use Magento\Framework\Stdlib\DateTime\DateTime;
+use Mageplaza\Productslider\Helper\Data;
 
 class AbstractSlider extends AbstractProduct implements BlockInterface
 {
-    /**
-     * Default value for products count that will be shown
-     */
-    const DEFAULT_PRODUCTS_COUNT = 5;
+	/** Default value for products count that will be shown */
+	const DEFAULT_PRODUCTS_COUNT = 5;
 
-    protected $_getDayDate;
+	/** Default category id */
+	const DEFAULT_CATEGORY = 2;
 
-    protected $_storeManager;
+	/** Default Title */
+	const DEFAULT_TITLE = 'Mageplaza Productslider';
 
-    protected $_slider;
+	/**
+	 * @var \Magento\Framework\Stdlib\DateTime\DateTime
+	 */
+	protected $_getDayDate;
 
-    protected $_displayTypes;
+	/**
+	 * @var \Magento\Store\Model\StoreManagerInterface
+	 */
+	protected $_storeManager;
 
-    protected $_helperData;
+	/**
+	 * @var \Mageplaza\Productslider\Helper\Data
+	 */
+	protected $_helperData;
 
-    public $productCacheKey = 'mageplaza_product_slider_cache';
+	/**
+	 * @var \Magento\Customer\Model\Session
+	 */
+	protected $_customer;
 
-    public function __construct(
-        \Magento\Store\Model\StoreManagerInterface $storeManager,
-        \Magento\Framework\Stdlib\DateTime\DateTime $getDayDate,
-        \Mageplaza\Productslider\Helper\Data $helperData,
-        Context $context,
-        array $data = []
-    )
-    {
-        parent::__construct($context, $data);
+	/**
+	 * @var string
+	 */
+	public $productCacheKey = 'mageplaza_product_slider_cache';
 
-        $this->_getDayDate = $getDayDate;
-        $this->_storeManager = $storeManager;
-        $this->_helperData = $helperData;
-    }
+	/**
+	 * @var CollectionFactory
+	 */
+	protected $_productCollectionFactory;
 
-    /**
-     * {@inheritdoc}
-     */
-    protected function _construct()
-    {
-        parent::_construct();
+	/**
+	 * @var Visibility
+	 */
+	protected $_catalogProductVisibility;
 
-        $this->setData('cache_lifetime',20);
-        $this->addColumnCountLayoutDepend('empty', 6)
-            ->addColumnCountLayoutDepend('1column', 5)
-            ->addColumnCountLayoutDepend('2columns-left', 4)
-            ->addColumnCountLayoutDepend('2columns-right', 4)
-            ->addColumnCountLayoutDepend('3columns', 3);
-        $this->addData([
-            'cache_lifetime' => $this->getCacheLifetime(),
-            'cache_tags'     => [\Magento\Catalog\Model\Product::CACHE_TAG,],
-            'cache_key'      => $this->getProductCacheKey(),
-        ]);
-    }
+	/**
+	 * @var \Magento\Catalog\Model\CategoryFactory
+	 */
+	protected $_categoryFactory;
 
-    public function getProductCacheKey()
-    {
-        return $this->productCacheKey;
-    }
+	/**
+	 * @var \Magento\Sales\Model\ResourceModel\Report\Bestsellers\Collection
+	 */
+	protected $_bestSellersCollection;
 
-    public function getStartOfDayDate()
-    {
-        return $this->_getDayDate->date(null, '0:0:0');
-    }
+	/**
+	 * @var \Magento\Wishlist\Model\ResourceModel\Item\Collection
+	 */
+	protected $_wishlistCollection;
 
-    public function getEndOfDayDate()
-    {
-        return $this->_getDayDate->date(null, '23:59:59');
-    }
+	/**
+	 * AbstractSlider constructor.
+	 * @param \Magento\Catalog\Model\ResourceModel\Product\CollectionFactory $productCollectionFactory
+	 * @param \Magento\Catalog\Model\Product\Visibility $catalogProductVisibility
+	 * @param \Magento\Catalog\Model\CategoryFactory $categoryFactory
+	 * @param \Magento\Customer\Model\Session $customer
+	 * @param \Magento\Sales\Model\ResourceModel\Report\Bestsellers\Collection $bestSellersCollection
+	 * @param \Magento\Wishlist\Model\ResourceModel\Item\Collection $wishlistCollection
+	 * @param \Magento\Store\Model\StoreManagerInterface $storeManager
+	 * @param \Magento\Framework\Stdlib\DateTime\DateTime $getDayDate
+	 * @param \Mageplaza\Productslider\Helper\Data $helperData
+	 * @param \Magento\Catalog\Block\Product\Context $context
+	 * @param array $data
+	 */
+	public function __construct(
+		CollectionFactory $productCollectionFactory,
+		Visibility $catalogProductVisibility,
+		CategoryFactory $categoryFactory,
+		Session $customer,
+		Collection $bestSellersCollection,
+		WishlistCollection $wishlistCollection,
+		StoreManagerInterface $storeManager,
+		DateTime $getDayDate,
+		Data $helperData,
+		Context $context,
+		array $data = []
+	)
+	{
+		parent::__construct($context, $data);
 
-    public function getStoreId()
-    {
-        return $this->_storeManager->getStore()->getId();
-    }
+		$this->_productCollectionFactory = $productCollectionFactory;
+		$this->_catalogProductVisibility = $catalogProductVisibility;
+		$this->_categoryFactory          = $categoryFactory;
+		$this->_bestSellersCollection    = $bestSellersCollection;
+		$this->_wishlistCollection       = $wishlistCollection;
+		$this->_getDayDate               = $getDayDate;
+		$this->_storeManager             = $storeManager;
+		$this->_helperData               = $helperData;
+		$this->_customer                 = $customer;
+	}
 
-    public function getProductsCount()
-    {
-        if ($this->hasData('products_count')) {
-            return $this->getData('products_count');
-        }
+	/**
+	 * {@inheritdoc}
+	 */
+	protected function _construct()
+	{
+		parent::_construct();
 
-        if (null === $this->getData('products_count')) {
-            $this->setData('products_count', self::DEFAULT_PRODUCTS_COUNT);
-        }
+//		$this->setData('cache_lifetime', 20);
+		$this->addColumnCountLayoutDepend('empty', 6)
+			->addColumnCountLayoutDepend('1column', 5)
+			->addColumnCountLayoutDepend('2columns-left', 4)
+			->addColumnCountLayoutDepend('2columns-right', 4)
+			->addColumnCountLayoutDepend('3columns', 3);
+		$this->addData([
+//			'cache_lifetime' => $this->getCacheLifetime(),
+			'cache_lifetime' => 0,
+			'cache_tags'     => [\Magento\Catalog\Model\Product::CACHE_TAG,],
+			'cache_key'      => $this->getProductCacheKey(),
+		]);
+	}
 
-        return $this->getData('products_count');
-    }
+	/**
+	 * @return string
+	 */
+	public function getProductCacheKey()
+	{
+		return $this->productCacheKey;
+	}
+
+	/**
+	 * Get Start of Day Date
+	 *
+	 * @return string
+	 */
+	public function getStartOfDayDate()
+	{
+		return $this->_getDayDate->date(null, '0:0:0');
+	}
+
+	/**
+	 * Get End of Day Date
+	 *
+	 * @return string
+	 */
+	public function getEndOfDayDate()
+	{
+		return $this->_getDayDate->date(null, '23:59:59');
+	}
+
+	/**
+	 * Get Store Id
+	 *
+	 * @return int
+	 */
+	public function getStoreId()
+	{
+		return $this->_storeManager->getStore()->getId();
+	}
+
+	/**
+	 * Get Product Count is displayed
+	 *
+	 * @return mixed
+	 */
+	public function getProductsCount()
+	{
+		if ($this->hasData('products_count')) {
+			return $this->getData('products_count');
+		}
+
+		if (null === $this->getData('products_count')) {
+			$this->setData('products_count', self::DEFAULT_PRODUCTS_COUNT);
+		}
+
+		return $this->getData('products_count');
+	}
 
 
-    /**
-     * @param $type
-     * @return bool
-     */
-    public function getShowList($type)
-    {
-        $this->_slider = $this->getSlider();
-        if (is_null($this->_displayTypes)) {
-            if ($this->_slider['display_additional']) {
-                try {
-                    $this->_displayTypes = $this->_helperData->unserialize($this->_slider['display_additional']);
-                } catch (\Exception $e) {
-                    $this->_displayTypes = [];
-                }
-            } else {
-                $this->_displayTypes = [];
-            }
-        }
+	/**
+	 * Check show Additional Config
+	 *
+	 * @param $type
+	 * @return bool
+	 */
+	public function getShowList($type)
+	{
+		$slider = $this->getSlider();
 
-        return in_array($type, $this->_displayTypes);
-    }
+		if ($slider && $slider['display_additional']) {
+			try {
+				$displayTypes = $this->_helperData->unserialize($slider['display_additional']);
+			} catch (\Exception $e) {
+				$displayTypes = [];
+			}
+		} else {
+			$displayTypes = explode(',', $this->_helperData->getModuleConfig('general/display_information'));
+		}
 
-    public function getSliderId(){
-    	if($this->getSlider()){
+		return in_array($type, $displayTypes);
+	}
+
+	/**
+	 * Get Slider Id
+	 * @return string
+	 */
+	public function getSliderId()
+	{
+		if ($this->getSlider()) {
 			return $this->getSlider()->getSliderId();
 		}
 
 		return '';
 	}
 
-    public function getTitle(){
-    	if($this->getSlider()){
+	/**
+	 * Get Slider Title
+	 *
+	 * @return mixed|string
+	 */
+	public function getTitle()
+	{
+		if ($this->getSlider()) {
 			return $this->getSlider()->getTitle();
 		}
 		if ($this->hasData('heading')) {
 			return $this->getData('heading');
 		}
 
-		return 'Mageplaza ProductSlider';
-    }
+		return self::DEFAULT_TITLE;
+	}
 
-    public function getDescription(){
+	/**
+	 * Get Slider Description
+	 *
+	 * @return mixed|string
+	 */
+	public function getDescription()
+	{
 		if ($this->hasData('description')) {
 			return $this->getData('description');
 		}
@@ -162,44 +281,273 @@ class AbstractSlider extends AbstractProduct implements BlockInterface
 		return '';
 	}
 
-    /**
-     * @return string
-     * @throws \Zend_Serializer_Exception
-     */
-    public function getAllOptions(){
-        $sliderOptions = '';
-        $allConfig = $this->_helperData->getModuleConfig('slider_design');
+	/**
+	 * @return string
+	 * @throws \Zend_Serializer_Exception
+	 */
+	public function getAllOptions()
+	{
+		$sliderOptions = '';
+		$allConfig     = $this->_helperData->getModuleConfig('slider_design');
 
-        foreach($allConfig as $key => $value){
-            if($key == 'item_slider'){
-                $sliderOptions = $sliderOptions . $this->getResponsiveConfig();
+		foreach ($allConfig as $key => $value) {
+			if ($key == 'item_slider') {
+				$sliderOptions = $sliderOptions . $this->getResponsiveConfig();
 
-            } else if($key != 'responsive'){
-                $sliderOptions = $sliderOptions . $key . ':' . $value . ',';
-            }
-        }
+			} else if ($key != 'responsive') {
+				$sliderOptions = $sliderOptions . $key . ':' . $value . ',';
+			}
+		}
 
-        return '{' . $sliderOptions . '}';
-    }
+		return '{' . $sliderOptions . '}';
+	}
 
-    /**
-     * @return string
-     * @throws \Zend_Serializer_Exception
-     */
-    public function getResponsiveConfig()
-    {
-        $slider = $this->getSlider();
-        $responsiveOptions = '';
-        $inSliderResponsiveConfig = $this->_helperData->unserialize($slider->getResponsiveItems());
-        $responsiveConfig = $this->_helperData->unserialize($this->_helperData->getModuleConfig('slider_design/item_slider'));
-        $config = (count($inSliderResponsiveConfig) && $slider->getIsResponsive()) ? $inSliderResponsiveConfig : $responsiveConfig;
+	/**
+	 * @return string
+	 * @throws \Zend_Serializer_Exception
+	 */
+	public function getResponsiveConfig()
+	{
+		$slider                   = $this->getSlider();
+		$responsiveOptions        = '';
+		$inSliderResponsiveConfig = '';
+		if ($slider) {
+			$inSliderResponsiveConfig = $this->_helperData->unserialize($slider->getResponsiveItems());
+		}
 
-        foreach ($config as $value){
-            $responsiveOptions = $responsiveOptions . $value['col_1'] . ':{items:' . $value['col_2'] . '},';
-        }
-        $responsiveOptions = rtrim($responsiveOptions,',');
+		$responsiveConfig = $this->_helperData->unserialize($this->_helperData->getModuleConfig('slider_design/item_slider'));
+		$config           = (is_array($inSliderResponsiveConfig) && $slider->getIsResponsive()) ? $inSliderResponsiveConfig : $responsiveConfig;
 
-        return  'responsive:{' . $responsiveOptions . '}';
-    }
+		foreach ($config as $value) {
+			$responsiveOptions = $responsiveOptions . $value['col_1'] . ':{items:' . $value['col_2'] . '},';
+		}
+		$responsiveOptions = rtrim($responsiveOptions, ',');
+
+		return 'responsive:{' . $responsiveOptions . '}';
+	}
+
+	/**
+	 * Get Collection of New Products
+	 *
+	 * @return $this
+	 */
+	public function getNewProductsCollection()
+	{
+		$visibleProducts = $this->_catalogProductVisibility->getVisibleInCatalogIds();
+		$collection      = $this->_productCollectionFactory->create()->setVisibility($visibleProducts);
+		$collection      = $this->_addProductAttributesAndPrices($collection)
+			->addAttributeToFilter(
+				'news_from_date',
+				['date' => true, 'to' => $this->getEndOfDayDate()],
+				'left')
+			->addAttributeToFilter(
+				'news_to_date',
+				[
+					'or' => [
+						0 => ['date' => true, 'from' => $this->getStartOfDayDate()],
+						1 => ['is' => new \Zend_Db_Expr('null')],
+					]
+				],
+				'left')
+			->addAttributeToSort(
+				'news_from_date',
+				'desc')
+			->addStoreFilter($this->getStoreId())
+			->setPageSize($this->getProductsCount());
+
+		return $collection;
+	}
+
+	/**
+	 * Get Collection of Custom Products
+	 *
+	 * @return $this|array
+	 */
+	public function getCustomProductsCollection()
+	{
+		$collection = [];
+		$productIds = $this->_helperData->unserialize($this->getSlider()->getProductIds());
+
+		if (!empty($productIds)) {
+			$collection = $this->_productCollectionFactory->create()->addIdFilter($productIds);
+			$this->_addProductAttributesAndPrices($collection);
+		}
+
+		return $collection;
+	}
+
+	/**
+	 * Get Collection of BestSeller Products
+	 *
+	 * @return $this
+	 */
+	public function getBestSellerProductsCollection()
+	{
+		$productIds  = [];
+		$bestSellers = $this->_bestSellersCollection->setPeriod('month');
+
+		foreach ($bestSellers as $product) {
+			$productIds[] = $product->getProductId();
+		}
+
+		$collection = $this->_productCollectionFactory->create()->addIdFilter($productIds);
+		$collection->addMinimalPrice()
+			->addFinalPrice()
+			->addTaxPercents()
+			->addAttributeToSelect('*')
+			->addStoreFilter($this->getStoreId());
+
+		if ($this->getProductsCount() > $collection->getSize()) {
+			return $collection;
+		} else {
+			return $collection->setPageSize($this->getProductsCount());
+		}
+	}
+
+	/**
+	 * Get Collection by Category Ids
+	 *
+	 * @return $this|array
+	 */
+	public function getCategoryIdsCollection()
+	{
+		$productIds = $this->getProductIdsByCategory();
+		$collection = [];
+		if (!empty($productIds)) {
+			$collection = $this->_productCollectionFactory->create()->addIdFilter($productIds);
+			$this->_addProductAttributesAndPrices($collection);
+		}
+
+		return $collection;
+	}
+
+	/**
+	 * Get ProductIds by Category
+	 *
+	 * @return array
+	 */
+	public function getProductIdsByCategory()
+	{
+		$productIds = [];
+		$catIds     = $this->getSliderCategoryIds();
+		foreach ($catIds as $catId) {
+			$category   = $this->_categoryFactory->create()->load($catId);
+			$collection = $this->_productCollectionFactory->create()
+				->addAttributeToSelect('*')
+				->addCategoryFilter($category);
+
+			foreach ($collection as $item) {
+				$productIds[] = $item->getData('entity_id');
+			}
+		}
+
+		return $productIds;
+	}
+
+	/**
+	 * Get Slider CategoryIds
+	 *
+	 * @return array|int|mixed
+	 */
+	public function getSliderCategoryIds()
+	{
+		if ($this->getData('category_id')) {
+			return $this->getData('category_id');
+		}
+		if ($this->getSlider()) {
+			$catIds = explode(',', $this->getSlider()->getCategoriesIds());
+
+			return $catIds;
+		}
+
+		return self::DEFAULT_CATEGORY;
+	}
+
+	/**
+	 * Get Collection of Featured Products
+	 *
+	 * @return $this
+	 */
+	public function getFeaturedProductsCollection()
+	{
+		$visibleProducts = $this->_catalogProductVisibility->getVisibleInCatalogIds();
+
+		$collection = $this->_productCollectionFactory->create()->setVisibility($visibleProducts);
+		$collection->addMinimalPrice()
+			->addFinalPrice()
+			->addTaxPercents()
+			->addAttributeToSelect('*')
+			->addStoreFilter($this->getStoreId())
+			->setPageSize($this->getProductsCount());
+		$collection->addAttributeToFilter('is_featured', '1');
+
+		return $collection;
+	}
+
+	/**
+	 * Get Collection of MostViewed Products
+	 *
+	 * @return mixed
+	 */
+	public function getMostViewedProductsCollection()
+	{
+		$collection = $this->_productCollectionFactory->create()
+			->addAttributeToSelect('*')
+			->setStoreId($this->getStoreId())
+			->addStoreFilter($this->getStoreId())
+			->setPageSize($this->getProductsCount());
+
+		return $collection;
+	}
+
+	/**
+	 * Get Collection of OnSale Products
+	 *
+	 * @return $this
+	 */
+	public function getOnSaleProductCollection()
+	{
+		$visibleProducts = $this->_catalogProductVisibility->getVisibleInCatalogIds();
+		$collection      = $this->_productCollectionFactory->create()->setVisibility($visibleProducts);
+		$collection      = $this->_addProductAttributesAndPrices($collection)
+			->addAttributeToFilter(
+				'special_from_date',
+				['date' => true, 'to' => $this->getEndOfDayDate()], 'left'
+			)->addAttributeToFilter(
+				'special_to_date', ['or' => [0 => ['date' => true,
+												   'from' => $this->getStartOfDayDate()],
+											 1 => ['is' => new \Zend_Db_Expr(
+												 'null'
+											 )],]], 'left'
+			)->addAttributeToSort(
+				'news_from_date', 'desc'
+			)->addStoreFilter($this->getStoreId())->setPageSize(
+				$this->getProductsCount()
+			);
+
+		return $collection;
+	}
+
+	/**
+	 * Get Collection of Wishlist Products
+	 *
+	 * @return $this|array
+	 */
+	public function getWishlistProductsCollection()
+	{
+		$collection = [];
+		if ($this->_customer->isLoggedIn()) {
+			$wishlist   = $this->_wishlistCollection->addCustomerIdFilter($this->_customer->getCustomerId());
+			$productIds = null;
+
+			foreach ($wishlist as $product) {
+				$productIds[] = $product->getProductId();
+			}
+			$collection = $this->_productCollectionFactory->create()->addIdFilter($productIds);
+			$collection = $this->_addProductAttributesAndPrices($collection)->addStoreFilter($this->getStoreId());
+		}
+
+		return $collection;
+	}
 
 }

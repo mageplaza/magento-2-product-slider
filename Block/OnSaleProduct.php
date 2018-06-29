@@ -14,7 +14,7 @@
  * version in the future.
  *
  * @category    Mageplaza
- * @package     Mageplaza_Core
+ * @package     Mageplaza_Productslider
  * @copyright   Copyright (c) Mageplaza (http://www.mageplaza.com/)
  * @license     https://www.mageplaza.com/LICENSE.txt
  */
@@ -22,60 +22,23 @@
 namespace Mageplaza\Productslider\Block;
 
 
-use Magento\Catalog\Block\Product\Context;
-
-class OnSaleProduct extends \Mageplaza\Productslider\Block\AbstractSlider
+class OnSaleProduct extends AbstractSlider
 {
-    protected $_helper;
+	/**
+	 * Get Product Collection of OnSale Products
+	 * @return $this
+	 */
+	public function getProductCollection()
+	{
+		return $this->getOnSaleProductCollection();
+	}
 
-    protected $catalogProductVisibility;
-
-    protected $productCollectionFactory;
-
-    public function __construct
-    (
-        \Magento\Catalog\Model\Product\Visibility $catalogProductVisibility,
-        \Magento\Catalog\Model\ResourceModel\Product\CollectionFactory $productCollectionFactory,
-        \Mageplaza\Productslider\Helper\Data $helper,
-        \Magento\Store\Model\StoreManagerInterface $storeManager,
-        \Magento\Framework\Stdlib\DateTime\DateTime $getDayDate,
-		\Mageplaza\Productslider\Helper\Data $helperData,
-        Context $context,
-        array $data = [])
-    {
-        parent::__construct($storeManager, $getDayDate, $helperData, $context, $data);
-
-        $this->productCollectionFactory = $productCollectionFactory;
-        $this->catalogProductVisibility = $catalogProductVisibility;
-        $this->_helper = $helper;
-    }
-
-    public function getProductCollection()
-    {
-        $visibleProducts = $this->catalogProductVisibility->getVisibleInCatalogIds();
-        $collection = $this->productCollectionFactory->create()->setVisibility($visibleProducts);
-        $collection = $this->_addProductAttributesAndPrices($collection)
-            ->addAttributeToFilter(
-                'special_from_date',
-                ['date' => true, 'to' => $this->getEndOfDayDate()], 'left'
-            )->addAttributeToFilter(
-                'special_to_date', ['or' => [0 => ['date' => true,
-                'from' => $this->getStartOfDayDate()],
-                1 => ['is' => new \Zend_Db_Expr(
-                    'null'
-                )],]], 'left'
-            )->addAttributeToSort(
-                'news_from_date', 'desc'
-            )->addStoreFilter($this->getStoreId())->setPageSize(
-                $this->getProductsCount()
-            );
-
-        return $collection;
-    }
-
-    public function getProductCacheKey()
-    {
-        return 'mageplaza_product_slider_onsales';
-    }
+	/**
+	 * @return string
+	 */
+	public function getProductCacheKey()
+	{
+		return 'mageplaza_product_slider_onsales';
+	}
 
 }

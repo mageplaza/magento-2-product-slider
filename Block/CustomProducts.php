@@ -21,60 +21,22 @@
 
 namespace Mageplaza\Productslider\Block;
 
-use Magento\Catalog\Block\Product\Context;
-use Magento\Store\Model\StoreManagerInterface;
-use Magento\Framework\Stdlib\DateTime\DateTime;
-use Magento\Catalog\Model\ResourceModel\Product\CollectionFactory;
-use Mageplaza\Productslider\Helper\Data;
-
 /**
  * Class CustomProducts
  * @package Mageplaza\Productslider\Block
  */
 class CustomProducts extends AbstractSlider
 {
-	/**
-	 * @var \Magento\Catalog\Model\ResourceModel\Product\CollectionFactory
-	 */
-	protected $_productCollectionFactory;
-
-	/**
-	 * CustomProducts constructor.
-	 * @param \Magento\Catalog\Model\ResourceModel\Product\CollectionFactory $productCollectionFactory
-	 * @param \Magento\Store\Model\StoreManagerInterface $storeManager
-	 * @param \Magento\Framework\Stdlib\DateTime\DateTime $getDayDate
-	 * @param \Mageplaza\Productslider\Helper\Data $helperData
-	 * @param \Magento\Catalog\Block\Product\Context $context
-	 * @param array $data
-	 */
-	public function __construct(
-		CollectionFactory $productCollectionFactory,
-		StoreManagerInterface $storeManager,
-		DateTime $getDayDate,
-		Data $helperData,
-		Context $context,
-		array $data = []
-	)
+	public function getProductCollection()
 	{
-		parent::__construct($storeManager, $getDayDate, $helperData, $context, $data);
-
-		$this->_productCollectionFactory = $productCollectionFactory;
+		return $this->getCustomProductsCollection();
 	}
 
 	/**
-	 * get Product Collection of Custom Product
-	 * @return $collection
+	 * @return string
 	 */
-	public function getProductCollection()
+	public function getProductCacheKey()
 	{
-		$productIds = $this->_helperData->unserialize($this->getSlider()->getProductIds());
-		$collection = [];
-
-		if (!empty($productIds)) {
-			$collection = $this->_productCollectionFactory->create()->addIdFilter($productIds);
-			$this->_addProductAttributesAndPrices($collection);
-		}
-
-		return $collection;
+		return 'mageplaza_product_slider_customproducts';
 	}
 }

@@ -23,7 +23,7 @@ namespace Mageplaza\Productslider\Model\Config\Source;
 
 use Magento\Framework\Option\ArrayInterface;
 
-class ProductType implements ArrayInterface
+class ProductTypeWidget implements ArrayInterface
 {
 	const NEW_PRODUCTS = 'new';
 	const BEST_SELLER_PRODUCTS = 'best-seller';
@@ -50,8 +50,6 @@ class ProductType implements ArrayInterface
 			['value' => self::ONSALE_PRODUCTS, 'label' => __('OnSale Products')],
 			['value' => self::RECENT_PRODUCT, 'label' => __('Recent Products')],
 			['value' => self::WISHLIST_PRODUCT, 'label' => __('WishList Products')],
-			['value' => self::CATEGORYID, 'label' => __('Select By Category')],
-			['value' => self::CUSTOM_PRODUCTS, 'label' => __('Custom Specific Products')]
 		];
 
 		return $options;

@@ -118,6 +118,7 @@ class General extends \Magento\Backend\Block\Widget\Form\Generic implements \Mag
                 'name' => 'name',
                 'label' => __('Name'),
                 'title' => __('Name'),
+				'required' => true,
             ]
         );
 		$fieldset->addField('title', 'text', [

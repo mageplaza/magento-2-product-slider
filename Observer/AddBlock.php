@@ -14,7 +14,7 @@
  * version in the future.
  *
  * @category    Mageplaza
- * @package     Mageplaza_AutoRelated
+ * @package     Mageplaza_Productslider
  * @copyright   Copyright (c) 2017-2018 Mageplaza (https://www.mageplaza.com/)
  * @license     https://www.mageplaza.com/LICENSE.txt
  */
@@ -129,7 +129,6 @@ class AddBlock implements ObserverInterface
 								$output = $output . "<div id=\"mageplaza-productslider-block-after-{$type}-{$id}\">$content</div>";
 							}
 						}
-
 					}
 				}
 			}
@@ -139,7 +138,12 @@ class AddBlock implements ObserverInterface
 		return $this;
 	}
 
-
+	/**
+	 * Get Slider Type and Location
+	 *
+	 * @param $slider
+	 * @return mixed
+	 */
 	public function getSliderLocation($slider)
 	{
 		$location         = explode('.', $slider->getLocation());
@@ -149,7 +153,12 @@ class AddBlock implements ObserverInterface
 		return $data;
 	}
 
-
+	/**
+	 * Get Block Path of Product Type
+	 *
+	 * @param $slider
+	 * @return string
+	 */
 	public function getSliderProductType($slider)
 	{
 		$block       = '';

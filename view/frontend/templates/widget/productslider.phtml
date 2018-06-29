@@ -33,6 +33,7 @@ $mode = 'grid';
 ?>
 
 <?php if ($items):?>
+<div id="mageplaza-productslider-block-widget">
     <div class="mp-product-slider-block block widget block-products-list <?php echo $mode; ?>">
         <h2 class="mp-product-slider-title"><?php echo $block->getTitle(); ?></h2>
         <p class="mp-ps-info"><?php echo $block->getDescription(); ?></p>
@@ -103,6 +104,7 @@ $mode = 'grid';
         </div>
         <?php echo $block->getPagerHtml() ?>
     </div>
+</div>
     <script>
         require([
             'jquery',

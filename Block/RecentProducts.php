@@ -14,7 +14,7 @@
  * version in the future.
  *
  * @category    Mageplaza
- * @package     Mageplaza_Core
+ * @package     Mageplaza_Productslider
  * @copyright   Copyright (c) Mageplaza (http://www.mageplaza.com/)
  * @license     https://www.mageplaza.com/LICENSE.txt
  */
@@ -29,18 +29,21 @@ use \Magento\Reports\Block\Product\Viewed;
  */
 class RecentProducts extends Viewed
 {
-    /**
-     * Get Collection Recently Viewed product
-     * @return mixed
-     */
+	/**
+	 * Get Collection Recently Viewed product
+	 * @return mixed
+	 */
 	public function getProductCollection()
 	{
 		return $this->getRecentlyViewedProducts();
 	}
 
+	/**
+	 * @return string
+	 */
 	public function getProductCacheKey()
 	{
-	    return 'mageplaza_product_slider_recent_products' ;
+		return 'mageplaza_product_slider_recent_products';
 	}
 
 }

@@ -14,50 +14,30 @@
  * version in the future.
  *
  * @category    Mageplaza
- * @package     Mageplaza_Core
+ * @package     Mageplaza_Productslider
  * @copyright   Copyright (c) Mageplaza (http://www.mageplaza.com/)
  * @license     https://www.mageplaza.com/LICENSE.txt
  */
 
 namespace Mageplaza\Productslider\Block;
 
-use Magento\Catalog\Block\Product\Context;
-
 class MostViewedProducts extends AbstractSlider
 {
-    protected $_template = 'Mageplaza_Productslider::productslider.phtml';
+	/**
+	 * Get Product Collection of MostViewed Products
+	 * @return mixed
+	 */
+	public function getProductCollection()
+	{
+		return $this->getMostViewedProductsCollection();
+	}
 
-    protected $_productsFactory;
-
-    public function __construct(
-        \Magento\Store\Model\StoreManagerInterface $storeManager,
-        \Magento\Framework\Stdlib\DateTime\DateTime $getDayDate,
-        \Mageplaza\Productslider\Helper\Data $helperData,
-        \Magento\Reports\Model\ResourceModel\Product\Collection $productsFactory,
-        Context $context,
-        array $data = [])
-    {
-        parent::__construct($storeManager, $getDayDate, $helperData, $context, $data);
-
-        $this->_productsFactory = $productsFactory;
-    }
-
-    public function getProductCollection() {
-        $collection = $this->_productsFactory
-            ->addAttributeToSelect(
-                '*'
-            )->addViewsCount()->setStoreId(
-                $this->getStoreId()
-            )->addStoreFilter(
-                $this->getStoreId()
-            )->setPageSize($this->getProductsCount());
-
-            return $collection;
-    }
-
-    public function getProductCacheKey()
-    {
-        return 'mageplaza_product_slider_mostviewed';
-    }
+	/**
+	 * @return string
+	 */
+	public function getProductCacheKey()
+	{
+		return 'mageplaza_product_slider_mostviewed';
+	}
 
 }
