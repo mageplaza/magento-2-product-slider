@@ -21,10 +21,11 @@
  */
 -->
 
-<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../../../../../../lib/internal/Magento/Framework/App/etc/routes.xsd">
-    <router id="admin">
-        <route id="mpproductslider" frontName="mpproductslider">
-            <module name="Mageplaza_Productslider" before="Magento_Backend"/>
-        </route>
-    </router>
-</config>
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../../../../../../../lib/internal/Magento/Framework/View/Layout/etc/page_configuration.xsd">
+<update handle="styles"/>
+<body>
+    <referenceContainer name="content">
+        <uiComponent name="mpproductslider_slider_listing"/>
+    </referenceContainer>
+</body>
+</page>

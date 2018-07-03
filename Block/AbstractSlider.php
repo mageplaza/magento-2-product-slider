@@ -25,6 +25,7 @@ use Magento\Catalog\Block\Product\AbstractProduct;
 use Magento\Widget\Block\BlockInterface;
 use Magento\Catalog\Block\Product\Context;
 use Magento\Catalog\Model\ResourceModel\Product\CollectionFactory;
+use Mageplaza\ProductSlider\Model\ResourceModel\Report\Product\CollectionFactory as MostViewedCollectionFactory;
 use Magento\Catalog\Model\Product\Visibility;
 use Magento\Catalog\Model\CategoryFactory;
 use Magento\Customer\Model\Session;
@@ -95,9 +96,13 @@ class AbstractSlider extends AbstractProduct implements BlockInterface
 	 */
 	protected $_wishlistCollection;
 
+
+	protected $_mostViewedProductsFactory;
+
 	/**
 	 * AbstractSlider constructor.
 	 * @param \Magento\Catalog\Model\ResourceModel\Product\CollectionFactory $productCollectionFactory
+	 * @param \Mageplaza\ProductSlider\Model\ResourceModel\Report\Product\CollectionFactory $mostViewedProductsFactory
 	 * @param \Magento\Catalog\Model\Product\Visibility $catalogProductVisibility
 	 * @param \Magento\Catalog\Model\CategoryFactory $categoryFactory
 	 * @param \Magento\Customer\Model\Session $customer
@@ -111,6 +116,7 @@ class AbstractSlider extends AbstractProduct implements BlockInterface
 	 */
 	public function __construct(
 		CollectionFactory $productCollectionFactory,
+		MostViewedCollectionFactory $mostViewedProductsFactory,
 		Visibility $catalogProductVisibility,
 		CategoryFactory $categoryFactory,
 		Session $customer,
@@ -125,15 +131,16 @@ class AbstractSlider extends AbstractProduct implements BlockInterface
 	{
 		parent::__construct($context, $data);
 
-		$this->_productCollectionFactory = $productCollectionFactory;
-		$this->_catalogProductVisibility = $catalogProductVisibility;
-		$this->_categoryFactory          = $categoryFactory;
-		$this->_bestSellersCollection    = $bestSellersCollection;
-		$this->_wishlistCollection       = $wishlistCollection;
-		$this->_getDayDate               = $getDayDate;
-		$this->_storeManager             = $storeManager;
-		$this->_helperData               = $helperData;
-		$this->_customer                 = $customer;
+		$this->_mostViewedProductsFactory = $mostViewedProductsFactory;
+		$this->_productCollectionFactory  = $productCollectionFactory;
+		$this->_catalogProductVisibility  = $catalogProductVisibility;
+		$this->_categoryFactory           = $categoryFactory;
+		$this->_bestSellersCollection     = $bestSellersCollection;
+		$this->_wishlistCollection        = $wishlistCollection;
+		$this->_getDayDate                = $getDayDate;
+		$this->_storeManager              = $storeManager;
+		$this->_helperData                = $helperData;
+		$this->_customer                  = $customer;
 	}
 
 	/**
@@ -491,9 +498,9 @@ class AbstractSlider extends AbstractProduct implements BlockInterface
 	 */
 	public function getMostViewedProductsCollection()
 	{
-		$collection = $this->_productCollectionFactory->create()
+		$collection = $this->_mostViewedProductsFactory->create()
 			->addAttributeToSelect('*')
-			->setStoreId($this->getStoreId())
+			->setStoreId($this->getStoreId())->addViewsCount()
 			->addStoreFilter($this->getStoreId())
 			->setPageSize($this->getProductsCount());
 

@@ -14,7 +14,7 @@
  * version in the future.
  *
  * @category    Mageplaza
- * @package     Mageplaza_Core
+ * @package     Mageplaza_Productslider
  * @copyright   Copyright (c) Mageplaza (http://www.mageplaza.com/)
  * @license     https://www.mageplaza.com/LICENSE.txt
  */
@@ -37,155 +37,155 @@ use Magento\Catalog\Ui\Component\Product\Form\Categories\Options;
  */
 class Category extends Multiselect
 {
-    /**
-     * @var \Magento\Catalog\Model\ResourceModel\Category\CollectionFactory
-     */
-    public $collectionFactory;
+	/**
+	 * @var \Magento\Catalog\Model\ResourceModel\Category\CollectionFactory
+	 */
+	public $collectionFactory;
 
-    /**
-     * @var \Magento\Framework\AuthorizationInterface
-     */
-    public $authorization;
+	/**
+	 * @var \Magento\Framework\AuthorizationInterface
+	 */
+	public $authorization;
 
-    /**
-     * @var \Magento\Framework\UrlInterface
-     */
-    protected $_urlBuilder;
+	/**
+	 * @var \Magento\Framework\UrlInterface
+	 */
+	protected $_urlBuilder;
 
 
-    protected $_option;
+	protected $_option;
 
-    /**
-     * Category constructor.
-     * @param Options $options
-     * @param Factory $factoryElement
-     * @param CollectionFactory $factoryCollection
-     * @param Escaper $escaper
-     * @param CategoryCollectionFactory $collectionFactory
-     * @param AuthorizationInterface $authorization
-     * @param UrlInterface $urlBuilder
-     * @param array $data
-     */
-    public function __construct(
-        Options $options,
-        Factory $factoryElement,
-        CollectionFactory $factoryCollection,
-        Escaper $escaper,
-        CategoryCollectionFactory $collectionFactory,
-        AuthorizationInterface $authorization,
-        UrlInterface $urlBuilder,
-        array $data = []
-    )
-    {
-        parent::__construct($factoryElement, $factoryCollection, $escaper, $data);
+	/**
+	 * Category constructor.
+	 * @param Options $options
+	 * @param Factory $factoryElement
+	 * @param CollectionFactory $factoryCollection
+	 * @param Escaper $escaper
+	 * @param CategoryCollectionFactory $collectionFactory
+	 * @param AuthorizationInterface $authorization
+	 * @param UrlInterface $urlBuilder
+	 * @param array $data
+	 */
+	public function __construct(
+		Options $options,
+		Factory $factoryElement,
+		CollectionFactory $factoryCollection,
+		Escaper $escaper,
+		CategoryCollectionFactory $collectionFactory,
+		AuthorizationInterface $authorization,
+		UrlInterface $urlBuilder,
+		array $data = []
+	)
+	{
+		parent::__construct($factoryElement, $factoryCollection, $escaper, $data);
 
-        $this->_option = $options;
-        $this->collectionFactory = $collectionFactory;
-        $this->authorization = $authorization;
-        $this->_urlBuilder = $urlBuilder;
-    }
+		$this->_option           = $options;
+		$this->collectionFactory = $collectionFactory;
+		$this->authorization     = $authorization;
+		$this->_urlBuilder       = $urlBuilder;
+	}
 
-    /**
-     * @inheritdoc
-     */
-    public function getElementHtml()
-    {
-        $html = '<div class="admin__field-control admin__control-grouped">';
-        $html .= '<div id="slider-category-select" class="admin__field" data-bind="scope:\'sliderCategory\'" data-index="index">';
-        $html .= '<!-- ko foreach: elems() -->';
-        $html .= '<input name="slider[categories_ids]" data-bind="value: value" style="display: none"/>';
-        $html .= '<!-- ko template: elementTmpl --><!-- /ko -->';
-        $html .= '<!-- /ko -->';
-        $html .= '</div>';
+	/**
+	 * @inheritdoc
+	 */
+	public function getElementHtml()
+	{
+		$html = '<div class="admin__field-control admin__control-grouped">';
+		$html .= '<div id="slider-category-select" class="admin__field" data-bind="scope:\'sliderCategory\'" data-index="index">';
+		$html .= '<!-- ko foreach: elems() -->';
+		$html .= '<input name="slider[categories_ids]" data-bind="value: value" style="display: none"/>';
+		$html .= '<!-- ko template: elementTmpl --><!-- /ko -->';
+		$html .= '<!-- /ko -->';
+		$html .= '</div>';
 
-        $html .= '<div class="admin__field admin__field-group-additional admin__field-small" data-bind="scope:\'create_category_button\'">';
-        $html .= '<div class="admin__field-control">';
-        $html .= '<!-- ko template: elementTmpl --><!-- /ko -->';
-        $html .= '</div></div></div>';
+		$html .= '<div class="admin__field admin__field-group-additional admin__field-small" data-bind="scope:\'create_category_button\'">';
+		$html .= '<div class="admin__field-control">';
+		$html .= '<!-- ko template: elementTmpl --><!-- /ko -->';
+		$html .= '</div></div></div>';
 
-        $html .= '<!-- ko scope: \'create_category_modal\' --><!-- ko template: getTemplate() --><!-- /ko --><!-- /ko -->';
+		$html .= '<!-- ko scope: \'create_category_modal\' --><!-- ko template: getTemplate() --><!-- /ko --><!-- /ko -->';
 
-        $html .= $this->getAfterElementHtml();
+		$html .= $this->getAfterElementHtml();
 
-        return $html;
-    }
+		return $html;
+	}
 
-    /**
-     * Get no display
-     *
-     * @return bool
-     */
-    public function getNoDisplay()
-    {
-        $isNotAllowed = !$this->authorization->isAllowed('Mageplaza_Productslider::category');
+	/**
+	 * Get no display
+	 *
+	 * @return bool
+	 */
+	public function getNoDisplay()
+	{
+		$isNotAllowed = !$this->authorization->isAllowed('Mageplaza_Productslider::category');
 
-        return $this->getData('no_display') || $isNotAllowed;
-    }
+		return $this->getData('no_display') || $isNotAllowed;
+	}
 
-    /**
-     * @return mixed
-     */
-    public function getCategoriesTree()
-    {
-        /* @var $collection \Magento\Catalog\Model\ResourceModel\Category\Collection */
-        $collection = $this->collectionFactory->create();
-        $categoryById = [
-            CategoryModel::TREE_ROOT_ID => [
-                'value' => CategoryModel::TREE_ROOT_ID,
-                'optgroup' => null,
-            ],
-        ];
+	/**
+	 * @return mixed
+	 */
+	public function getCategoriesTree()
+	{
+		/* @var $collection \Magento\Catalog\Model\ResourceModel\Category\Collection */
+		$collection   = $this->collectionFactory->create();
+		$categoryById = [
+			CategoryModel::TREE_ROOT_ID => [
+				'value'    => CategoryModel::TREE_ROOT_ID,
+				'optgroup' => null,
+			],
+		];
 
-        foreach ($collection as $category) {
-            foreach ([$category->getId(), $category->getParentId()] as $categoryId) {
-                if (!isset($categoryById[$categoryId])) {
-                    $categoryById[$categoryId] = ['value' => $categoryId];
-                }
-            }
+		foreach ($collection as $category) {
+			foreach ([$category->getId(), $category->getParentId()] as $categoryId) {
+				if (!isset($categoryById[$categoryId])) {
+					$categoryById[$categoryId] = ['value' => $categoryId];
+				}
+			}
 
-            $categoryById[$category->getId()]['is_active'] = 1;
-            $categoryById[$category->getId()]['label'] = $category->getName();
-            $categoryById[$category->getParentId()]['optgroup'][] = &$categoryById[$category->getId()];
-        }
+			$categoryById[$category->getId()]['is_active']        = 1;
+			$categoryById[$category->getId()]['label']            = $category->getName();
+			$categoryById[$category->getParentId()]['optgroup'][] = &$categoryById[$category->getId()];
+		}
 
-        return $categoryById[CategoryModel::TREE_ROOT_ID]['optgroup'];
-    }
+		return $categoryById[CategoryModel::TREE_ROOT_ID]['optgroup'];
+	}
 
-    /**
-     * Get values for select
-     *
-     * @return array
-     */
-    public function getValues()
-    {
-        $values = $this->getValue();
-        if (!is_array($values)) {
-            $values = explode(',', $values);
-        }
+	/**
+	 * Get values for select
+	 *
+	 * @return array
+	 */
+	public function getValues()
+	{
+		$values = $this->getValue();
+		if (!is_array($values)) {
+			$values = explode(',', $values);
+		}
 
-        if (!sizeof($values)) {
-            return [];
-        }
+		if (!sizeof($values)) {
+			return [];
+		}
 
-        $collection = $this->collectionFactory->create()
-            ->addIdFilter($values);
+		$collection = $this->collectionFactory->create()
+			->addIdFilter($values);
 
-        $options = [];
-        foreach ($collection as $category) {
-            $options[] = $category->getId();
-        }
+		$options = [];
+		foreach ($collection as $category) {
+			$options[] = $category->getId();
+		}
 
-        return $options;
-    }
+		return $options;
+	}
 
-    /**
-     * Attach Slider Category suggest widget initialization
-     *
-     * @return string
-     */
-    public function getAfterElementHtml()
-    {
-        $html = '<script type="text/x-magento-init">
+	/**
+	 * Attach Slider Category suggest widget initialization
+	 *
+	 * @return string
+	 */
+	public function getAfterElementHtml()
+	{
+		$html = '<script type="text/x-magento-init">
             {
                 "*": {
                     "Magento_Ui/js/core/app": {
@@ -221,6 +221,6 @@ class Category extends Multiselect
             }
         </script>';
 
-        return $html;
-    }
+		return $html;
+	}
 }

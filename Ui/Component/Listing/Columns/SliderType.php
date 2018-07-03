@@ -50,6 +50,10 @@ class SliderType extends Column
         return $dataSource;
     }
 
+	/**
+	 * @param $data
+	 * @return string
+	 */
     public function getProductType($data)
     {
         $productType = '';

@@ -14,7 +14,7 @@
  * version in the future.
  *
  * @category    Mageplaza
- * @package     Mageplaza_GiftCard
+ * @package     Mageplaza_Productslider
  * @copyright   Copyright (c) 2018 Mageplaza (http://www.mageplaza.com/)
  * @license     https://www.mageplaza.com/LICENSE.txt
  */
@@ -53,6 +53,10 @@ class SliderLocation extends Column
         return $dataSource;
     }
 
+	/**
+	 * @param $data
+	 * @return array
+	 */
     public function getLocation($data)
     {
         $location = [];

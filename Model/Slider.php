@@ -1,18 +1,24 @@
 <?php
 /**
- * Mageplaza_Productslider extension
- *                     NOTICE OF LICENSE
+ * Mageplaza
  *
- *                     This source file is subject to the MIT License
- *                     that is bundled with this package in the file LICENSE.txt.
- *                     It is also available through the world-wide-web at this URL:
- *                     https://www.mageplaza.com/LICENSE.txt
+ * NOTICE OF LICENSE
  *
- *                     @category  Mageplaza
- *                     @package   Mageplaza_Productslider
- *                     @copyright Copyright (c) 2016
- *                     @license   https://www.mageplaza.com/LICENSE.txt
+ * This source file is subject to the Mageplaza.com license that is
+ * available through the world-wide-web at this URL:
+ * https://www.mageplaza.com/LICENSE.txt
+ *
+ * DISCLAIMER
+ *
+ * Do not edit or add to this file if you wish to upgrade this extension to newer
+ * version in the future.
+ *
+ * @category    Mageplaza
+ * @package     Mageplaza_Productslider
+ * @copyright   Copyright (c) Mageplaza (http://www.mageplaza.com/)
+ * @license     https://www.mageplaza.com/LICENSE.txt
  */
+
 namespace Mageplaza\Productslider\Model;
 
 /**
@@ -78,20 +84,12 @@ class Slider extends \Magento\Framework\Model\AbstractModel
 	}
 
 	/**
-	 * get entity default values
-	 *
+	 * @param \Mageplaza\Productslider\Model\Slider $object
 	 * @return array
 	 */
-	public function getDefaultValues()
-	{
-		$values = [];
-//        $values['status'] = '1';
-		return $values;
-	}
-
 	public function getProducts(\Mageplaza\Productslider\Model\Slider $object)
 	{
-		$tbl = $this->getResource()->getTable(\Mageplaza\Productslider\Model\ResourceModel\Slider::TBL_ATT_PRODUCT);
+		$tbl    = $this->getResource()->getTable(\Mageplaza\Productslider\Model\ResourceModel\Slider::TBL_ATT_PRODUCT);
 		$select = $this->getResource()->getConnection()->select()->from(
 			$tbl,
 			['product_id']
@@ -100,9 +98,13 @@ class Slider extends \Magento\Framework\Model\AbstractModel
 				'slider_id = ?',
 				(int)$object->getSliderId()
 			);
+
 		return $this->getResource()->getConnection()->fetchCol($select);
 	}
 
+	/**
+	 * @return $this
+	 */
 	public function afterSave()
 	{
 		if ($this->getCustomerGroupIds() || $this->getStoreIds()) {
@@ -117,6 +119,5 @@ class Slider extends \Magento\Framework\Model\AbstractModel
 
 		return parent::afterSave();
 	}
-
 
 }

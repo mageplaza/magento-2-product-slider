@@ -48,7 +48,7 @@
     <type name="Magento\Framework\View\Element\UiComponent\DataProvider\CollectionFactory">
         <arguments>
             <argument name="collections" xsi:type="array">
-                <item name="mageplaza_productslider_slider_listing_data_source" xsi:type="string">Mageplaza\Productslider\Model\ResourceModel\Slider\Grid\Collection</item>
+                <item name="mpproductslider_slider_listing_data_source" xsi:type="string">Mageplaza\Productslider\Model\ResourceModel\Slider\Grid\Collection</item>
             </argument>
         </arguments>
     </type>

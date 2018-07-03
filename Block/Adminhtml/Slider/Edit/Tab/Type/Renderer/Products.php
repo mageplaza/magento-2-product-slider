@@ -1,13 +1,32 @@
 <?php
+/**
+ * Mageplaza
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the Mageplaza.com license that is
+ * available through the world-wide-web at this URL:
+ * https://www.mageplaza.com/LICENSE.txt
+ *
+ * DISCLAIMER
+ *
+ * Do not edit or add to this file if you wish to upgrade this extension to newer
+ * version in the future.
+ *
+ * @category    Mageplaza
+ * @package     Mageplaza_Productslider
+ * @copyright   Copyright (c) Mageplaza (http://www.mageplaza.com/)
+ * @license     https://www.mageplaza.com/LICENSE.txt
+ */
 
 namespace Mageplaza\Productslider\Block\Adminhtml\Slider\Edit\Tab\Type\Renderer;
 
 use Magento\Backend\Block\Template\Context;
 use Magento\Backend\Block\Widget\Grid\Extended;
-use Magento\Backend\Block\Widget\Tab\TabInterface;
+use Mageplaza\Productslider\Helper\Data as HeplerData;
 use Magento\Backend\Helper\Data;
+use Mageplaza\Productslider\Model\SliderFactory;
 use Magento\Catalog\Model\ResourceModel\Product\CollectionFactory;
-use Magento\Framework\Registry;
 
 /**
  * Class Product
@@ -18,7 +37,7 @@ class Products extends Extended
 	/**
 	 * @var \Magento\Catalog\Model\ResourceModel\Product\CollectionFactory
 	 */
-	protected $productCollectionFactory;
+	protected $_productCollectionFactory;
 
 	/**
 	 * @var \Mageplaza\Productslider\Model\SliderFactory
@@ -26,40 +45,33 @@ class Products extends Extended
 	protected $_sliderFactory;
 
 	/**
-	 * @var  \Magento\Framework\Registry
+	 * @var \Mageplaza\Productslider\Helper\Data
 	 */
-	protected $registry;
-
-	protected $_objectManager = null;
-
 	protected $_helperData;
 
 	/**
 	 * Products constructor.
+	 * @param \Mageplaza\Productslider\Helper\Data $helperData
 	 * @param \Magento\Backend\Block\Template\Context $context
 	 * @param \Magento\Backend\Helper\Data $backendHelper
-	 * @param \Magento\Framework\Registry $registry
-	 * @param \Magento\Framework\ObjectManagerInterface $objectManager
 	 * @param \Mageplaza\Productslider\Model\SliderFactory $sliderFactory
 	 * @param \Magento\Catalog\Model\ResourceModel\Product\CollectionFactory $productCollectionFactory
 	 * @param array $data
 	 */
 	public function __construct(
-		\Mageplaza\Productslider\Helper\Data $helperData,
-		\Magento\Backend\Block\Template\Context $context,
-		\Magento\Backend\Helper\Data $backendHelper,
-		\Magento\Framework\Registry $registry,
-		\Magento\Framework\ObjectManagerInterface $objectManager,
-		\Mageplaza\Productslider\Model\SliderFactory $sliderFactory,
-		\Magento\Catalog\Model\ResourceModel\Product\CollectionFactory $productCollectionFactory,
+		HeplerData $helperData,
+		Context $context,
+		Data $backendHelper,
+		SliderFactory $sliderFactory,
+		CollectionFactory $productCollectionFactory,
 		array $data = []
-	) {
-		$this->_helperData = $helperData;
-		$this->_sliderFactory = $sliderFactory;
-		$this->productCollectionFactory = $productCollectionFactory;
-		$this->_objectManager = $objectManager;
-		$this->registry = $registry;
+	)
+	{
 		parent::__construct($context, $backendHelper, $data);
+
+		$this->_helperData               = $helperData;
+		$this->_sliderFactory            = $sliderFactory;
+		$this->_productCollectionFactory = $productCollectionFactory;
 	}
 
 	/**
@@ -109,11 +121,12 @@ class Products extends Extended
 	 */
 	protected function _prepareCollection()
 	{
-		$collection = $this->productCollectionFactory->create();
+		$collection = $this->_productCollectionFactory->create();
 		$collection->addAttributeToSelect('name');
 		$collection->addAttributeToSelect('sku');
 		$collection->addAttributeToSelect('price');
 		$this->setCollection($collection);
+
 		return parent::_prepareCollection();
 	}
 
@@ -126,19 +139,19 @@ class Products extends Extended
 			'in_product',
 			[
 				'header_css_class' => 'a-center',
-				'type' => 'checkbox',
-				'name' => 'in_product',
-				'align' => 'center',
-				'index' => 'entity_id',
-				'values' => $this->_getSelectedProducts(),
+				'type'             => 'checkbox',
+				'name'             => 'in_product',
+				'align'            => 'center',
+				'index'            => 'entity_id',
+				'values'           => $this->_getSelectedProducts(),
 			]
 		);
 		$this->addColumn(
 			'entity_id',
 			[
-				'header' => __('Product ID'),
-				'type' => 'number',
-				'index' => 'entity_id',
+				'header'           => __('Product ID'),
+				'type'             => 'number',
+				'index'            => 'entity_id',
 				'header_css_class' => 'col-id',
 				'column_css_class' => 'col-id',
 			]
@@ -147,27 +160,27 @@ class Products extends Extended
 			'name',
 			[
 				'header' => __('Name'),
-				'index' => 'name',
-				'class' => 'xxx',
-				'width' => '50px',
+				'index'  => 'name',
+				'class'  => 'xxx',
+				'width'  => '50px',
 			]
 		);
 		$this->addColumn(
 			'sku',
 			[
 				'header' => __('Sku'),
-				'index' => 'sku',
-				'class' => 'xxx',
-				'width' => '50px',
+				'index'  => 'sku',
+				'class'  => 'xxx',
+				'width'  => '50px',
 			]
 		);
 		$this->addColumn(
 			'price',
 			[
 				'header' => __('Price'),
-				'type' => 'currency',
-				'index' => 'price',
-				'width' => '50px',
+				'type'   => 'currency',
+				'index'  => 'price',
+				'width'  => '50px',
 			]
 		);
 
@@ -191,9 +204,12 @@ class Products extends Extended
 		return '';
 	}
 
+	/**
+	 * @return mixed
+	 */
 	protected function _getSelectedProducts()
 	{
-		$slider = $this->getSlider();
+		$slider     = $this->getSlider();
 		$productIds = $this->_helperData->unserialize($slider->getProductIds());
 
 		return $productIds;
@@ -206,15 +222,19 @@ class Products extends Extended
 	 */
 	public function getSelectedProducts()
 	{
-		$slider = $this->getSlider();
+		$slider   = $this->getSlider();
 		$selected = $this->_helperData->unserialize($slider->getProductIds());
 
 		if (!is_array($selected)) {
 			$selected = [];
 		}
+
 		return $selected;
 	}
 
+	/**
+	 * @return \Mageplaza\Productslider\Model\Slider
+	 */
 	protected function getSlider()
 	{
 		$sliderId = $this->getRequest()->getParam('slider_id');

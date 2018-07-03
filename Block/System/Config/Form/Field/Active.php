@@ -1,14 +1,29 @@
 <?php
 /**
- * Created by PhpStorm.
- * User: nk
- * Date: 12/06/2018
- * Time: 14:48
+ * Mageplaza
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the Mageplaza.com license that is
+ * available through the world-wide-web at this URL:
+ * https://www.mageplaza.com/LICENSE.txt
+ *
+ * DISCLAIMER
+ *
+ * Do not edit or add to this file if you wish to upgrade this extension to newer
+ * version in the future.
+ *
+ * @category    Mageplaza
+ * @package     Mageplaza_Productslider
+ * @copyright   Copyright (c) Mageplaza (http://www.mageplaza.com/)
+ * @license     https://www.mageplaza.com/LICENSE.txt
  */
 
 namespace Mageplaza\Productslider\Block\System\Config\Form\Field;
 
-class Active extends \Magento\Config\Block\System\Config\Form\Field\FieldArray\AbstractFieldArray
+use Magento\Config\Block\System\Config\Form\Field\FieldArray\AbstractFieldArray;
+
+class Active extends AbstractFieldArray
 {
     protected function _prepareToRender() {
         $this->addColumn('col_1', ['label' => __('Screen size max'),  'renderer' => false]);
@@ -16,8 +31,6 @@ class Active extends \Magento\Config\Block\System\Config\Form\Field\FieldArray\A
 
         $this->_addAfter = false;
         $this->_addButtonLabel = __('Add');
-//        $this->_addAfter = false;
-//        $this->_addButtonLabel = __('Add');
     }
 
 }

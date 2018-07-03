@@ -1,9 +1,7 @@
 .owl-item li.product-slider {
     width: 100% !important;
 }
-.product-item-info {
-    width: 80% !important;
-}
+
 .mp-product-slider-title {
     font-size: 3.8rem;
     position: relative;
@@ -33,9 +31,20 @@
     -webkit-margin-end: 0px;
 
 }
-.mp-product-item-name {
-    height: 40px !important;
+
+.slider-product-item-info {
+    width: 80% !important;
 }
+
+.slider-product-item-actions {
+    margin: 0px;
+}
+
+.product.details.slider-product-item-details {
+    margin-left: 10px
+}
+
+
 
 
 

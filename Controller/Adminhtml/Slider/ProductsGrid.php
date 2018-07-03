@@ -1,16 +1,30 @@
 <?php
 /**
- * Created by PhpStorm.
- * User: nk
- * Date: 18/06/2018
- * Time: 15:15
+ * Mageplaza
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the Mageplaza.com license that is
+ * available through the world-wide-web at this URL:
+ * https://www.mageplaza.com/LICENSE.txt
+ *
+ * DISCLAIMER
+ *
+ * Do not edit or add to this file if you wish to upgrade this extension to newer
+ * version in the future.
+ *
+ * @category    Mageplaza
+ * @package     Mageplaza_Productslider
+ * @copyright   Copyright (c) Mageplaza (http://www.mageplaza.com/)
+ * @license     https://www.mageplaza.com/LICENSE.txt
  */
 
 namespace Mageplaza\Productslider\Controller\Adminhtml\Slider;
 
 use Magento\Backend\App\Action;
+use Magento\Framework\View\Result\LayoutFactory;
 
-class ProductsGrid extends \Magento\Backend\App\Action
+class ProductsGrid extends Action
 {
 	/**
 	 * @var \Magento\Framework\View\Result\LayoutFactory
@@ -24,9 +38,11 @@ class ProductsGrid extends \Magento\Backend\App\Action
 	 */
 	public function __construct(
 		Action\Context $context,
-		\Magento\Framework\View\Result\LayoutFactory $resultLayoutFactory
-	) {
+		LayoutFactory $resultLayoutFactory
+	)
+	{
 		parent::__construct($context);
+
 		$this->_resultLayoutFactory = $resultLayoutFactory;
 	}
 

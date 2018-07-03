@@ -20,13 +20,14 @@
  * @license     https://www.mageplaza.com/LICENSE.txt
  */
 -->
+
 <listing xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Ui:etc/ui_configuration.xsd">
     <argument name="data" xsi:type="array">
         <item name="js_config" xsi:type="array">
-            <item name="provider" xsi:type="string">mageplaza_productslider_slider_listing.mageplaza_productslider_slider_listing_data_source</item>
-            <item name="deps" xsi:type="string">mageplaza_productslider_slider_listing.mageplaza_productslider_slider_listing_data_source</item>
+            <item name="provider" xsi:type="string">mpproductslider_slider_listing.mpproductslider_slider_listing_data_source</item>
+            <item name="deps" xsi:type="string">mpproductslider_slider_listing.mpproductslider_slider_listing_data_source</item>
         </item>
-        <item name="spinner" xsi:type="string">mageplaza_productslider_slider_columns</item>
+        <item name="spinner" xsi:type="string">mpproductslider_slider_columns</item>
         <item name="buttons" xsi:type="array">
             <item name="add" xsi:type="array">
                 <item name="name" xsi:type="string">add</item>
@@ -36,10 +37,10 @@
             </item>
         </item>
     </argument>
-    <dataSource name="mageplaza_productslider_slider_listing_data_source">
+    <dataSource name="mpproductslider_slider_listing_data_source">
         <argument name="dataProvider" xsi:type="configurableObject">
             <argument name="class" xsi:type="string">Magento\Framework\View\Element\UiComponent\DataProvider\DataProvider</argument>
-            <argument name="name" xsi:type="string">mageplaza_productslider_slider_listing_data_source</argument>
+            <argument name="name" xsi:type="string">mpproductslider_slider_listing_data_source</argument>
             <argument name="primaryFieldName" xsi:type="string">slider_id</argument>
             <argument name="requestFieldName" xsi:type="string">slider_id</argument>
             <argument name="data" xsi:type="array">
@@ -79,7 +80,7 @@
                     <item name="config" xsi:type="array">
                         <item name="type" xsi:type="string">delete</item>
                         <item name="label" xsi:type="string" translate="true">Delete</item>
-                        <item name="url" xsi:type="url" path="mageplaza_productslider/slider/massDelete"/>
+                        <item name="url" xsi:type="url" path="mpproductslider/slider/massDelete"/>
                         <item name="confirm" xsi:type="array">
                             <item name="title" xsi:type="string" translate="true">Delete Slider</item>
                             <item name="message" xsi:type="string" translate="true">Are you sure you wan't to delete selected Slider?</item>
@@ -98,14 +99,14 @@
                     <item name="0" xsi:type="array">
                         <item name="type" xsi:type="string">enable</item>
                         <item name="label" xsi:type="string" translate="true">Active</item>
-                        <item name="url" xsi:type="url" path="mageplaza_productslider/slider/massStatus">
+                        <item name="url" xsi:type="url" path="mpproductslider/slider/massStatus">
                             <param name="status">1</param>
                         </item>
                     </item>
                     <item name="1" xsi:type="array">
                         <item name="type" xsi:type="string">disable</item>
                         <item name="label" xsi:type="string" translate="true">Inactive</item>
-                        <item name="url" xsi:type="url" path="mageplaza_productslider/slider/massStatus">
+                        <item name="url" xsi:type="url" path="mpproductslider/slider/massStatus">
                             <param name="status">0</param>
                         </item>
                     </item>
@@ -114,16 +115,16 @@
         </massaction>
         <paging name="listing_paging"/>
     </listingToolbar>
-    <columns name="mageplaza_productslider_slider_columns">
+    <columns name="mpproductslider_slider_columns">
         <argument name="data" xsi:type="array">
             <item name="config" xsi:type="array">
                 <item name="storageConfig" xsi:type="array">
-                    <item name="provider" xsi:type="string">mageplaza_productslider_slider_listing.mageplaza_productslider_slider_listing.listing_top.bookmarks</item>
+                    <item name="provider" xsi:type="string">mpproductslider_slider_listing.mpproductslider_slider_listing.listing_top.bookmarks</item>
                     <item name="namespace" xsi:type="string">current</item>
                 </item>
                 <item name="childDefaults" xsi:type="array">
                     <item name="fieldAction" xsi:type="array">
-                        <item name="provider" xsi:type="string">mageplaza_productslider_slider_listing.mageplaza_productslider_slider_listing.mageplaza_productslider_slider_columns_editor</item>
+                        <item name="provider" xsi:type="string">mpproductslider_slider_listing.mpproductslider_slider_listing.mpproductslider_slider_columns_editor</item>
                         <item name="target" xsi:type="string">startEdit</item>
                         <item name="params" xsi:type="array">
                             <item name="0" xsi:type="string">${ $.$data.rowIndex }</item>
@@ -131,7 +132,7 @@
                         </item>
                     </item>
                     <item name="storageConfig" xsi:type="array">
-                        <item name="provider" xsi:type="string">mageplaza_productslider_slider_listing.mageplaza_productslider_slider_listing.listing_top.bookmarks</item>
+                        <item name="provider" xsi:type="string">mpproductslider_slider_listing.mpproductslider_slider_listing.listing_top.bookmarks</item>
                         <item name="root" xsi:type="string">columns.${ $.index }</item>
                         <item name="namespace" xsi:type="string">current.${ $.storageConfig.root}</item>
                     </item>

@@ -25,8 +25,8 @@ use Magento\Framework\App\Request\Http;
 use Magento\Framework\Event\Observer;
 use Magento\Framework\Event\ObserverInterface;
 use Mageplaza\Productslider\Helper\Data;
-use Mageplaza\Productslider\Model\Config\Source\ProductType;
 use Mageplaza\Productslider\Model\SliderFactory;
+use Mageplaza\Productslider\Model\ResourceModel\SliderFactory as ResourceModelFactory;
 
 /**
  * Class AddBlock
@@ -34,16 +34,6 @@ use Mageplaza\Productslider\Model\SliderFactory;
  */
 class AddBlock implements ObserverInterface
 {
-	const NEW_PRODUCT_PATH = 'Mageplaza\Productslider\Block\NewProducts';
-	const BEST_SELLER_PATH = 'Mageplaza\Productslider\Block\BestSellerProducts';
-	const FEATURED_PRODUCTS_PATH = 'Mageplaza\Productslider\Block\FeaturedProducts';
-	const MOSTVIEWED_PRODUCTS_PATH = 'Mageplaza\Productslider\Block\MostViewedProducts';
-	const ONSALE_PRODUCTS_PATH = 'Mageplaza\Productslider\Block\OnSaleProduct';
-	const RECENT_PRODUCT_PATH = 'Mageplaza\Productslider\Block\RecentProducts';
-	const WISHLIST_PRODUCT_PATH = 'Mageplaza\Productslider\Block\WishlistProducts';
-	const CATEGORYID_PATH = 'Mageplaza\Productslider\Block\CategoryId';
-	const CUSTOM_PRODUC_PATH = 'Mageplaza\Productslider\Block\CustomProducts';
-
 	/**
 	 * @var \Magento\Framework\App\Request\Http
 	 */
@@ -60,20 +50,28 @@ class AddBlock implements ObserverInterface
 	protected $_sliderFactory;
 
 	/**
+	 * @var \Mageplaza\Productslider\Model\ResourceModel\SliderFactory
+	 */
+	protected $_resourceModelSliderFactory;
+
+	/**
 	 * AddBlock constructor.
-	 * @param SliderFactory $sliderFactory
-	 * @param Http $request
-	 * @param Data $helperData
+	 * @param \Mageplaza\Productslider\Model\ResourceModel\SliderFactory $resourceModelSliderFactory
+	 * @param \Mageplaza\Productslider\Model\SliderFactory $sliderFactory
+	 * @param \Magento\Framework\App\Request\Http $request
+	 * @param \Mageplaza\Productslider\Helper\Data $helperData
 	 */
 	public function __construct(
+		ResourceModelFactory $resourceModelSliderFactory,
 		SliderFactory $sliderFactory,
 		Http $request,
 		Data $helperData
 	)
 	{
-		$this->_sliderFactory = $sliderFactory;
-		$this->request        = $request;
-		$this->helperData     = $helperData;
+		$this->_resourceModelSliderFactory = $resourceModelSliderFactory;
+		$this->_sliderFactory              = $sliderFactory;
+		$this->request                     = $request;
+		$this->helperData                  = $helperData;
 	}
 
 	/**
@@ -86,7 +84,8 @@ class AddBlock implements ObserverInterface
 			return false;
 		}
 
-		$sliders        = $this->_sliderFactory->create()->getCollection();
+		$resourceModel  = $this->_resourceModelSliderFactory->create();
+		$sliderIds      = $resourceModel->getSliderIds();
 		$elementName    = $observer->getElementName();
 		$output         = $observer->getTransport()->getOutput();
 		$fullActionName = $this->request->getFullActionName();
@@ -103,31 +102,30 @@ class AddBlock implements ObserverInterface
 		$type = array_search($elementName, $types);
 
 		if ($type !== false) {
-			foreach ($sliders as $slider) {
-				$data = $this->getSliderLocation($slider);
-				if ($slider->getStatus()) {
-					if ($fullActionName == $data['type'] || $data['type'] == 'allpage') {
-						$id = $slider->getSliderId();
-						$js = $layout->createBlock($this->getSliderProductType($slider))
-							->setTemplate('Mageplaza_Productslider::productslider.phtml')
-							->setSlider($slider);
+			foreach ($sliderIds as $sliderId) {
+				$slider = $this->_sliderFactory->create()->load($sliderId);
+				$data   = $resourceModel->getSliderLocation($slider);
+				if ($fullActionName == $data['page_type'] || $data['page_type'] == 'allpage') {
+					$block = $resourceModel->getSliderProductType($slider);
+					$html  = $layout->createBlock($block)
+						->setTemplate('Mageplaza_Productslider::productslider.phtml')
+						->setSlider($slider);
 
-						$content = $js->toHtml();
+					$content = $html->toHtml();
 
-						if ($type == 'content') {
-							if ($data['location'] == 'content-top') {
-								$output = "<div id=\"mageplaza-productslider-block-before-{$type}-{$id}\">$content</div>" . $output;
-							} else if ($data['location'] == 'content-bottom') {
-								$output = $output . "<div id=\"mageplaza-productslider-block-after-{$type}-{$id}\">$content</div>";
-							}
+					if ($type == 'content') {
+						if ($data['location'] == 'content-top') {
+							$output = "<div id=\"mageplaza-productslider-block-before-{$type}-{$sliderId}\">$content</div>" . $output;
+						} else if ($data['location'] == 'content-bottom') {
+							$output = $output . "<div id=\"mageplaza-productslider-block-after-{$type}-{$sliderId}\">$content</div>";
 						}
+					}
 
-						if ($type == 'sidebar') {
-							if ($data['location'] == 'sidebar-top') {
-								$output = "<div id=\"mageplaza-productslider-block-before-{$type}-{$id}\">$content</div>" . $output;
-							} else if ($data['location'] == 'sidebar-bottom') {
-								$output = $output . "<div id=\"mageplaza-productslider-block-after-{$type}-{$id}\">$content</div>";
-							}
+					if ($type == 'sidebar') {
+						if ($data['location'] == 'sidebar-top') {
+							$output = "<div id=\"mageplaza-productslider-block-before-{$type}-{$sliderId}\">$content</div>" . $output;
+						} else if ($data['location'] == 'sidebar-bottom') {
+							$output = $output . "<div id=\"mageplaza-productslider-block-after-{$type}-{$sliderId}\">$content</div>";
 						}
 					}
 				}
@@ -136,65 +134,6 @@ class AddBlock implements ObserverInterface
 		}
 
 		return $this;
-	}
-
-	/**
-	 * Get Slider Type and Location
-	 *
-	 * @param $slider
-	 * @return mixed
-	 */
-	public function getSliderLocation($slider)
-	{
-		$location         = explode('.', $slider->getLocation());
-		$data['type']     = $location[0];
-		$data['location'] = $location[1];
-
-		return $data;
-	}
-
-	/**
-	 * Get Block Path of Product Type
-	 *
-	 * @param $slider
-	 * @return string
-	 */
-	public function getSliderProductType($slider)
-	{
-		$block       = '';
-		$productType = $slider->getProductType();
-
-		switch ($productType) {
-			case ProductType::NEW_PRODUCTS :
-				$block = self::NEW_PRODUCT_PATH;
-				break;
-			case ProductType::BEST_SELLER_PRODUCTS :
-				$block = self::BEST_SELLER_PATH;
-				break;
-			case ProductType::FEATURED_PRODUCTS :
-				$block = self::BEST_SELLER_PATH;
-				break;
-			case ProductType::MOSTVIEWED_PRODUCTS :
-				$block = self::MOSTVIEWED_PRODUCTS_PATH;
-				break;
-			case ProductType::ONSALE_PRODUCTS :
-				$block = self::ONSALE_PRODUCTS_PATH;
-				break;
-			case ProductType::RECENT_PRODUCT :
-				$block = self::RECENT_PRODUCT_PATH;
-				break;
-			case ProductType::WISHLIST_PRODUCT :
-				$block = self::WISHLIST_PRODUCT_PATH;
-				break;
-			case ProductType::CATEGORYID :
-				$block = self::CATEGORYID_PATH;
-				break;
-			case ProductType::CUSTOM_PRODUCTS :
-				$block = self::CUSTOM_PRODUC_PATH;
-				break;
-		}
-
-		return $block;
 	}
 
 }
