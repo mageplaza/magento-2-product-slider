@@ -25,15 +25,16 @@ use Magento\Catalog\Block\Product\AbstractProduct;
 use Magento\Widget\Block\BlockInterface;
 use Magento\Catalog\Block\Product\Context;
 use Magento\Catalog\Model\ResourceModel\Product\CollectionFactory;
-use Mageplaza\ProductSlider\Model\ResourceModel\Report\Product\CollectionFactory as MostViewedCollectionFactory;
+use Mageplaza\Productslider\Model\ResourceModel\Report\Product\CollectionFactory as MostViewedCollectionFactory;
 use Magento\Catalog\Model\Product\Visibility;
 use Magento\Catalog\Model\CategoryFactory;
 use Magento\Customer\Model\Session;
 use Magento\Sales\Model\ResourceModel\Report\Bestsellers\Collection;
-use Magento\Wishlist\Model\ResourceModel\Item\Collection as WishlistCollection;
+use Magento\Wishlist\Model\ResourceModel\Item\CollectionFactory as WishlistCollection;
 use Magento\Store\Model\StoreManagerInterface;
 use Magento\Framework\Stdlib\DateTime\DateTime;
 use Mageplaza\Productslider\Helper\Data;
+use Magento\Reports\Block\Product\Viewed;
 
 class AbstractSlider extends AbstractProduct implements BlockInterface
 {
@@ -67,11 +68,6 @@ class AbstractSlider extends AbstractProduct implements BlockInterface
 	protected $_customer;
 
 	/**
-	 * @var string
-	 */
-	public $productCacheKey = 'mageplaza_product_slider_cache';
-
-	/**
 	 * @var CollectionFactory
 	 */
 	protected $_productCollectionFactory;
@@ -94,20 +90,27 @@ class AbstractSlider extends AbstractProduct implements BlockInterface
 	/**
 	 * @var \Magento\Wishlist\Model\ResourceModel\Item\Collection
 	 */
-	protected $_wishlistCollection;
+	protected $_wishlistCollectionFactory;
 
-
+	/**
+	 * @var \Mageplaza\Productslider\Model\ResourceModel\Report\Product\CollectionFactory
+	 */
 	protected $_mostViewedProductsFactory;
+
+	/**
+	 * @var \Magento\Reports\Block\Product\Viewed
+	 */
+	protected $_viewed;
 
 	/**
 	 * AbstractSlider constructor.
 	 * @param \Magento\Catalog\Model\ResourceModel\Product\CollectionFactory $productCollectionFactory
-	 * @param \Mageplaza\ProductSlider\Model\ResourceModel\Report\Product\CollectionFactory $mostViewedProductsFactory
+	 * @param \Mageplaza\Productslider\Model\ResourceModel\Report\Product\CollectionFactory $mostViewedProductsFactory
 	 * @param \Magento\Catalog\Model\Product\Visibility $catalogProductVisibility
 	 * @param \Magento\Catalog\Model\CategoryFactory $categoryFactory
 	 * @param \Magento\Customer\Model\Session $customer
 	 * @param \Magento\Sales\Model\ResourceModel\Report\Bestsellers\Collection $bestSellersCollection
-	 * @param \Magento\Wishlist\Model\ResourceModel\Item\Collection $wishlistCollection
+	 * @param \Magento\Wishlist\Model\ResourceModel\Item\CollectionFactory $wishlistCollectionFactory
 	 * @param \Magento\Store\Model\StoreManagerInterface $storeManager
 	 * @param \Magento\Framework\Stdlib\DateTime\DateTime $getDayDate
 	 * @param \Mageplaza\Productslider\Helper\Data $helperData
@@ -121,8 +124,9 @@ class AbstractSlider extends AbstractProduct implements BlockInterface
 		CategoryFactory $categoryFactory,
 		Session $customer,
 		Collection $bestSellersCollection,
-		WishlistCollection $wishlistCollection,
+		WishlistCollection $wishlistCollectionFactory,
 		StoreManagerInterface $storeManager,
+		Viewed $viewed,
 		DateTime $getDayDate,
 		Data $helperData,
 		Context $context,
@@ -136,7 +140,8 @@ class AbstractSlider extends AbstractProduct implements BlockInterface
 		$this->_catalogProductVisibility  = $catalogProductVisibility;
 		$this->_categoryFactory           = $categoryFactory;
 		$this->_bestSellersCollection     = $bestSellersCollection;
-		$this->_wishlistCollection        = $wishlistCollection;
+		$this->_wishlistCollectionFactory = $wishlistCollectionFactory;
+		$this->_viewed                    = $viewed;
 		$this->_getDayDate                = $getDayDate;
 		$this->_storeManager              = $storeManager;
 		$this->_helperData                = $helperData;
@@ -150,15 +155,12 @@ class AbstractSlider extends AbstractProduct implements BlockInterface
 	{
 		parent::_construct();
 
-//		$this->setData('cache_lifetime', 20);
 		$this->addColumnCountLayoutDepend('empty', 6)
 			->addColumnCountLayoutDepend('1column', 5)
 			->addColumnCountLayoutDepend('2columns-left', 4)
 			->addColumnCountLayoutDepend('2columns-right', 4)
 			->addColumnCountLayoutDepend('3columns', 3);
 		$this->addData([
-//			'cache_lifetime' => $this->getCacheLifetime(),
-			'cache_lifetime' => 0,
 			'cache_tags'     => [\Magento\Catalog\Model\Product::CACHE_TAG,],
 			'cache_key'      => $this->getProductCacheKey(),
 		]);
@@ -169,7 +171,7 @@ class AbstractSlider extends AbstractProduct implements BlockInterface
 	 */
 	public function getProductCacheKey()
 	{
-		return $this->productCacheKey;
+		return 'mageplaza_product_slider_cache';
 	}
 
 	/**
@@ -315,18 +317,23 @@ class AbstractSlider extends AbstractProduct implements BlockInterface
 	 */
 	public function getResponsiveConfig()
 	{
-		$slider                   = $this->getSlider();
-		$responsiveOptions        = '';
-		$inSliderResponsiveConfig = '';
-		if ($slider) {
-			$inSliderResponsiveConfig = $this->_helperData->unserialize($slider->getResponsiveItems());
-		}
+		$slider            = $this->getSlider();
+		$responsiveOptions = '';
 
 		$responsiveConfig = $this->_helperData->unserialize($this->_helperData->getModuleConfig('slider_design/item_slider'));
-		$config           = (is_array($inSliderResponsiveConfig) && $slider->getIsResponsive()) ? $inSliderResponsiveConfig : $responsiveConfig;
+		if ($slider && $slider->getIsResponsive() != 0) {
+			$inSliderResponsiveConfig = $this->_helperData->unserialize($slider->getResponsiveItems());
+			$config                   = (is_array($inSliderResponsiveConfig) && $slider->getIsResponsive() == 1) ? $inSliderResponsiveConfig : $responsiveConfig;
+		} else if ($slider && $slider->getIsResponsive() == 0){
+			return '';
+		} else {
+
+		}
 
 		foreach ($config as $value) {
-			$responsiveOptions = $responsiveOptions . $value['col_1'] . ':{items:' . $value['col_2'] . '},';
+			if ($value['col_1'] && $value['col_2']) {
+				$responsiveOptions = $responsiveOptions . $value['col_1'] . ':{items:' . $value['col_2'] . '},';
+			}
 		}
 		$responsiveOptions = rtrim($responsiveOptions, ',');
 
@@ -543,8 +550,9 @@ class AbstractSlider extends AbstractProduct implements BlockInterface
 	public function getWishlistProductsCollection()
 	{
 		$collection = [];
+
 		if ($this->_customer->isLoggedIn()) {
-			$wishlist   = $this->_wishlistCollection->addCustomerIdFilter($this->_customer->getCustomerId());
+			$wishlist   = $this->_wishlistCollectionFactory->create()->addCustomerIdFilter($this->_customer->getCustomerId());
 			$productIds = null;
 
 			foreach ($wishlist as $product) {
@@ -555,6 +563,16 @@ class AbstractSlider extends AbstractProduct implements BlockInterface
 		}
 
 		return $collection;
+	}
+
+	/**
+	 * Get Recent Collection
+	 *
+	 * @return \Magento\Reports\Model\ResourceModel\Product\Index\Collection\AbstractCollection
+	 */
+	public function getRecentProducts()
+	{
+		return $this->_viewed->getItemsCollection();
 	}
 
 }

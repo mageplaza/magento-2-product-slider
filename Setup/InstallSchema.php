@@ -51,6 +51,7 @@ class InstallSchema implements InstallSchemaInterface
 				->addColumn('title', Table::TYPE_TEXT, 255, [], 'Title')
 				->addColumn('location', Table::TYPE_TEXT, 255, [], 'Location')
 				->addColumn('time_cache', Table::TYPE_TEXT,  255, [],'Cache Lifetime')
+				->addColumn('cache_last_time', Table::TYPE_TIMESTAMP, null, ['nullable' => false, 'default' => Table::TIMESTAMP_INIT], 'Cache Last Time')
 				->addColumn('from_date', Table::TYPE_DATE, null, ['nullable' => true, 'default' => null], 'From')
 				->addColumn('to_date', Table::TYPE_DATE, null, ['nullable' => true, 'default' => null], 'To')
 				->addColumn('product_type', Table::TYPE_TEXT, 255, [], 'Type')

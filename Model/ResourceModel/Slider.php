@@ -39,7 +39,7 @@ class Slider extends \Magento\Framework\Model\ResourceModel\Db\AbstractDb
 	const RECENT_PRODUCT_PATH = 'Mageplaza\Productslider\Block\RecentProducts';
 	const WISHLIST_PRODUCT_PATH = 'Mageplaza\Productslider\Block\WishlistProducts';
 	const CATEGORYID_PATH = 'Mageplaza\Productslider\Block\CategoryId';
-	const CUSTOM_PRODUC_PATH = 'Mageplaza\Productslider\Block\CustomProducts';
+	const CUSTOM_PRODUCT_PATH = 'Mageplaza\Productslider\Block\CustomProducts';
 
 	/**
 	 * @var \Magento\Framework\Stdlib\DateTime
@@ -257,7 +257,7 @@ class Slider extends \Magento\Framework\Model\ResourceModel\Db\AbstractDb
 				$block = self::BEST_SELLER_PATH;
 				break;
 			case ProductType::FEATURED_PRODUCTS :
-				$block = self::BEST_SELLER_PATH;
+				$block = self::FEATURED_PRODUCTS_PATH;
 				break;
 			case ProductType::MOSTVIEWED_PRODUCTS :
 				$block = self::MOSTVIEWED_PRODUCTS_PATH;
@@ -275,7 +275,7 @@ class Slider extends \Magento\Framework\Model\ResourceModel\Db\AbstractDb
 				$block = self::CATEGORYID_PATH;
 				break;
 			case ProductType::CUSTOM_PRODUCTS :
-				$block = self::CUSTOM_PRODUC_PATH;
+				$block = self::CUSTOM_PRODUCT_PATH;
 				break;
 		}
 

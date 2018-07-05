@@ -104,7 +104,8 @@ class Design extends Generic implements TabInterface
 				'title'   => __('Is Responsive'),
 				'options' => [
 					'1' => __('Yes'),
-					'0' => __('No')
+					'0' => __('No'),
+					'2' => __('Use Config')
 				]
 			]
 		);

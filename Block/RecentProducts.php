@@ -21,13 +21,11 @@
 
 namespace Mageplaza\Productslider\Block;
 
-use \Magento\Reports\Block\Product\Viewed;
-
 /**
  * Class RecentProducts
  * @package Mageplaza\Productslider\Block
  */
-class RecentProducts extends Viewed
+class RecentProducts extends AbstractSlider
 {
 	/**
 	 * Get Collection Recently Viewed product
@@ -35,7 +33,7 @@ class RecentProducts extends Viewed
 	 */
 	public function getProductCollection()
 	{
-		return $this->getRecentlyViewedProducts();
+		return $this->getRecentProducts();
 	}
 
 	/**

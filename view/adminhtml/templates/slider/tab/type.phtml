@@ -64,7 +64,7 @@
 
         function getAjaxProductGrid() {
             $.ajax({
-                url:  '<?php echo $block->getUrl('mageplaza_productslider/slider/products',['form_key'=>$block->getFormKey(),'_current' => true]); ?>',
+                url:  '<?php echo $block->getUrl('mpproductslider/slider/products',['form_key'=>$block->getFormKey(),'_current' => true]); ?>',
                 dataType: 'json',
                 cache: false
             }).done(function (data) {

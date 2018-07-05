@@ -117,7 +117,7 @@ class Location implements ArrayInterface
 				]
 			],
 			[
-				'label' => __('Checkout Cart Page'),
+				'label' => __('Shopping Cart Page'),
 				'value' => [
 					[
 						'label' => __('Top of content'),

@@ -21,8 +21,8 @@
 
 namespace Mageplaza\Productslider\Block\Widget;
 
-use Mageplaza\ProductSlider\Block\AbstractSlider;
-use Mageplaza\ProductSlider\Model\Config\Source\ProductTypeWidget;
+use Mageplaza\Productslider\Block\AbstractSlider;
+use Mageplaza\Productslider\Model\Config\Source\ProductTypeWidget;
 
 class Slider extends AbstractSlider
 {
@@ -61,7 +61,7 @@ class Slider extends AbstractSlider
 					$collection = $this->getOnSaleProductCollection();
 					break;
 				case ProductTypeWidget::RECENT_PRODUCT :
-					$collection = $this->getRecentlyViewedProducts();
+					$collection = $this->getRecentProducts();
 					break;
 				case ProductTypeWidget::WISHLIST_PRODUCT :
 					$collection = $this->getWishlistProductsCollection();

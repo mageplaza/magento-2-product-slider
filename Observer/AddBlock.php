@@ -98,7 +98,6 @@ class AddBlock implements ObserverInterface
 			'content' => 'content',
 			'sidebar' => 'catalog.leftnav'
 		];
-
 		$type = array_search($elementName, $types);
 
 		if ($type !== false) {
