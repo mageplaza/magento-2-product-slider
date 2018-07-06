@@ -31,13 +31,12 @@
                 <responsive>0</responsive>
                 <loop>1</loop>
                 <margin>10</margin>
-                <autoWidth>0</autoWidth>
                 <nav>0</nav>
                 <dots>0</dots>
                 <lazyLoad>1</lazyLoad>
                 <autoplay>0</autoplay>
-                <autoplay_timeout>2000</autoplay_timeout>
-                <autoplay_hoverPause>0</autoplay_hoverPause>
+                <autoplayTimeout>5000</autoplayTimeout>
+                <autoplayHoverPause>0</autoplayHoverPause>
             </slider_design>
         </productslider>
     </default>

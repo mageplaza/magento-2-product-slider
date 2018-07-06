@@ -161,8 +161,8 @@ class AbstractSlider extends AbstractProduct implements BlockInterface
 			->addColumnCountLayoutDepend('2columns-right', 4)
 			->addColumnCountLayoutDepend('3columns', 3);
 		$this->addData([
-			'cache_tags'     => [\Magento\Catalog\Model\Product::CACHE_TAG,],
-			'cache_key'      => $this->getProductCacheKey(),
+			'cache_tags' => [\Magento\Catalog\Model\Product::CACHE_TAG,],
+			'cache_key'  => $this->getProductCacheKey(),
 		]);
 	}
 
@@ -215,13 +215,16 @@ class AbstractSlider extends AbstractProduct implements BlockInterface
 			return $this->getData('products_count');
 		}
 
+		if ($this->getSlider()) {
+			return ($this->getSlider()->getLimitNumber()) ? $this->getSlider()->getLimitNumber() : self::DEFAULT_PRODUCTS_COUNT;
+		}
+
 		if (null === $this->getData('products_count')) {
 			$this->setData('products_count', self::DEFAULT_PRODUCTS_COUNT);
 		}
 
 		return $this->getData('products_count');
 	}
-
 
 	/**
 	 * Check show Additional Config
@@ -287,6 +290,10 @@ class AbstractSlider extends AbstractProduct implements BlockInterface
 			return $this->getData('description');
 		}
 
+		if ($this->getSlider()) {
+			return $this->getSlider()->getDescription();
+		}
+
 		return '';
 	}
 
@@ -324,7 +331,7 @@ class AbstractSlider extends AbstractProduct implements BlockInterface
 		if ($slider && $slider->getIsResponsive() != 0) {
 			$inSliderResponsiveConfig = $this->_helperData->unserialize($slider->getResponsiveItems());
 			$config                   = (is_array($inSliderResponsiveConfig) && $slider->getIsResponsive() == 1) ? $inSliderResponsiveConfig : $responsiveConfig;
-		} else if ($slider && $slider->getIsResponsive() == 0){
+		} else if ($slider && $slider->getIsResponsive() == 0) {
 			return '';
 		} else {
 
@@ -383,7 +390,7 @@ class AbstractSlider extends AbstractProduct implements BlockInterface
 		$productIds = $this->_helperData->unserialize($this->getSlider()->getProductIds());
 
 		if (!empty($productIds)) {
-			$collection = $this->_productCollectionFactory->create()->addIdFilter($productIds);
+			$collection = $this->_productCollectionFactory->create()->addIdFilter($productIds)->setPageSize($this->getProductsCount());
 			$this->_addProductAttributesAndPrices($collection);
 		}
 
@@ -409,13 +416,9 @@ class AbstractSlider extends AbstractProduct implements BlockInterface
 			->addFinalPrice()
 			->addTaxPercents()
 			->addAttributeToSelect('*')
-			->addStoreFilter($this->getStoreId());
+			->addStoreFilter($this->getStoreId())->setPageSize($this->getProductsCount());
 
-		if ($this->getProductsCount() > $collection->getSize()) {
-			return $collection;
-		} else {
-			return $collection->setPageSize($this->getProductsCount());
-		}
+		return $collection;
 	}
 
 	/**
@@ -428,7 +431,7 @@ class AbstractSlider extends AbstractProduct implements BlockInterface
 		$productIds = $this->getProductIdsByCategory();
 		$collection = [];
 		if (!empty($productIds)) {
-			$collection = $this->_productCollectionFactory->create()->addIdFilter($productIds);
+			$collection = $this->_productCollectionFactory->create()->addIdFilter($productIds)->setPageSize($this->getProductsCount());;
 			$this->_addProductAttributesAndPrices($collection);
 		}
 
@@ -559,7 +562,7 @@ class AbstractSlider extends AbstractProduct implements BlockInterface
 				$productIds[] = $product->getProductId();
 			}
 			$collection = $this->_productCollectionFactory->create()->addIdFilter($productIds);
-			$collection = $this->_addProductAttributesAndPrices($collection)->addStoreFilter($this->getStoreId());
+			$collection = $this->_addProductAttributesAndPrices($collection)->addStoreFilter($this->getStoreId())->setPageSize($this->getProductsCount());
 		}
 
 		return $collection;
@@ -572,7 +575,7 @@ class AbstractSlider extends AbstractProduct implements BlockInterface
 	 */
 	public function getRecentProducts()
 	{
-		return $this->_viewed->getItemsCollection();
+		return $this->_viewed->getItemsCollection()->setPageSize($this->getProductsCount());
 	}
 
 }

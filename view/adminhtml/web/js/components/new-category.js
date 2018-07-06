@@ -13,7 +13,7 @@
  * version in the future.
  *
  * @category    Mageplaza
- * @package     Mageplaza_Blog
+ * @package     Mageplaza_Productslider
  * @copyright   Copyright (c) 2018 Mageplaza (http://www.mageplaza.com/)
  * @license     https://www.mageplaza.com/LICENSE.txt
  */

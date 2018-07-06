@@ -63,11 +63,6 @@
                     <label>Margin Between Items</label>
                     <validate>validate-digits</validate>
                 </field>
-                <field id="autoWidth" translate="label" type="select" sortOrder="50" showInDefault="1" showInWebsite="1" showInStore="1">
-                    <label>Auto Width</label>
-                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
-                    <validate>validate-digits</validate>
-                </field>
                 <field id="nav" translate="label" type="select" sortOrder="60" showInDefault="1" showInWebsite="1" showInStore="1">
                     <label>Next/Prev buttons</label>
                     <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
@@ -88,7 +83,7 @@
                     <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
                     <validate>validate-digits</validate>
                 </field>
-                <field id="autoplay_timeout" translate="label" type="text" sortOrder="100" showInDefault="1" showInWebsite="1" showInStore="1">
+                <field id="autoplayTimeout" translate="label" type="text" sortOrder="100" showInDefault="1" showInWebsite="1" showInStore="1">
                     <label>Autoplay TimeOut</label>
                     <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
                     <validate>validate-digits</validate>
@@ -96,7 +91,7 @@
                         <field id="productslider/slider_design/autoplay">1</field>
                     </depends>
                 </field>
-                <field id="autoplay_hoverPause" translate="label" type="select" sortOrder="110" showInDefault="1" showInWebsite="1" showInStore="1">
+                <field id="autoplayHoverPause" translate="label" type="select" sortOrder="110" showInDefault="1" showInWebsite="1" showInStore="1">
                     <label>Autoplay HoverPause</label>
                     <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
                     <validate>validate-digits</validate>

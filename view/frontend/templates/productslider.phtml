@@ -25,11 +25,11 @@ use Mageplaza\Productslider\Model\Config\Source\Additional;
 <?php
 $image = 'recently_viewed_products_grid_content_widget';
 $mode = 'grid';
-    $items = $block->getProductCollection();
-    $title = $block->getTitle();
-    $showPrice = $block->getShowList(Additional::SHOW_PRICE);
-    $showCart = $block->getShowList(Additional::SHOW_CART);
-    $showReview = $block->getShowList(Additional::SHOW_REVIEW);
+$items = $block->getProductCollection();
+$title = $block->getTitle();
+$showPrice = $block->getShowList(Additional::SHOW_PRICE);
+$showCart = $block->getShowList(Additional::SHOW_CART);
+$showReview = $block->getShowList(Additional::SHOW_REVIEW);
 ?>
 
 <?php if ($items):?>

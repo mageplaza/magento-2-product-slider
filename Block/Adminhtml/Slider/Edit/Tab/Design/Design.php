@@ -109,6 +109,8 @@ class Design extends Generic implements TabInterface
 				]
 			]
 		);
+		$html = '<div id="max-items-slider">';
+		$fieldset->getAdvancedChildrenHtml();
 		$tableResponsiveBlock = $this->getLayout()->createBlock('\Mageplaza\Productslider\Block\System\Config\Form\Field\Active');
 		$fieldset->addField('responsive_items', 'multiselect', [
 				'name'  => 'responsive_items',
@@ -119,6 +121,7 @@ class Design extends Generic implements TabInterface
 		if ($responsiveData = $slider->getResponsiveItems()) {
 			$slider->setData('responsive_items', $this->_helperData->unserialize($responsiveData));
 		}
+
 
 		$fieldset->addField('display_additional', 'multiselect', [
 				'name'   => 'display_additional',

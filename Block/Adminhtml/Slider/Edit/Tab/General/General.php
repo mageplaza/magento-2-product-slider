@@ -142,6 +142,18 @@ class General extends Generic implements TabInterface
 				'title' => __('Title'),
 			]
 		);
+		$fieldset->addField('description', 'text', [
+				'name'  => 'description',
+				'label' => __('Description'),
+				'title' => __('Description'),
+			]
+		);
+		$fieldset->addField('limit_number', 'text', [
+				'name'  => 'limit_number',
+				'label' => __('Limit number of products'),
+				'title' => __('Limit number of products'),
+			]
+		);
 		$fieldset->addField('status', 'select', [
 				'name'     => 'status',
 				'label'    => __('Status'),

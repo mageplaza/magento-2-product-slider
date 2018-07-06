@@ -49,6 +49,8 @@ class InstallSchema implements InstallSchemaInterface
 				->addColumn('name', Table::TYPE_TEXT, 255, [], 'Name')
 				->addColumn('status', Table::TYPE_SMALLINT, null, ['nullable' => false, 'default' => '0'], 'Status')
 				->addColumn('title', Table::TYPE_TEXT, 255, [], 'Title')
+				->addColumn('description', Table::TYPE_TEXT, '64k', [], 'Description')
+				->addColumn('limit_number', Table::TYPE_SMALLINT, null, ['unsigned' => true, 'nullable' => false], 'Limit Number Of Products')
 				->addColumn('location', Table::TYPE_TEXT, 255, [], 'Location')
 				->addColumn('time_cache', Table::TYPE_TEXT,  255, [],'Cache Lifetime')
 				->addColumn('cache_last_time', Table::TYPE_TIMESTAMP, null, ['nullable' => false, 'default' => Table::TIMESTAMP_INIT], 'Cache Last Time')

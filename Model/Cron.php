@@ -107,7 +107,7 @@ class Cron
 			$cacheLifeTime = $slider->getData('time_cache');
 			$cacheLastTime = $this->date->timestamp($slider->getData('cache_last_time'));
 
-			if ($cacheLifeTime <= ($currentTime - $cacheLastTime)) {
+			if ($cacheLifeTime <= ($currentTime - $cacheLastTime) && $cacheLifeTime) {
 				$cache_types = array('block_html');
 				foreach ($cache_types as $type) {
 					$this->_cacheTypeList->cleanType($type);

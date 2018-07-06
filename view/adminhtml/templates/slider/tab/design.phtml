@@ -29,30 +29,40 @@
         'jquery',
     ], function ($) {
         $('.slider_responsive_items').hide();
-            $('.design_theme_ua_regexp').hide();
+        $('.design_theme_ua_regexp').hide();
+        $('label[for="slider_responsive_items"]').hide()
 
-        if($('#slider_is_responsive').val() == '1'){
+        if ($('#slider_is_responsive').val() == '1') {
             $('.design_theme_ua_regexp').show();
+            $('label[for="slider_responsive_items"]').show()
         }
 
         $('#slider_is_responsive').change(function () {
             var optionSelected = $(this).find("option:selected");
-            var valueSelected  = optionSelected.val();
+            var valueSelected = optionSelected.val();
 
-            if(valueSelected == '1'){
+            if (valueSelected == '1') {
                 $('.design_theme_ua_regexp').show();
+                $('label[for="slider_responsive_items"]').show()
             } else {
                 $('.design_theme_ua_regexp').hide();
+                $('label[for="slider_responsive_items"]').hide()
             }
         });
     });
 </script>
 
 <style>
-    .design_theme_ua_regexp {
-        width:  50%
+    label {
+        font-weight: 600;
+        float: left;
+        margin-left: 120px;
     }
-    .field-display_additional {
-        margin-top: 25px;
+    .design_theme_ua_regexp {
+        margin-left: 254px;
+        width: 40%
+    }
+    .admin__field.field.field-display_additional.with-note {
+        margin-top: 20px;
     }
 </style>
