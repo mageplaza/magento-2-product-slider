@@ -27,23 +27,22 @@ namespace Mageplaza\Productslider\Block;
  */
 class WishlistProducts extends AbstractSlider
 {
-	/**
-	 * Get Collection of Wishlist Products
-	 *
-	 * @return $this|array
-	 */
-	public function getProductCollection()
-	{
-		return $this->getWishlistProductsCollection();
-	}
+    /**
+     * Get Collection of Wishlist Products
+     *
+     * @return $this|array
+     */
+    public function getProductCollection()
+    {
+        return $this->getWishlistProductsCollection();
+    }
 
-	/**
-	 * @return string
-	 */
-	public function getProductCacheKey()
-	{
-		return 'mageplaza_product_slider_wishlist';
-	}
-
+    /**
+     * @return string
+     */
+    public function getProductCacheKey()
+    {
+        return 'mageplaza_product_slider_wishlist';
+    }
 }
 

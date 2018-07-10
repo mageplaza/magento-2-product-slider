@@ -27,16 +27,20 @@ namespace Mageplaza\Productslider\Block;
  */
 class CustomProducts extends AbstractSlider
 {
-	public function getProductCollection()
-	{
-		return $this->getCustomProductsCollection();
-	}
+    /**
+     * @return $this|array
+     * @throws \Zend_Serializer_Exception
+     */
+    public function getProductCollection()
+    {
+        return $this->getCustomProductsCollection();
+    }
 
-	/**
-	 * @return string
-	 */
-	public function getProductCacheKey()
-	{
-		return 'mageplaza_product_slider_customproducts';
-	}
+    /**
+     * @return string
+     */
+    public function getProductCacheKey()
+    {
+        return 'mageplaza_product_slider_customproducts';
+    }
 }

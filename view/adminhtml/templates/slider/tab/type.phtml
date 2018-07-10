@@ -4,7 +4,7 @@
  *
  * NOTICE OF LICENSE
  *
- * This source file is subject to the mageplaza.com license that is
+ * This source file is subject to the Mageplaza.com license that is
  * available through the world-wide-web at this URL:
  * https://www.mageplaza.com/LICENSE.txt
  *
@@ -15,7 +15,7 @@
  *
  * @category    Mageplaza
  * @package     Mageplaza_Productslider
- * @copyright   Copyright (c) 2017-2018 Mageplaza (https://www.mageplaza.com/)
+ * @copyright   Copyright (c) Mageplaza (https://www.mageplaza.com/)
  * @license     https://www.mageplaza.com/LICENSE.txt
  */
 ?>
@@ -27,32 +27,30 @@
 <div id="mp-slider-grid-product"></div>
 
 <script type="text/javascript">
-    require([
-        'jquery'
-    ], function ($) {
+    require(['jquery'], function ($) {
         var productGrid = $('#mp-slider-grid-product'),
             categoryGrid = $('.field-categories_ids'),
             productType = $('#slider_product_type');
         productGrid.hide();
         categoryGrid.hide();
 
-        if(productType.val() == 'categoryId'){
+        if (productType.val() == 'categoryId') {
             categoryGrid.show();
         }
 
-        if(productType.val() == 'custom'){
+        if (productType.val() == 'custom') {
             productGrid.show();
             getAjaxProductGrid();
         }
 
         productType.change(function () {
             var optionSelected = $(this).find("option:selected");
-            var valueSelected  = optionSelected.val();
+            var valueSelected = optionSelected.val();
 
-            if(valueSelected == 'categoryId'){
+            if (valueSelected == 'categoryId') {
                 categoryGrid.show();
                 productGrid.hide();
-            } else if(valueSelected == 'custom') {
+            } else if (valueSelected == 'custom') {
                 productGrid.show();
                 categoryGrid.hide();
                 getAjaxProductGrid();
@@ -64,7 +62,7 @@
 
         function getAjaxProductGrid() {
             $.ajax({
-                url:  '<?php echo $block->getUrl('mpproductslider/slider/products',['form_key'=>$block->getFormKey(),'_current' => true]); ?>',
+                url: '<?php echo $block->getUrl('mpproductslider/slider/products', ['form_key' => $block->getFormKey(), '_current' => true]); ?>',
                 dataType: 'json',
                 cache: false
             }).done(function (data) {

@@ -22,67 +22,68 @@
 namespace Mageplaza\Productslider\Controller\Adminhtml;
 
 use Magento\Backend\App\Action;
-use Mageplaza\Productslider\Model\SliderFactory;
-use Magento\Framework\Registry;
 use Magento\Backend\App\Action\Context;
+use Magento\Framework\Registry;
+use Mageplaza\Productslider\Model\SliderFactory;
 
+/**
+ * Class Slider
+ * @package Mageplaza\Productslider\Controller\Adminhtml
+ */
 abstract class Slider extends Action
 {
-	/**
-	 * Slider Factory
-	 *
-	 * @var \Mageplaza\Productslider\Model\SliderFactory
-	 */
-	protected $_sliderFactory;
+    /**
+     * Authorization level of a basic admin session
+     */
+    const ADMIN_RESOURCE = 'Mageplaza_Productslider::slider';
 
-	/**
-	 * Core registry
-	 *
-	 * @var \Magento\Framework\Registry
-	 */
-	protected $_coreRegistry;
+    /**
+     * Slider Factory
+     *
+     * @var \Mageplaza\Productslider\Model\SliderFactory
+     */
+    protected $_sliderFactory;
 
-	/**
-	 * Result redirect factory
-	 *
-	 * @var \Magento\Backend\Model\View\Result\RedirectFactory
-	 */
-	protected $_resultRedirectFactory;
+    /**
+     * Core registry
+     *
+     * @var \Magento\Framework\Registry
+     */
+    protected $_coreRegistry;
 
-	/**
-	 * Slider constructor.
-	 * @param \Mageplaza\Productslider\Model\SliderFactory $sliderFactory
-	 * @param \Magento\Framework\Registry $coreRegistry
-	 * @param \Magento\Backend\App\Action\Context $context
-	 */
-	public function __construct(
-		SliderFactory $sliderFactory,
-		Registry $coreRegistry,
-		Context $context
-	)
-	{
-		parent::__construct($context);
+    /**
+     * Slider constructor.
+     * @param \Mageplaza\Productslider\Model\SliderFactory $sliderFactory
+     * @param \Magento\Framework\Registry $coreRegistry
+     * @param \Magento\Backend\App\Action\Context $context
+     */
+    public function __construct(
+        Context $context,
+        SliderFactory $sliderFactory,
+        Registry $coreRegistry
+    )
+    {
+        $this->_sliderFactory = $sliderFactory;
+        $this->_coreRegistry  = $coreRegistry;
 
-		$this->_sliderFactory         = $sliderFactory;
-		$this->_coreRegistry          = $coreRegistry;
-		$this->_resultRedirectFactory = $context->getResultRedirectFactory();
-	}
+        parent::__construct($context);
+    }
 
-	/**
-	 * Init Slider
-	 *
-	 * @return \Mageplaza\Productslider\Model\Slider
-	 */
-	protected function _initSlider()
-	{
-		$sliderId = (int)$this->getRequest()->getParam('slider_id');
-		$slider   = $this->_sliderFactory->create();
+    /**
+     * Init Slider
+     *
+     * @return \Mageplaza\Productslider\Model\Slider
+     */
+    protected function _initSlider()
+    {
+        $sliderId = (int)$this->getRequest()->getParam('slider_id');
+        $slider   = $this->_sliderFactory->create();
 
-		if ($sliderId) {
-			$slider->load($sliderId);
-		}
-		$this->_coreRegistry->register('mageplaza_productslider_slider', $slider);
+        if ($sliderId) {
+            $slider->load($sliderId);
+        }
+        $this->_coreRegistry->register('mageplaza_productslider_slider', $slider);
 
-		return $slider;
-	}
+        return $slider;
+    }
 }

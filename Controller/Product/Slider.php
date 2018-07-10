@@ -31,31 +31,31 @@ use Magento\Framework\View\Result\PageFactory;
  */
 class Slider extends Action
 {
-	/**
-	 * @var \Magento\Framework\View\Result\PageFactory
-	 */
-	protected $resultPageFactory;
+    /**
+     * @var \Magento\Framework\View\Result\PageFactory
+     */
+    protected $resultPageFactory;
 
-	/**
-	 * Slider constructor.
-	 * @param \Magento\Framework\App\Action\Context $context
-	 * @param \Magento\Framework\View\Result\PageFactory $resultPageFactory
-	 */
-	public function __construct(
-		Context $context,
-		PageFactory $resultPageFactory
-	)
-	{
-		return parent::__construct($context);
+    /**
+     * Slider constructor.
+     * @param \Magento\Framework\App\Action\Context $context
+     * @param \Magento\Framework\View\Result\PageFactory $resultPageFactory
+     */
+    public function __construct(
+        Context $context,
+        PageFactory $resultPageFactory
+    )
+    {
+        $this->resultPageFactory = $resultPageFactory;
 
-		$this->resultPageFactory = $resultPageFactory;
-	}
+        parent::__construct($context);
+    }
 
-	/**
-	 * @return \Magento\Framework\View\Result\Page
-	 */
-	public function execute()
-	{
-		return $this->resultPageFactory->create();
-	}
+    /**
+     * @return \Magento\Framework\View\Result\Page
+     */
+    public function execute()
+    {
+        return $this->resultPageFactory->create();
+    }
 }

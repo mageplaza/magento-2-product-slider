@@ -27,21 +27,20 @@ namespace Mageplaza\Productslider\Block;
  */
 class RecentProducts extends AbstractSlider
 {
-	/**
-	 * Get Collection Recently Viewed product
-	 * @return mixed
-	 */
-	public function getProductCollection()
-	{
-		return $this->getRecentProducts();
-	}
+    /**
+     * Get Collection Recently Viewed product
+     * @return mixed
+     */
+    public function getProductCollection()
+    {
+        return $this->getRecentProducts();
+    }
 
-	/**
-	 * @return string
-	 */
-	public function getProductCacheKey()
-	{
-		return 'mageplaza_product_slider_recent_products';
-	}
-
+    /**
+     * @return string
+     */
+    public function getProductCacheKey()
+    {
+        return 'mageplaza_product_slider_recent_products';
+    }
 }

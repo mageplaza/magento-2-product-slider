@@ -4,7 +4,7 @@
  *
  * NOTICE OF LICENSE
  *
- * This source file is subject to the mageplaza.com license that is
+ * This source file is subject to the Mageplaza.com license that is
  * available through the world-wide-web at this URL:
  * https://www.mageplaza.com/LICENSE.txt
  *
@@ -15,7 +15,7 @@
  *
  * @category    Mageplaza
  * @package     Mageplaza_Productslider
- * @copyright   Copyright (c) 2017-2018 Mageplaza (https://www.mageplaza.com/)
+ * @copyright   Copyright (c) Mageplaza (https://www.mageplaza.com/)
  * @license     https://www.mageplaza.com/LICENSE.txt
  */
 
@@ -25,8 +25,8 @@ use Magento\Framework\App\Request\Http;
 use Magento\Framework\Event\Observer;
 use Magento\Framework\Event\ObserverInterface;
 use Mageplaza\Productslider\Helper\Data;
-use Mageplaza\Productslider\Model\SliderFactory;
 use Mageplaza\Productslider\Model\ResourceModel\SliderFactory as ResourceModelFactory;
+use Mageplaza\Productslider\Model\SliderFactory;
 
 /**
  * Class AddBlock
@@ -34,105 +34,104 @@ use Mageplaza\Productslider\Model\ResourceModel\SliderFactory as ResourceModelFa
  */
 class AddBlock implements ObserverInterface
 {
-	/**
-	 * @var \Magento\Framework\App\Request\Http
-	 */
-	protected $request;
+    /**
+     * @var \Magento\Framework\App\Request\Http
+     */
+    protected $request;
 
-	/**
-	 * @var \Mageplaza\Productslider\Helper\Data
-	 */
-	protected $helperData;
+    /**
+     * @var \Mageplaza\Productslider\Helper\Data
+     */
+    protected $helperData;
 
-	/**
-	 * @var SliderFactory
-	 */
-	protected $_sliderFactory;
+    /**
+     * @var SliderFactory
+     */
+    protected $_sliderFactory;
 
-	/**
-	 * @var \Mageplaza\Productslider\Model\ResourceModel\SliderFactory
-	 */
-	protected $_resourceModelSliderFactory;
+    /**
+     * @var \Mageplaza\Productslider\Model\ResourceModel\SliderFactory
+     */
+    protected $_resourceModelSliderFactory;
 
-	/**
-	 * AddBlock constructor.
-	 * @param \Mageplaza\Productslider\Model\ResourceModel\SliderFactory $resourceModelSliderFactory
-	 * @param \Mageplaza\Productslider\Model\SliderFactory $sliderFactory
-	 * @param \Magento\Framework\App\Request\Http $request
-	 * @param \Mageplaza\Productslider\Helper\Data $helperData
-	 */
-	public function __construct(
-		ResourceModelFactory $resourceModelSliderFactory,
-		SliderFactory $sliderFactory,
-		Http $request,
-		Data $helperData
-	)
-	{
-		$this->_resourceModelSliderFactory = $resourceModelSliderFactory;
-		$this->_sliderFactory              = $sliderFactory;
-		$this->request                     = $request;
-		$this->helperData                  = $helperData;
-	}
+    /**
+     * AddBlock constructor.
+     * @param \Mageplaza\Productslider\Model\ResourceModel\SliderFactory $resourceModelSliderFactory
+     * @param \Mageplaza\Productslider\Model\SliderFactory $sliderFactory
+     * @param \Magento\Framework\App\Request\Http $request
+     * @param \Mageplaza\Productslider\Helper\Data $helperData
+     */
+    public function __construct(
+        ResourceModelFactory $resourceModelSliderFactory,
+        SliderFactory $sliderFactory,
+        Http $request,
+        Data $helperData
+    )
+    {
+        $this->_resourceModelSliderFactory = $resourceModelSliderFactory;
+        $this->_sliderFactory              = $sliderFactory;
+        $this->request                     = $request;
+        $this->helperData                  = $helperData;
+    }
 
-	/**
-	 * @param Observer $observer
-	 * @return $this|bool|void
-	 */
-	public function execute(Observer $observer)
-	{
-		if (!$this->helperData->isEnabled()) {
-			return false;
-		}
+    /**
+     * @param Observer $observer
+     * @return $this|bool|void
+     */
+    public function execute(Observer $observer)
+    {
+        if (!$this->helperData->isEnabled()) {
+            return false;
+        }
 
-		$resourceModel  = $this->_resourceModelSliderFactory->create();
-		$sliderIds      = $resourceModel->getSliderIds();
-		$elementName    = $observer->getElementName();
-		$output         = $observer->getTransport()->getOutput();
-		$fullActionName = $this->request->getFullActionName();
+        $resourceModel  = $this->_resourceModelSliderFactory->create();
+        $sliderIds      = $resourceModel->getSliderIds();
+        $elementName    = $observer->getElementName();
+        $output         = $observer->getTransport()->getOutput();
+        $fullActionName = $this->request->getFullActionName();
 
-		$event = $observer->getEvent();
-		/** @var \Magento\Framework\View\Layout $layout */
-		$layout = $event->getLayout();
+        $event = $observer->getEvent();
+        /** @var \Magento\Framework\View\Layout $layout */
+        $layout = $event->getLayout();
 
-		$types = [
-			'content' => 'content',
-			'sidebar' => 'catalog.leftnav'
-		];
-		$type = array_search($elementName, $types);
+        $types = [
+            'content' => 'content',
+            'sidebar' => 'catalog.leftnav'
+        ];
+        $type  = array_search($elementName, $types);
 
-		if ($type !== false) {
-			foreach ($sliderIds as $sliderId) {
-				$slider = $this->_sliderFactory->create()->load($sliderId);
-				$data   = $resourceModel->getSliderLocation($slider);
-				if ($fullActionName == $data['page_type'] || $data['page_type'] == 'allpage') {
-					$block = $resourceModel->getSliderProductType($slider);
-					$html  = $layout->createBlock($block)
-						->setTemplate('Mageplaza_Productslider::productslider.phtml')
-						->setSlider($slider);
+        if ($type !== false) {
+            foreach ($sliderIds as $sliderId) {
+                $slider = $this->_sliderFactory->create()->load($sliderId);
+                $data   = $resourceModel->getSliderLocation($slider);
+                if ($fullActionName == $data['page_type'] || $data['page_type'] == 'allpage') {
+                    $block = $resourceModel->getSliderProductType($slider);
+                    $html  = $layout->createBlock($block)
+                        ->setTemplate('Mageplaza_Productslider::productslider.phtml')
+                        ->setSlider($slider);
 
-					$content = $html->toHtml();
+                    $content = $html->toHtml();
 
-					if ($type == 'content') {
-						if ($data['location'] == 'content-top') {
-							$output = "<div id=\"mageplaza-productslider-block-before-{$type}-{$sliderId}\">$content</div>" . $output;
-						} else if ($data['location'] == 'content-bottom') {
-							$output = $output . "<div id=\"mageplaza-productslider-block-after-{$type}-{$sliderId}\">$content</div>";
-						}
-					}
+                    if ($type == 'content') {
+                        if ($data['location'] == 'content-top') {
+                            $output = "<div id=\"mageplaza-productslider-block-before-{$type}-{$sliderId}\">$content</div>" . $output;
+                        } else if ($data['location'] == 'content-bottom') {
+                            $output = $output . "<div id=\"mageplaza-productslider-block-after-{$type}-{$sliderId}\">$content</div>";
+                        }
+                    }
 
-					if ($type == 'sidebar') {
-						if ($data['location'] == 'sidebar-top') {
-							$output = "<div id=\"mageplaza-productslider-block-before-{$type}-{$sliderId}\">$content</div>" . $output;
-						} else if ($data['location'] == 'sidebar-bottom') {
-							$output = $output . "<div id=\"mageplaza-productslider-block-after-{$type}-{$sliderId}\">$content</div>";
-						}
-					}
-				}
-			}
-			$observer->getTransport()->setOutput($output);
-		}
+                    if ($type == 'sidebar') {
+                        if ($data['location'] == 'sidebar-top') {
+                            $output = "<div id=\"mageplaza-productslider-block-before-{$type}-{$sliderId}\">$content</div>" . $output;
+                        } else if ($data['location'] == 'sidebar-bottom') {
+                            $output = $output . "<div id=\"mageplaza-productslider-block-after-{$type}-{$sliderId}\">$content</div>";
+                        }
+                    }
+                }
+            }
+            $observer->getTransport()->setOutput($output);
+        }
 
-		return $this;
-	}
-
+        return $this;
+    }
 }

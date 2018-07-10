@@ -22,43 +22,18 @@
 namespace Mageplaza\Productslider\Controller\Adminhtml\Slider;
 
 use Magento\Backend\App\Action;
-use Magento\Backend\Model\View\Result\ForwardFactory;
-use Magento\Backend\App\Action\Context;
 
+/**
+ * Class NewAction
+ * @package Mageplaza\Productslider\Controller\Adminhtml\Slider
+ */
 class NewAction extends Action
 {
-	/**
-	 * Redirect result factory
-	 *
-	 * @var \Magento\Backend\Model\View\Result\ForwardFactory
-	 */
-	protected $_resultForwardFactory;
-
-	/**
-	 * NewAction constructor.
-	 * @param \Magento\Backend\Model\View\Result\ForwardFactory $resultForwardFactory
-	 * @param \Magento\Backend\App\Action\Context $context
-	 */
-	public function __construct(
-		ForwardFactory $resultForwardFactory,
-		Context $context
-	)
-	{
-		parent::__construct($context);
-
-		$this->_resultForwardFactory = $resultForwardFactory;
-	}
-
-	/**
-	 * forward to edit
-	 *
-	 * @return \Magento\Backend\Model\View\Result\Forward
-	 */
-	public function execute()
-	{
-		$resultForward = $this->_resultForwardFactory->create();
-		$resultForward->forward('edit');
-
-		return $resultForward;
-	}
+    /**
+     * @return \Magento\Framework\App\ResponseInterface|\Magento\Framework\Controller\ResultInterface|void
+     */
+    public function execute()
+    {
+        return $this->_forward('edit');
+    }
 }

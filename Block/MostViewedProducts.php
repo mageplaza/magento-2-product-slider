@@ -21,23 +21,26 @@
 
 namespace Mageplaza\Productslider\Block;
 
+/**
+ * Class MostViewedProducts
+ * @package Mageplaza\Productslider\Block
+ */
 class MostViewedProducts extends AbstractSlider
 {
-	/**
-	 * Get Product Collection of MostViewed Products
-	 * @return mixed
-	 */
-	public function getProductCollection()
-	{
-		return $this->getMostViewedProductsCollection();
-	}
+    /**
+     * Get Product Collection of MostViewed Products
+     * @return mixed
+     */
+    public function getProductCollection()
+    {
+        return $this->getMostViewedProductsCollection();
+    }
 
-	/**
-	 * @return string
-	 */
-	public function getProductCacheKey()
-	{
-		return 'mageplaza_product_slider_mostviewed';
-	}
-
+    /**
+     * @return string
+     */
+    public function getProductCacheKey()
+    {
+        return 'mageplaza_product_slider_mostviewed';
+    }
 }

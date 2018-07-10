@@ -23,14 +23,21 @@ namespace Mageplaza\Productslider\Block\System\Config\Form\Field;
 
 use Magento\Config\Block\System\Config\Form\Field\FieldArray\AbstractFieldArray;
 
+/**
+ * Class Active
+ * @package Mageplaza\Productslider\Block\System\Config\Form\Field
+ */
 class Active extends AbstractFieldArray
 {
-    protected function _prepareToRender() {
-        $this->addColumn('col_1', ['label' => __('Screen size max'),  'renderer' => false]);
-        $this->addColumn('col_2', ['label' => __('Number of items'),  'renderer' => false]);
+    /**
+     * @inheritdoc
+     */
+    protected function _prepareToRender()
+    {
+        $this->addColumn('col_1', ['label' => __('Screen size max'), 'renderer' => false]);
+        $this->addColumn('col_2', ['label' => __('Number of items'), 'renderer' => false]);
 
-        $this->_addAfter = false;
+        $this->_addAfter       = false;
         $this->_addButtonLabel = __('Add');
     }
-
 }

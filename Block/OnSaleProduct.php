@@ -21,24 +21,26 @@
 
 namespace Mageplaza\Productslider\Block;
 
-
+/**
+ * Class OnSaleProduct
+ * @package Mageplaza\Productslider\Block
+ */
 class OnSaleProduct extends AbstractSlider
 {
-	/**
-	 * Get Product Collection of OnSale Products
-	 * @return $this
-	 */
-	public function getProductCollection()
-	{
-		return $this->getOnSaleProductCollection();
-	}
+    /**
+     * Get Product Collection of OnSale Products
+     * @return $this
+     */
+    public function getProductCollection()
+    {
+        return $this->getOnSaleProductCollection();
+    }
 
-	/**
-	 * @return string
-	 */
-	public function getProductCacheKey()
-	{
-		return 'mageplaza_product_slider_onsales';
-	}
-
+    /**
+     * @return string
+     */
+    public function getProductCacheKey()
+    {
+        return 'mageplaza_product_slider_onsales';
+    }
 }

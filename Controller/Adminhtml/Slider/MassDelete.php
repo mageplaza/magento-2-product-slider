@@ -22,64 +22,67 @@
 namespace Mageplaza\Productslider\Controller\Adminhtml\Slider;
 
 use Magento\Backend\App\Action;
+use Magento\Backend\App\Action\Context;
 use Magento\Ui\Component\MassAction\Filter;
 use Mageplaza\Productslider\Model\ResourceModel\Slider\CollectionFactory;
-use Magento\Backend\App\Action\Context;
 
+/**
+ * Class MassDelete
+ * @package Mageplaza\Productslider\Controller\Adminhtml\Slider
+ */
 class MassDelete extends Action
 {
-	/**
-	 * Mass Action Filter
-	 *
-	 * @var \Magento\Ui\Component\MassAction\Filter
-	 */
-	protected $_filter;
+    /**
+     * Mass Action Filter
+     *
+     * @var \Magento\Ui\Component\MassAction\Filter
+     */
+    protected $_filter;
 
-	/**
-	 * Collection Factory
-	 *
-	 * @var \Mageplaza\Productslider\Model\ResourceModel\Slider\CollectionFactory
-	 */
-	protected $_collectionFactory;
+    /**
+     * Collection Factory
+     *
+     * @var \Mageplaza\Productslider\Model\ResourceModel\Slider\CollectionFactory
+     */
+    protected $_collectionFactory;
 
-	/**
-	 * MassDelete constructor.
-	 * @param \Magento\Ui\Component\MassAction\Filter $filter
-	 * @param \Mageplaza\Productslider\Model\ResourceModel\Slider\CollectionFactory $collectionFactory
-	 * @param \Magento\Backend\App\Action\Context $context
-	 */
-	public function __construct(
-		Filter $filter,
-		CollectionFactory $collectionFactory,
-		Context $context
-	)
-	{
-		parent::__construct($context);
+    /**
+     * MassDelete constructor.
+     * @param Context $context
+     * @param Filter $filter
+     * @param CollectionFactory $collectionFactory
+     */
+    public function __construct(
+        Context $context,
+        Filter $filter,
+        CollectionFactory $collectionFactory
+    )
+    {
+        $this->_filter            = $filter;
+        $this->_collectionFactory = $collectionFactory;
 
-		$this->_filter            = $filter;
-		$this->_collectionFactory = $collectionFactory;
-	}
+        parent::__construct($context);
+    }
 
+    /**
+     * @return $this|\Magento\Framework\App\ResponseInterface|\Magento\Framework\Controller\ResultInterface
+     * @throws \Exception
+     * @throws \Magento\Framework\Exception\LocalizedException
+     */
+    public function execute()
+    {
+        $collection = $this->_filter->getCollection($this->_collectionFactory->create());
 
-	/**
-	 * execute action
-	 *
-	 * @return \Magento\Backend\Model\View\Result\Redirect
-	 */
-	public function execute()
-	{
-		$collection = $this->_filter->getCollection($this->_collectionFactory->create());
+        $delete = 0;
+        foreach ($collection as $item) {
+            /** @var \Mageplaza\Productslider\Model\Slider $item */
+            $item->delete();
+            $delete++;
+        }
+        $this->messageManager->addSuccessMessage(__('A total of %1 record(s) have been deleted.', $delete));
+        /** @var \Magento\Backend\Model\View\Result\Redirect $resultRedirect */
+        $resultRedirect = $this->resultFactory->create(\Magento\Framework\Controller\ResultFactory::TYPE_REDIRECT);
 
-		$delete = 0;
-		foreach ($collection as $item) {
-			/** @var \Mageplaza\Productslider\Model\Slider $item */
-			$item->delete();
-			$delete++;
-		}
-		$this->messageManager->addSuccess(__('A total of %1 record(s) have been deleted.', $delete));
-		/** @var \Magento\Backend\Model\View\Result\Redirect $resultRedirect */
-		$resultRedirect = $this->resultFactory->create(\Magento\Framework\Controller\ResultFactory::TYPE_REDIRECT);
-
-		return $resultRedirect->setPath('*/*/');
-	}
+        return $resultRedirect->setPath('*/*/');
+    }
 }

@@ -21,64 +21,58 @@
 
 namespace Mageplaza\Productslider\Controller\Adminhtml\Slider;
 
-use Magento\Framework\View\Result\LayoutFactory;
-use Mageplaza\Productslider\Controller\Adminhtml\Slider;
-use Magento\Framework\Controller\Result\JsonFactory;
-use Mageplaza\Productslider\Model\SliderFactory;
-use Magento\Framework\Registry;
+use Magento\Backend\App\Action;
 use Magento\Backend\App\Action\Context;
+use Magento\Framework\Controller\Result\JsonFactory;
+use Magento\Framework\View\Result\LayoutFactory;
 
 /**
  * Class Products
- * @package Mageplaza\Blog\Controller\Adminhtml\Post
+ * @package Mageplaza\Productslider\Controller\Adminhtml\Slider
  */
-class Products extends Slider
+class Products extends Action
 {
-	/**
-	 * @var \Magento\Framework\View\Result\LayoutFactory
-	 */
-	protected $resultLayoutFactory;
+    /**
+     * @var \Magento\Framework\View\Result\LayoutFactory
+     */
+    protected $resultLayoutFactory;
 
-	/**
-	 * @var \Magento\Framework\Controller\Result\JsonFactory
-	 */
-	protected $resultJsonFactory;
+    /**
+     * @var \Magento\Framework\Controller\Result\JsonFactory
+     */
+    protected $resultJsonFactory;
 
-	public function __construct(
-		SliderFactory $sliderFactory,
-		Registry $coreRegistry,
-		Context $context,
-		JsonFactory $resultJsonFactory,
-		LayoutFactory $resultLayoutFactory
-	)
-	{
-		parent::__construct($sliderFactory, $coreRegistry, $context);
+    /**
+     * Products constructor.
+     * @param Context $context
+     * @param JsonFactory $resultJsonFactory
+     * @param LayoutFactory $resultLayoutFactory
+     */
+    public function __construct(
+        Context $context,
+        JsonFactory $resultJsonFactory,
+        LayoutFactory $resultLayoutFactory
+    )
+    {
+        $this->resultLayoutFactory = $resultLayoutFactory;
+        $this->resultJsonFactory   = $resultJsonFactory;
 
-		$this->resultLayoutFactory = $resultLayoutFactory;
-		$this->resultJsonFactory   = $resultJsonFactory;
-	}
+        parent::__construct($context);
+    }
 
-	/**
-	 * {@inheritdoc}
-	 */
-	protected function _isAllowed()
-	{
-		return true;
-	}
+    /**
+     * Save action
+     *
+     * @return \Magento\Framework\Controller\ResultInterface
+     */
+    public function execute()
+    {
+        $result       = $this->resultJsonFactory->create();
+        $resultLayout = $this->resultLayoutFactory->create();
+        $block        = $resultLayout->getLayout()->getBlock('slider.edit.tab.product')->toHtml();
+        $block        .= $resultLayout->getLayout()->getBlock('product_grid_serializer')->toHtml();
+        $result->setData(['output' => $block]);
 
-	/**
-	 * Save action
-	 *
-	 * @return \Magento\Framework\Controller\ResultInterface
-	 */
-	public function execute()
-	{
-		$result       = $this->resultJsonFactory->create();
-		$resultLayout = $this->resultLayoutFactory->create();
-		$block        = $resultLayout->getLayout()->getBlock('slider.edit.tab.product')->toHtml();
-		$block        .= $resultLayout->getLayout()->getBlock('product_grid_serializer')->toHtml();
-		$result->setData(['output' => $block]);
-
-		return $result;
-	}
+        return $result;
+    }
 }

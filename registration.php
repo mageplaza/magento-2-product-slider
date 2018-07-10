@@ -20,7 +20,7 @@
  */
 
 \Magento\Framework\Component\ComponentRegistrar::register(
-	\Magento\Framework\Component\ComponentRegistrar::MODULE,
-	'Mageplaza_Productslider',
-	__DIR__
+    \Magento\Framework\Component\ComponentRegistrar::MODULE,
+    'Mageplaza_Productslider',
+    __DIR__
 );

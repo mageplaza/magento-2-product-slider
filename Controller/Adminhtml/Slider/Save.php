@@ -21,168 +21,158 @@
 
 namespace Mageplaza\Productslider\Controller\Adminhtml\Slider;
 
-use Mageplaza\Productslider\Controller\Adminhtml\Slider;
-use Magento\Backend\Helper\Js;
-use Mageplaza\Productslider\Helper\Data;
-use Magento\Framework\Stdlib\DateTime\Filter\Date;
-use Mageplaza\Productslider\Model\SliderFactory;
-use Magento\Framework\Registry;
 use Magento\Backend\App\Action\Context;
+use Magento\Backend\Helper\Js;
+use Magento\Framework\Registry;
+use Magento\Framework\Stdlib\DateTime\Filter\Date;
+use Mageplaza\Productslider\Controller\Adminhtml\Slider;
+use Mageplaza\Productslider\Helper\Data;
+use Mageplaza\Productslider\Model\SliderFactory;
 
+/**
+ * Class Save
+ * @package Mageplaza\Productslider\Controller\Adminhtml\Slider
+ */
 class Save extends Slider
 {
-	/**
-	 * Backend session
-	 *
-	 * @var \Magento\Backend\Model\Session
-	 */
-	protected $_backendSession;
+    /**
+     * Date filter
+     *
+     * @var \Magento\Framework\Stdlib\DateTime\Filter\Date
+     */
+    protected $_dateFilter;
 
-	/**
-	 * Date filter
-	 *
-	 * @var \Magento\Framework\Stdlib\DateTime\Filter\Date
-	 */
-	protected $_dateFilter;
+    /**
+     * @var \Mageplaza\Productslider\Helper\Data
+     */
+    protected $_helperData;
 
-	/**
-	 * @var \Mageplaza\Productslider\Helper\Data
-	 */
-	protected $_helperData;
+    /**
+     * @var \Magento\Backend\Helper\Js
+     */
+    protected $_jsHelper;
 
-	/**
-	 * @var \Magento\Backend\Helper\Js
-	 */
-	protected $_jsHelper;
+    /**
+     * Save constructor.
+     * @param Context $context
+     * @param SliderFactory $sliderFactory
+     * @param Registry $coreRegistry
+     * @param Js $jsHelper
+     * @param Data $helper
+     * @param Date $dateFilter
+     */
+    public function __construct(
+        Context $context,
+        SliderFactory $sliderFactory,
+        Registry $coreRegistry,
+        Js $jsHelper,
+        Data $helper,
+        Date $dateFilter
+    )
+    {
+        $this->_jsHelper   = $jsHelper;
+        $this->_helperData = $helper;
+        $this->_dateFilter = $dateFilter;
 
-	/**
-	 * Save constructor.
-	 * @param \Magento\Backend\Helper\Js $jsHelper
-	 * @param \Mageplaza\Productslider\Helper\Data $helper
-	 * @param \Magento\Framework\Stdlib\DateTime\Filter\Date $dateFilter
-	 * @param \Mageplaza\Productslider\Model\SliderFactory $sliderFactory
-	 * @param \Magento\Framework\Registry $registry
-	 * @param \Magento\Backend\App\Action\Context $context
-	 */
-	public function __construct(
-		Js $jsHelper,
-		Data $helper,
-		Date $dateFilter,
-		SliderFactory $sliderFactory,
-		Registry $registry,
-		Context $context
-	)
-	{
-		parent::__construct($sliderFactory, $registry, $context);
+        parent::__construct($context, $sliderFactory, $coreRegistry);
+    }
 
-		$this->_jsHelper       = $jsHelper;
-		$this->_helperData     = $helper;
-		$this->_backendSession = $context->getSession();
-		$this->_dateFilter     = $dateFilter;
-	}
+    /**
+     * @return \Magento\Framework\App\ResponseInterface|\Magento\Framework\Controller\Result\Redirect|\Magento\Framework\Controller\ResultInterface
+     * @throws \Zend_Serializer_Exception
+     */
+    public function execute()
+    {
+        $data           = $this->getRequest()->getPost('slider');
+        $resultRedirect = $this->resultRedirectFactory->create();
 
-	/**
-	 * @return \Magento\Framework\Controller\Result\Redirect
-	 */
-	public function execute()
-	{
-		$data           = $this->getRequest()->getPost('slider');
-		$resultRedirect = $this->resultRedirectFactory->create();
+        if ($data) {
+            if (isset($data['display_additional'])) {
+                $data['display_additional'] = $this->_helperData->serialize($data['display_additional']);
+            }
+            if (isset($data['responsive_items'])) {
+                unset($data['responsive_items'][count($data['responsive_items']) - 1]);
+                $data['responsive_items'] = $this->_helperData->serialize($this->formatResponsiveItems($data['responsive_items']));
+            }
+            $paramIds            = $this->getRequest()->getParam('products');
+            $data['product_ids'] = $this->_helperData->serialize(explode('&', $paramIds));
 
-		if ($data) {
-			if (isset($data['display_additional'])) {
-				$data['display_additional'] = $this->_helperData->serialize($data['display_additional']);
-			}
-			if (isset($data['responsive_items'])) {
-				unset($data['responsive_items'][count($data['responsive_items']) - 1]);
-				$data['responsive_items'] = $this->_helperData->serialize($this->formatResponsiveItems($data['responsive_items']));
-			}
-			$paramIds            = $this->getRequest()->getParam('products');
-			$data['product_ids'] = $this->_helperData->serialize(explode('&', $paramIds));
+            $data   = $this->_filterData($data);
+            $slider = $this->_initSlider();
+            $slider->setData($data);
 
-			$data   = $this->_filterData($data);
-			$slider = $this->_initSlider();
-			$slider->setData($data);
+            try {
+                $slider->save();
+                $this->messageManager->addSuccessMessage(__('The Slider has been saved.'));
+                $this->_session->setMageplazaProductsliderSliderData(false);
+                if ($this->getRequest()->getParam('back')) {
+                    $resultRedirect->setPath('mpproductslider/*/edit', [
+                        'slider_id' => $slider->getId(),
+                        '_current'  => true
+                    ]);
 
-			try {
-				$slider->save();
-				$this->messageManager->addSuccess(__('The Slider has been saved.'));
-				$this->_backendSession->setMageplazaProductsliderSliderData(false);
-				if ($this->getRequest()->getParam('back')) {
-					$resultRedirect->setPath(
-						'mpproductslider/*/edit',
-						[
-							'slider_id' => $slider->getId(),
-							'_current'  => true
-						]
-					);
+                    return $resultRedirect;
+                }
+                $resultRedirect->setPath('mpproductslider/*/');
 
-					return $resultRedirect;
-				}
-				$resultRedirect->setPath('mpproductslider/*/');
+                return $resultRedirect;
+            } catch (\Magento\Framework\Exception\LocalizedException $e) {
+                $this->messageManager->addErrorMessage($e->getMessage());
+            } catch (\RuntimeException $e) {
+                $this->messageManager->addErrorMessage($e->getMessage());
+            } catch (\Exception $e) {
+                $this->messageManager->addExceptionMessage($e, __('Something went wrong while saving the Slider.'));
+            }
+            $this->_getSession()->setMageplazaProductsliderSliderData($data);
+            $resultRedirect->setPath('mpproductslider/*/edit', [
+                'slider_id' => $slider->getId(),
+                '_current'  => true
+            ]);
 
-				return $resultRedirect;
-			} catch (\Magento\Framework\Exception\LocalizedException $e) {
-				$this->messageManager->addError($e->getMessage());
-			} catch (\RuntimeException $e) {
-				$this->messageManager->addError($e->getMessage());
-			} catch (\Exception $e) {
-				$this->messageManager->addException($e, __('Something went wrong while saving the Slider.'));
-			}
-			$this->_getSession()->setMageplazaProductsliderSliderData($data);
-			$resultRedirect->setPath(
-				'mpproductslider/*/edit',
-				[
-					'slider_id' => $slider->getId(),
-					'_current'  => true
-				]
-			);
+            return $resultRedirect;
+        }
+        $resultRedirect->setPath('mpproductslider/*/');
 
-			return $resultRedirect;
-		}
-		$resultRedirect->setPath('mpproductslider/*/');
+        return $resultRedirect;
+    }
 
-		return $resultRedirect;
-	}
+    /**
+     * Format Responsive config
+     *
+     * @param $data
+     * @return array
+     */
+    public function formatResponsiveItems($data)
+    {
+        $resData = [];
 
-	/**
-	 * filter values
-	 *
-	 * @param array $data
-	 * @return array
-	 */
-	protected function _filterData($data)
-	{
-		$inputFilter = new \Zend_Filter_Input(['from_date' => $this->_dateFilter,], [], $data);
-		$data        = $inputFilter->getUnescaped();
-		if (isset($data['store_views'])) {
-			if (is_array($data['store_views'])) {
-				$data['store_views'] = implode(',', $data['store_views']);
-			}
-		}
+        foreach ($data as $items) {
+            foreach ($items as $id => $item) {
+                foreach ($item as $col => $value) {
+                    $resData[$id][$col] = $value;
+                }
+            }
+        }
 
-		return $data;
-	}
+        return $resData;
+    }
 
-	/**
-	 * Format Responsive config
-	 *
-	 * @param $data
-	 * @return array
-	 */
-	public function formatResponsiveItems($data)
-	{
-		$resData = [];
+    /**
+     * filter values
+     *
+     * @param array $data
+     * @return array
+     */
+    protected function _filterData($data)
+    {
+        $inputFilter = new \Zend_Filter_Input(['from_date' => $this->_dateFilter,], [], $data);
+        $data        = $inputFilter->getUnescaped();
+        if (isset($data['store_views'])) {
+            if (is_array($data['store_views'])) {
+                $data['store_views'] = implode(',', $data['store_views']);
+            }
+        }
 
-		foreach ($data as $items) {
-			foreach ($items as $id => $item) {
-				foreach ($item as $col => $value) {
-					$resData[$id][$col] = $value;
-				}
-			}
-		}
-
-		return $resData;
-	}
-
+        return $data;
+    }
 }

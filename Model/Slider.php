@@ -21,6 +21,8 @@
 
 namespace Mageplaza\Productslider\Model;
 
+use Magento\Framework\Model\AbstractModel;
+
 /**
  * @method Slider setName($name)
  * @method Slider setStoreViews($storeViews)
@@ -39,85 +41,83 @@ namespace Mageplaza\Productslider\Model;
  * @method Slider setUpdatedAt(\string $updatedAt)
  * @method string getUpdatedAt()
  */
-class Slider extends \Magento\Framework\Model\AbstractModel
+class Slider extends AbstractModel
 {
-	/**
-	 * Cache tag
-	 *
-	 * @var string
-	 */
-	const CACHE_TAG = 'mageplaza_productslider_slider';
+    /**
+     * Cache tag
+     *
+     * @var string
+     */
+    const CACHE_TAG = 'mageplaza_productslider_slider';
 
-	/**
-	 * Cache tag
-	 *
-	 * @var string
-	 */
-	protected $_cacheTag = 'mageplaza_productslider_slider';
+    /**
+     * Cache tag
+     *
+     * @var string
+     */
+    protected $_cacheTag = 'mageplaza_productslider_slider';
 
-	/**
-	 * Event prefix
-	 *
-	 * @var string
-	 */
-	protected $_eventPrefix = 'mageplaza_productslider_slider';
+    /**
+     * Event prefix
+     *
+     * @var string
+     */
+    protected $_eventPrefix = 'mageplaza_productslider_slider';
 
+    /**
+     * Get identities
+     *
+     * @return array
+     */
+    public function getIdentities()
+    {
+        return [self::CACHE_TAG . '_' . $this->getId()];
+    }
 
-	/**
-	 * Initialize resource model
-	 *
-	 * @return void
-	 */
-	protected function _construct()
-	{
-		$this->_init('Mageplaza\Productslider\Model\ResourceModel\Slider');
-	}
+    /**
+     * @param \Mageplaza\Productslider\Model\Slider $object
+     * @return array
+     */
+    public function getProducts(\Mageplaza\Productslider\Model\Slider $object)
+    {
+        $tbl    = $this->getResource()->getTable(\Mageplaza\Productslider\Model\ResourceModel\Slider::TBL_ATT_PRODUCT);
+        $select = $this->getResource()->getConnection()->select()->from(
+            $tbl,
+            ['product_id']
+        )
+            ->where(
+                'slider_id = ?',
+                (int)$object->getSliderId()
+            );
 
-	/**
-	 * Get identities
-	 *
-	 * @return array
-	 */
-	public function getIdentities()
-	{
-		return [self::CACHE_TAG . '_' . $this->getId()];
-	}
+        return $this->getResource()->getConnection()->fetchCol($select);
+    }
 
-	/**
-	 * @param \Mageplaza\Productslider\Model\Slider $object
-	 * @return array
-	 */
-	public function getProducts(\Mageplaza\Productslider\Model\Slider $object)
-	{
-		$tbl    = $this->getResource()->getTable(\Mageplaza\Productslider\Model\ResourceModel\Slider::TBL_ATT_PRODUCT);
-		$select = $this->getResource()->getConnection()->select()->from(
-			$tbl,
-			['product_id']
-		)
-			->where(
-				'slider_id = ?',
-				(int)$object->getSliderId()
-			);
+    /**
+     * @return $this
+     */
+    public function afterSave()
+    {
+        if ($this->getCustomerGroupIds() || $this->getStoreIds()) {
+            $this->getResource()->deleteOldData($this->getId());
+            if ($storeIds = $this->getStoreIds()) {
+                $this->getResource()->updateStore($storeIds, $this->getId());
+            }
+            if ($groupIds = $this->getCustomerGroupIds()) {
+                $this->getResource()->updateCustomerGroup($groupIds, $this->getId());
+            }
+        }
 
-		return $this->getResource()->getConnection()->fetchCol($select);
-	}
+        return parent::afterSave();
+    }
 
-	/**
-	 * @return $this
-	 */
-	public function afterSave()
-	{
-		if ($this->getCustomerGroupIds() || $this->getStoreIds()) {
-			$this->getResource()->deleteOldData($this->getId());
-			if ($storeIds = $this->getStoreIds()) {
-				$this->getResource()->updateStore($storeIds, $this->getId());
-			}
-			if ($groupIds = $this->getCustomerGroupIds()) {
-				$this->getResource()->updateCustomerGroup($groupIds, $this->getId());
-			}
-		}
-
-		return parent::afterSave();
-	}
-
+    /**
+     * Initialize resource model
+     *
+     * @return void
+     */
+    protected function _construct()
+    {
+        $this->_init('Mageplaza\Productslider\Model\ResourceModel\Slider');
+    }
 }

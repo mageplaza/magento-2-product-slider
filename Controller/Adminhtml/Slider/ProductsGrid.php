@@ -24,47 +24,43 @@ namespace Mageplaza\Productslider\Controller\Adminhtml\Slider;
 use Magento\Backend\App\Action;
 use Magento\Framework\View\Result\LayoutFactory;
 
+/**
+ * Class ProductsGrid
+ * @package Mageplaza\Productslider\Controller\Adminhtml\Slider
+ */
 class ProductsGrid extends Action
 {
-	/**
-	 * @var \Magento\Framework\View\Result\LayoutFactory
-	 */
-	protected $_resultLayoutFactory;
+    /**
+     * @var \Magento\Framework\View\Result\LayoutFactory
+     */
+    protected $_resultLayoutFactory;
 
-	/**
-	 * ProductsGrid constructor.
-	 * @param \Magento\Backend\App\Action\Context $context
-	 * @param \Magento\Framework\View\Result\LayoutFactory $resultLayoutFactory
-	 */
-	public function __construct(
-		Action\Context $context,
-		LayoutFactory $resultLayoutFactory
-	)
-	{
-		parent::__construct($context);
+    /**
+     * ProductsGrid constructor.
+     * @param \Magento\Backend\App\Action\Context $context
+     * @param \Magento\Framework\View\Result\LayoutFactory $resultLayoutFactory
+     */
+    public function __construct(
+        Action\Context $context,
+        LayoutFactory $resultLayoutFactory
+    )
+    {
+        $this->_resultLayoutFactory = $resultLayoutFactory;
+        
+        parent::__construct($context);
+    }
 
-		$this->_resultLayoutFactory = $resultLayoutFactory;
-	}
+    /**
+     * Save action
+     *
+     * @return \Magento\Framework\Controller\ResultInterface
+     */
+    public function execute()
+    {
+        $resultLayout = $this->_resultLayoutFactory->create();
+        $resultLayout->getLayout()->getBlock('slider.edit.tab.product')
+            ->setInBanner($this->getRequest()->getPost('slider_products', null));
 
-	/**
-	 * {@inheritdoc}
-	 */
-	protected function _isAllowed()
-	{
-		return true;
-	}
-
-	/**
-	 * Save action
-	 *
-	 * @return \Magento\Framework\Controller\ResultInterface
-	 */
-	public function execute()
-	{
-		$resultLayout = $this->_resultLayoutFactory->create();
-		$resultLayout->getLayout()->getBlock('slider.edit.tab.product')
-			->setInBanner($this->getRequest()->getPost('slider_products', null));
-
-		return $resultLayout;
-	}
+        return $resultLayout;
+    }
 }

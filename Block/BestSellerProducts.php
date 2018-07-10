@@ -27,21 +27,20 @@ namespace Mageplaza\Productslider\Block;
  */
 class BestSellerProducts extends AbstractSlider
 {
-	/**
-	 * get collection of best-seller products
-	 * @return mixed
-	 */
-	public function getProductCollection()
-	{
-		return $this->getBestSellerProductsCollection();
-	}
+    /**
+     * get collection of best-seller products
+     * @return mixed
+     */
+    public function getProductCollection()
+    {
+        return $this->getBestSellerProductsCollection();
+    }
 
-	/**
-	 * @return string
-	 */
-	public function getProductCacheKey()
-	{
-		return 'mageplaza_product_slider_bestseller';
-	}
-
+    /**
+     * @return string
+     */
+    public function getProductCacheKey()
+    {
+        return 'mageplaza_product_slider_bestseller';
+    }
 }

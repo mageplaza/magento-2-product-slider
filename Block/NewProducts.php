@@ -27,22 +27,21 @@ namespace Mageplaza\Productslider\Block;
  */
 class NewProducts extends AbstractSlider
 {
-	/**
-	 * Get New product collection
-	 *
-	 * @return $this
-	 */
-	public function getProductCollection()
-	{
-		return $this->getNewProductsCollection();
-	}
+    /**
+     * Get New product collection
+     *
+     * @return $this
+     */
+    public function getProductCollection()
+    {
+        return $this->getNewProductsCollection();
+    }
 
-	/**
-	 * @return string
-	 */
-	public function getProductCacheKey()
-	{
-		return 'mageplaza_product_slider_newproducts';
-	}
-
+    /**
+     * @return string
+     */
+    public function getProductCacheKey()
+    {
+        return 'mageplaza_product_slider_newproducts';
+    }
 }

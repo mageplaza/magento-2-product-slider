@@ -21,44 +21,47 @@
 
 namespace Mageplaza\Productslider\Block;
 
+/**
+ * Class CategoryId
+ * @package Mageplaza\Productslider\Block
+ */
 class CategoryId extends AbstractSlider
 {
-	/**
-	 * Default category id
-	 */
-	const DEFAULT_CATEGORY = 2;
+    /**
+     * Default category id
+     */
+    const DEFAULT_CATEGORY = 2;
 
-	/**
-	 * @var \Mageplaza\Productslider\Model\SliderFactory
-	 */
-	protected $_sliderFactory;
+    /**
+     * @var \Mageplaza\Productslider\Model\SliderFactory
+     */
+    protected $_sliderFactory;
 
-	/**
-	 * @var \Magento\Catalog\Model\ResourceModel\Product\CollectionFactory
-	 */
-	protected $_productCollectionFactory;
+    /**
+     * @var \Magento\Catalog\Model\ResourceModel\Product\CollectionFactory
+     */
+    protected $_productCollectionFactory;
 
-	/**
-	 * @var \Magento\Catalog\Model\CategoryFactory
-	 */
-	protected $_categoryFactory;
+    /**
+     * @var \Magento\Catalog\Model\CategoryFactory
+     */
+    protected $_categoryFactory;
 
-	/**
-	 * Get Product Collection by Category Ids
-	 *
-	 * @return $this|array
-	 */
-	public function getProductCollection()
-	{
-		return $this->getCategoryIdsCollection();
-	}
+    /**
+     * Get Product Collection by Category Ids
+     *
+     * @return $this|array
+     */
+    public function getProductCollection()
+    {
+        return $this->getCategoryIdsCollection();
+    }
 
-	/**
-	 * @return string
-	 */
-	public function getProductCacheKey()
-	{
-		return 'mageplaza_product_slider_category_' . $this->getData('category_id');
-	}
-
+    /**
+     * @return string
+     */
+    public function getProductCacheKey()
+    {
+        return 'mageplaza_product_slider_category_' . $this->getData('category_id');
+    }
 }
