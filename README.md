@@ -51,106 +51,6 @@ Feel free to **Fork** and contrinute to this module and create a pull request so
 
 
 
-## 5. SWEET MAGEPLAZA EXTENSIONS TO BRING YOU MORE MONEY
-
-### ✓ One Step Checkout
-
-☞ ↑30% INCREASE CONVERSION RATE 
-
-☞ ↓66% DECREASE ABANDONMENT CART
-
-☞ ↓80% REDUCE CHECKOUT TIME
-
-### ✓ Layered Navigation
-
-☞ ↑84% USER'S FILTERING EXPERIENCE
-
-☞ ↑25% CONVERSION RATE
-
-☞ ↓67% SHOPPING TIME
-
-### ✓ Frequently Bought Together
-
-☞ Amazon Product Recommendation Solution
- 
-☞ AJAX loading for better performance
-
-☞ Support Custom Options and all product types
-
-### ✓ Gift Card
-
-☞ Physical, virtual or combined gift cards
- 
-☞ Different gift card values from prices
-
-☞ Send cards via email, SMS, post office or messenger
-
-
-### ✓ Who Bought This Also Bought
-
-☞ Display on Product Page, Category Page, Shopping Cart page
-
-☞ AJAX loading for better performance.
-
-☞ Flexible layout and design.
-
-
-### ✓ Social Login
-
-☞ Increase signup rate up-to 30%
-
-☞ Supports 11 Types: Facebook, Google Plus, Twitter, Linkedin, Instagram, Yahoo, Github, Foursquare, VK, Live, Amazon
-
-☞ Easy custom design fit with your store design
-
-☞ [Social Login on Github](https://github.com/mageplaza/magento-2-social-login)
-
-
-### ✓ Shop By Brand
-
-☞ Fully Compatible with Layered Navigation
-
-☞ Instant Search brands
-
-☞ Import brands
-
-
-### ✓ Affiliate
-
-☞ Multiple Affiliate Campaigns
-
-☞ Smart Referral Links
-
-☞ Affiliate Report
-
-
-
-## Mageplaza extensions on Magento Marketplace, Github
-
-
-☞ [Magento 2 One Step Checkout extension](https://marketplace.magento.com/mageplaza-magento-2-one-step-checkout-extension.html)
-
-☞ [Magento 2 SEO Module](https://marketplace.magento.com/mageplaza-magento-2-seo-extension.html)
-
-☞ [Magento 2 Blog extension](https://marketplace.magento.com/mageplaza-magento-2-blog-extension.html)
-
-☞ [Magento 2 Layered Navigation extension](https://marketplace.magento.com/mageplaza-layered-navigation-m2.html)
-
-☞ [Magento One Step Checkout](https://github.com/magento-2/one-step-checkout)
-
-☞ [Magento 2 Blog on Github](https://github.com/mageplaza/magento-2-blog)
-
-☞ [Magento 2 Social Login on Github](https://github.com/mageplaza/magento-2-social-login)
-
-☞ [Magento 2 SEO on Github](https://github.com/mageplaza/magento-2-seo)
-
-☞ [Magento 2 SMTP on Github](https://github.com/mageplaza/magento-2-smtp)
-
-☞ [Magento 2 Product Slider on Github](https://github.com/mageplaza/magento-2-product-slider)
-
-☞ [Magento 2 Banner on Github](https://github.com/mageplaza/magento-2-banner-slider)
-
-
 
 
 
@@ -372,6 +272,35 @@ Release notes:
 ### Product Slider v1.1.2.1
 Released on  2016-12-20
 Release notes: 
+
+
+
+
+## Mageplaza extensions on Magento Marketplace, Github
+
+
+☞ [Magento 2 One Step Checkout extension](https://marketplace.magento.com/mageplaza-magento-2-one-step-checkout-extension.html)
+
+☞ [Magento 2 SEO Module](https://marketplace.magento.com/mageplaza-magento-2-seo-extension.html)
+
+☞ [Magento 2 Blog extension](https://marketplace.magento.com/mageplaza-magento-2-blog-extension.html)
+
+☞ [Magento 2 Layered Navigation extension](https://marketplace.magento.com/mageplaza-layered-navigation-m2.html)
+
+☞ [Magento One Step Checkout](https://github.com/magento-2/one-step-checkout)
+
+☞ [Magento 2 Blog on Github](https://github.com/mageplaza/magento-2-blog)
+
+☞ [Magento 2 Social Login on Github](https://github.com/mageplaza/magento-2-social-login)
+
+☞ [Magento 2 SEO on Github](https://github.com/mageplaza/magento-2-seo)
+
+☞ [Magento 2 SMTP on Github](https://github.com/mageplaza/magento-2-smtp)
+
+☞ [Magento 2 Product Slider on Github](https://github.com/mageplaza/magento-2-product-slider)
+
+☞ [Magento 2 Banner on Github](https://github.com/mageplaza/magento-2-banner-slider)
+
 
 
 
