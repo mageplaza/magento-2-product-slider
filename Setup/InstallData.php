@@ -53,11 +53,11 @@ class InstallData implements InstallDataInterface
      */
     public function install(ModuleDataSetupInterface $setup, ModuleContextInterface $context)
     {
+        $installer = $setup;
+        $installer->startSetup();
+
         $eavSetup = $this->eavSetupFactory->create(['setup' => $setup]);
-        $eavSetup->addAttribute(
-            \Magento\Catalog\Model\Product::ENTITY,
-            'is_featured',
-            [
+        $eavSetup->addAttribute(\Magento\Catalog\Model\Product::ENTITY, 'is_featured', [
                 'type'                    => 'int',
                 'backend'                 => '',
                 'frontend'                => '',
@@ -81,5 +81,7 @@ class InstallData implements InstallDataInterface
                 'apply_to'                => 'simple,virtual,bundle,downloadable,grouped,configurable'
             ]
         );
+
+        $installer->endSetup();
     }
 }

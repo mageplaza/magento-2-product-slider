@@ -19,7 +19,7 @@
  * @license     https://www.mageplaza.com/LICENSE.txt
  */
 
-namespace Mageplaza\Productslider\Block\Adminhtml\Slider\Edit\Tab\Type\Renderer;
+namespace Mageplaza\Productslider\Block\Adminhtml\Slider\Edit\Tab\Renderer;
 
 use Magento\Catalog\Model\Category as CategoryModel;
 use Magento\Catalog\Model\ResourceModel\Category\CollectionFactory as CategoryCollectionFactory;
@@ -33,7 +33,7 @@ use Magento\Framework\UrlInterface;
 
 /**
  * Class Category
- * @package Mageplaza\Productslider\Block\Adminhtml\Slider\Edit\Tab\Type\Renderer
+ * @package Mageplaza\Productslider\Block\Adminhtml\Slider\Edit\Tab\Renderer
  */
 class Category extends Multiselect
 {
@@ -53,7 +53,7 @@ class Category extends Multiselect
     protected $_urlBuilder;
 
     /**
-     * @var Options 
+     * @var Options
      */
     protected $_option;
 
@@ -83,7 +83,7 @@ class Category extends Multiselect
         $this->collectionFactory = $collectionFactory;
         $this->authorization     = $authorization;
         $this->_urlBuilder       = $urlBuilder;
-        
+
         parent::__construct($factoryElement, $factoryCollection, $escaper, $data);
     }
 
@@ -92,7 +92,8 @@ class Category extends Multiselect
      */
     public function getElementHtml()
     {
-        $html = '<div class="admin__field-control admin__control-grouped">';
+        $html = '<div class="admin__field-control admin__control-grouped" id="' . $this->getHtmlId() . '">';
+
         $html .= '<div id="slider-category-select" class="admin__field" data-bind="scope:\'sliderCategory\'" data-index="index">';
         $html .= '<!-- ko foreach: elems() -->';
         $html .= '<input name="slider[categories_ids]" data-bind="value: value" style="display: none"/>';
@@ -107,7 +108,7 @@ class Category extends Multiselect
 
         $html .= '<!-- ko scope: \'create_category_modal\' --><!-- ko template: getTemplate() --><!-- /ko --><!-- /ko -->';
 
-        $html .= $this->getAfterElementHtml();
+        $html .= $this->getScriptHtml();
 
         return $html;
     }
@@ -117,7 +118,7 @@ class Category extends Multiselect
      *
      * @return string
      */
-    public function getAfterElementHtml()
+    public function getScriptHtml()
     {
         $html = '<script type="text/x-magento-init">
             {

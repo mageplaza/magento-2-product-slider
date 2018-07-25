@@ -90,7 +90,9 @@ class Edit extends Container
         $this->_objectId   = 'slider_id';
         $this->_blockGroup = 'Mageplaza_Productslider';
         $this->_controller = 'adminhtml_slider';
+
         parent::_construct();
+
         $this->buttonList->add(
             'save-and-continue',
             [
@@ -107,5 +109,22 @@ class Edit extends Container
             ],
             -100
         );
+
+        $this->_formScripts[] = "
+        require(['jquery'], function ($){
+            $('#slider_product_type').on('change', function(){
+                showHideProductTab();
+            });
+            showHideProductTab();
+            
+            function showHideProductTab(){
+                if($('#slider_product_type').val() == 'custom'){
+                    $('#slider_tabs_slider_products').parent().show();
+                } else {
+                    $('#slider_tabs_slider_products').parent().hide();
+                }
+            }
+        });
+        ";
     }
 }

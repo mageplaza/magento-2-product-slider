@@ -34,6 +34,6 @@ class NewAction extends Action
      */
     public function execute()
     {
-        return $this->_forward('edit');
+        $this->_forward('edit');
     }
 }

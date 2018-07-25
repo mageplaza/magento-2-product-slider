@@ -35,40 +35,21 @@ class Delete extends Slider
     public function execute()
     {
         $resultRedirect = $this->resultRedirectFactory->create();
-        $id             = $this->getRequest()->getParam('slider_id');
-        if ($id) {
-            $name = "";
-            try {
-                /** @var \Mageplaza\Productslider\Model\Slider $slider */
-                $slider = $this->_sliderFactory->create();
-                $slider->load($id);
-                $name = $slider->getName();
-                $slider->delete();
-                $this->messageManager->addSuccessMessage(__('The Slider has been deleted.'));
-                $this->_eventManager->dispatch(
-                    'adminhtml_mageplaza_productslider_slider_on_delete',
-                    ['name' => $name, 'status' => 'success']
-                );
-                $resultRedirect->setPath('mpproductslider/*/');
+        try {
+            $this->_sliderFactory->create()
+                ->load($this->getRequest()->getParam('slider_id'))
+                ->delete();
+            $this->messageManager->addSuccessMessage(__('The Slider has been deleted.'));
+        } catch (\Exception $e) {
+            // display error message
+            $this->messageManager->addErrorMessage($e->getMessage());
+            // go back to edit form
+            $resultRedirect->setPath('*/*/edit', ['slider_id' => $this->getRequest()->getParam('slider_id')]);
 
-                return $resultRedirect;
-            } catch (\Exception $e) {
-                $this->_eventManager->dispatch(
-                    'adminhtml_mageplaza_productslider_slider_on_delete',
-                    ['name' => $name, 'status' => 'fail']
-                );
-                // display error message
-                $this->messageManager->addErrorMessage($e->getMessage());
-                // go back to edit form
-                $resultRedirect->setPath('mpproductslider/*/edit', ['slider_id' => $id]);
-
-                return $resultRedirect;
-            }
+            return $resultRedirect;
         }
-        // display error message
-        $this->messageManager->addErrorMessage(__('Slider to delete was not found.'));
-        // go to grid
-        $resultRedirect->setPath('mpproductslider/*/');
+
+        $resultRedirect->setPath('*/*/');
 
         return $resultRedirect;
     }

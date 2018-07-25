@@ -28,10 +28,10 @@
             </argument>
         </arguments>
     </type>
-    <type name="Mageplaza\Productslider\Model\ResourceModel\Slider\Grid\Collection">
+    <virtualType name="Mageplaza\Productslider\Model\ResourceModel\Slider\Grid\Collection" type="Magento\Framework\View\Element\UiComponent\DataProvider\SearchResult">
         <arguments>
             <argument name="mainTable" xsi:type="string">mageplaza_productslider_slider</argument>
             <argument name="resourceModel" xsi:type="string">Mageplaza\Productslider\Model\ResourceModel\Slider</argument>
         </arguments>
-    </type>
+    </virtualType>
 </config>

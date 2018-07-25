@@ -19,7 +19,7 @@
  * @license     https://www.mageplaza.com/LICENSE.txt
  */
 
-namespace Mageplaza\Productslider\Block\Adminhtml\Slider\Edit\Tab\Type\Renderer;
+namespace Mageplaza\Productslider\Block\Adminhtml\Slider\Edit\Tab;
 
 use Magento\Backend\Block\Template\Context;
 use Magento\Backend\Block\Widget\Grid\Extended;
@@ -27,12 +27,13 @@ use Magento\Backend\Helper\Data;
 use Magento\Catalog\Model\ResourceModel\Product\CollectionFactory;
 use Mageplaza\Productslider\Helper\Data as HeplerData;
 use Mageplaza\Productslider\Model\SliderFactory;
+use Magento\Backend\Block\Widget\Tab\TabInterface;
 
 /**
- * Class Product
- * @package Mageplaza\Blog\Block\Adminhtml\Post\Edit\Tab
+ * Class Products
+ * @package Mageplaza\Productslider\Block\Adminhtml\Slider\Edit\Tab\Renderer
  */
-class Products extends Extended
+class Products extends Extended implements TabInterface
 {
     /**
      * @var \Magento\Catalog\Model\ResourceModel\Product\CollectionFactory
@@ -216,7 +217,7 @@ class Products extends Extended
     protected function _getSelectedProducts()
     {
         $slider     = $this->getSlider();
-        $productIds = $this->_helperData->unserialize($slider->getProductIds());
+        $productIds = $slider->getProductIds() ? $this->_helperData->unserialize($slider->getProductIds()) : [];
 
         return $productIds;
     }
@@ -242,7 +243,7 @@ class Products extends Extended
     public function getSelectedProducts()
     {
         $slider   = $this->getSlider();
-        $selected = $this->_helperData->unserialize($slider->getProductIds());
+        $selected = $slider->getProductIds() ? $this->_helperData->unserialize($slider->getProductIds()) : [];
 
         if (!is_array($selected)) {
             $selected = [];
@@ -252,7 +253,31 @@ class Products extends Extended
     }
 
     /**
-     * {@inheritdoc}
+     * @return string
+     */
+    public function getTabLabel()
+    {
+        return __('Select Products');
+    }
+
+    /**
+     * @return bool
+     */
+    public function isHidden()
+    {
+        return false;
+    }
+
+    /**
+     * @return string
+     */
+    public function getTabTitle()
+    {
+        return $this->getTabLabel();
+    }
+
+    /**
+     * @return bool
      */
     public function canShowTab()
     {
@@ -260,10 +285,18 @@ class Products extends Extended
     }
 
     /**
-     * {@inheritdoc}
+     * @return string
      */
-    public function isHidden()
+    public function getTabUrl()
     {
-        return true;
+        return $this->getUrl('mpproductslider/slider/products', ['_current' => true]);
+    }
+
+    /**
+     * @return string
+     */
+    public function getTabClass()
+    {
+        return 'ajax only';
     }
 }

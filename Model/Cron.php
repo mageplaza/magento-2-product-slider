@@ -26,8 +26,8 @@ use Magento\Framework\App\Cache\TypeListInterface;
 use Magento\Framework\App\ResourceConnection;
 use Magento\Framework\Model\Context;
 use Magento\Framework\Stdlib\DateTime\DateTime;
+use Mageplaza\Productslider\Helper\Data;
 use Mageplaza\Productslider\Model\ResourceModel\SliderFactory as ResourceModelFactory;
-use Mageplaza\Productslider\Model\SliderFactory;
 
 /**
  * Class Cron
@@ -66,14 +66,20 @@ class Cron
     protected $_resourceModelSliderFactory;
 
     /**
+     * @var Data
+     */
+    protected $helper;
+
+    /**
      * Cron constructor.
-     * @param \Magento\Framework\Model\Context $context
-     * @param \Magento\Framework\App\Cache\TypeListInterface $cacheTypeList
-     * @param \Magento\Framework\Stdlib\DateTime\DateTime $date
-     * @param \Mageplaza\Productslider\Model\SliderFactory $sliderFactory
-     * @param \Mageplaza\Productslider\Model\ResourceModel\SliderFactory $resourceModelSliderFactory
-     * @param \Magento\Framework\App\ResourceConnection $resource
-     * @param \Magento\Framework\App\Cache\Frontend\Pool $cacheFrontendPool
+     * @param Context $context
+     * @param TypeListInterface $cacheTypeList
+     * @param DateTime $date
+     * @param SliderFactory $sliderFactory
+     * @param ResourceModelFactory $resourceModelSliderFactory
+     * @param ResourceConnection $resource
+     * @param Pool $cacheFrontendPool
+     * @param Data $helper
      */
     public function __construct(
         Context $context,
@@ -82,7 +88,8 @@ class Cron
         SliderFactory $sliderFactory,
         ResourceModelFactory $resourceModelSliderFactory,
         ResourceConnection $resource,
-        Pool $cacheFrontendPool
+        Pool $cacheFrontendPool,
+        Data $helper
     )
     {
         $this->_resource                   = $resource;
@@ -91,6 +98,7 @@ class Cron
         $this->date                        = $date;
         $this->_cacheTypeList              = $cacheTypeList;
         $this->_cacheFrontendPool          = $cacheFrontendPool;
+        $this->helper                      = $helper;
     }
 
     /**
@@ -98,12 +106,9 @@ class Cron
      */
     public function autoRefreshCache()
     {
-        $resourceModel = $this->_resourceModelSliderFactory->create();
-        $sliderIds     = $resourceModel->getSliderIds();
-        $currentTime   = $this->date->gmtTimestamp();
+        $currentTime = $this->date->gmtTimestamp();
 
-        foreach ($sliderIds as $sliderId) {
-            $slider        = $this->_sliderFactory->create()->load($sliderId);
+        foreach ($this->helper->getActiveSliders() as $slider) {
             $cacheLifeTime = $slider->getData('time_cache');
             $cacheLastTime = $this->date->timestamp($slider->getData('cache_last_time'));
 

@@ -36,7 +36,7 @@ class ProductType implements ArrayInterface
     const ONSALE_PRODUCTS      = 'onsale';
     const RECENT_PRODUCT       = 'recent';
     const WISHLIST_PRODUCT     = 'wishlist';
-    const CATEGORYID           = 'categoryId';
+    const CATEGORY             = 'category';
     const CUSTOM_PRODUCTS      = 'custom';
 
     /**
@@ -54,7 +54,7 @@ class ProductType implements ArrayInterface
             ['value' => self::ONSALE_PRODUCTS, 'label' => __('OnSale Products')],
             ['value' => self::RECENT_PRODUCT, 'label' => __('Recent Products')],
             ['value' => self::WISHLIST_PRODUCT, 'label' => __('WishList Products')],
-            ['value' => self::CATEGORYID, 'label' => __('Select By Category')],
+            ['value' => self::CATEGORY, 'label' => __('Select By Category')],
             ['value' => self::CUSTOM_PRODUCTS, 'label' => __('Custom Specific Products')]
         ];
 

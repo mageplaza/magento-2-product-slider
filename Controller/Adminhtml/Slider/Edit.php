@@ -66,7 +66,7 @@ class Edit extends Slider
     {
         $this->_resultPageFactory = $resultPageFactory;
         $this->_resultJsonFactory = $resultJsonFactory;
-        
+
         parent::__construct($context, $sliderFactory, $coreRegistry);
     }
 
@@ -75,36 +75,31 @@ class Edit extends Slider
      */
     public function execute()
     {
-        $id     = $this->getRequest()->getParam('slider_id');
         $slider = $this->_initSlider();
+        if ($this->getRequest()->getParam('slider_id') && !$slider->getId()) {
+            $this->messageManager->addErrorMessage(__('This Slider no longer exists.'));
+            $resultRedirect = $this->resultRedirectFactory->create();
+            $resultRedirect->setPath(
+                'mpproductslider/*/edit',
+                [
+                    'slider_id' => $slider->getId(),
+                    '_current'  => true
+                ]
+            );
 
-        $resultPage = $this->_resultPageFactory->create();
-        $resultPage->setActiveMenu('Mageplaza_Productslider::slider');
-        $resultPage->getConfig()->getTitle()->set(__('Sliders'));
-        if ($id) {
-            $slider->load($id);
-            if (!$slider->getId()) {
-                $this->messageManager->addErrorMessage(__('This Slider no longer exists.'));
-                $resultRedirect = $this->resultRedirectFactory->create();
-                $resultRedirect->setPath(
-                    'mpproductslider/*/edit',
-                    [
-                        'slider_id' => $slider->getId(),
-                        '_current'  => true
-                    ]
-                );
-
-                return $resultRedirect;
-            }
+            return $resultRedirect;
         }
 
-        $title = $slider->getId() ? $slider->getName() : __('New Slider');
-        $resultPage->getConfig()->getTitle()->prepend($title);
         $data = $this->_session->getData('mageplaza_productslider_slider_data', true);
-
         if (!empty($data)) {
             $slider->setData($data);
         }
+
+        $resultPage = $this->_resultPageFactory->create();
+        $resultPage->setActiveMenu('Mageplaza_Productslider::slider');
+        $resultPage->getConfig()->getTitle()
+            ->set(__('Sliders'))
+            ->prepend($slider->getId() ? $slider->getName() : __('New Slider'));
 
         return $resultPage;
     }

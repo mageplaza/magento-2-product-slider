@@ -22,6 +22,6 @@
 -->
 <layout xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/layout_generic.xsd">
     <container name="root" label="Root">
-        <block class="Mageplaza\Productslider\Block\Adminhtml\Slider\Edit\Tab\Type\Renderer\Products" name="slider.edit.tab.product"/>
+        <block class="Mageplaza\Productslider\Block\Adminhtml\Slider\Edit\Tab\Products" name="slider.edit.tab.product"/>
     </container>
 </layout>

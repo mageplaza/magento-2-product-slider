@@ -47,10 +47,10 @@
                 </field>
                 <field id="item_slider" translate="label" sortOrder="20" showInDefault="1" showInWebsite="1" showInStore="0">
                     <label>Max Items slider</label>
-                    <frontend_model>Mageplaza\Productslider\Block\System\Config\Form\Field\Active</frontend_model>
+                    <frontend_model>Mageplaza\Productslider\Block\Adminhtml\Config\Field\Responsive</frontend_model>
                     <backend_model>Magento\Config\Model\Config\Backend\Serialized\ArraySerialized</backend_model>
                     <depends>
-                        <field id="productslider/slider_design/responsive">1</field>
+                        <field id="responsive">1</field>
                     </depends>
                 </field>
                 <field id="loop" translate="label" type="select" sortOrder="30" showInDefault="1" showInWebsite="1" showInStore="1">
@@ -87,7 +87,7 @@
                     <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
                     <validate>validate-digits</validate>
                     <depends>
-                        <field id="productslider/slider_design/autoplay">1</field>
+                        <field id="autoplay">1</field>
                     </depends>
                 </field>
                 <field id="autoplayHoverPause" translate="label" type="select" sortOrder="110" showInDefault="1" showInWebsite="1" showInStore="1">
@@ -95,7 +95,7 @@
                     <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
                     <validate>validate-digits</validate>
                     <depends>
-                        <field id="productslider/slider_design/autoplay">1</field>
+                        <field id="autoplay">1</field>
                     </depends>
                 </field>
             </group>

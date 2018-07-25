@@ -30,7 +30,6 @@ use Magento\Customer\Model\Session;
 use Magento\Framework\Stdlib\DateTime\DateTime;
 use Magento\Reports\Block\Product\Viewed;
 use Magento\Sales\Model\ResourceModel\Report\Bestsellers\Collection;
-use Magento\Store\Model\StoreManagerInterface;
 use Magento\Widget\Block\BlockInterface;
 use Magento\Wishlist\Model\ResourceModel\Item\CollectionFactory as WishlistCollection;
 use Mageplaza\Productslider\Helper\Data;
@@ -44,17 +43,11 @@ class AbstractSlider extends AbstractProduct implements BlockInterface
 {
     const DEFAULT_PRODUCTS_COUNT = 5;
     const DEFAULT_CATEGORY       = 2;
-    const DEFAULT_TITLE          = 'Mageplaza Productslider';
 
     /**
      * @var \Magento\Framework\Stdlib\DateTime\DateTime
      */
     protected $_getDayDate;
-
-    /**
-     * @var \Magento\Store\Model\StoreManagerInterface
-     */
-    protected $_storeManager;
 
     /**
      * @var \Mageplaza\Productslider\Helper\Data
@@ -110,7 +103,6 @@ class AbstractSlider extends AbstractProduct implements BlockInterface
      * @param Session $customer
      * @param Collection $bestSellersCollection
      * @param WishlistCollection $wishlistCollectionFactory
-     * @param StoreManagerInterface $storeManager
      * @param Viewed $viewed
      * @param DateTime $getDayDate
      * @param Data $helperData
@@ -125,7 +117,6 @@ class AbstractSlider extends AbstractProduct implements BlockInterface
         Session $customer,
         Collection $bestSellersCollection,
         WishlistCollection $wishlistCollectionFactory,
-        StoreManagerInterface $storeManager,
         Viewed $viewed,
         DateTime $getDayDate,
         Data $helperData,
@@ -141,7 +132,6 @@ class AbstractSlider extends AbstractProduct implements BlockInterface
         $this->_wishlistCollectionFactory = $wishlistCollectionFactory;
         $this->_viewed                    = $viewed;
         $this->_getDayDate                = $getDayDate;
-        $this->_storeManager              = $storeManager;
         $this->_helperData                = $helperData;
         $this->_customer                  = $customer;
 
@@ -224,7 +214,7 @@ class AbstractSlider extends AbstractProduct implements BlockInterface
             return $this->getData('heading');
         }
 
-        return self::DEFAULT_TITLE;
+        return __('Product Slider');
     }
 
     /**

@@ -80,7 +80,7 @@ class SliderType extends Column
             case ProductType::WISHLIST_PRODUCT :
                 $productType = 'WishList Products';
                 break;
-            case ProductType::CATEGORYID :
+            case ProductType::CATEGORY :
                 $productType = 'Select By Category';
                 break;
             case ProductType::CUSTOM_PRODUCTS :

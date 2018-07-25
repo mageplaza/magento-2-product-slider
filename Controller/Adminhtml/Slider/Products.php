@@ -23,7 +23,6 @@ namespace Mageplaza\Productslider\Controller\Adminhtml\Slider;
 
 use Magento\Backend\App\Action;
 use Magento\Backend\App\Action\Context;
-use Magento\Framework\Controller\Result\JsonFactory;
 use Magento\Framework\View\Result\LayoutFactory;
 
 /**
@@ -38,24 +37,16 @@ class Products extends Action
     protected $resultLayoutFactory;
 
     /**
-     * @var \Magento\Framework\Controller\Result\JsonFactory
-     */
-    protected $resultJsonFactory;
-
-    /**
      * Products constructor.
      * @param Context $context
-     * @param JsonFactory $resultJsonFactory
      * @param LayoutFactory $resultLayoutFactory
      */
     public function __construct(
         Context $context,
-        JsonFactory $resultJsonFactory,
         LayoutFactory $resultLayoutFactory
     )
     {
         $this->resultLayoutFactory = $resultLayoutFactory;
-        $this->resultJsonFactory   = $resultJsonFactory;
 
         parent::__construct($context);
     }
@@ -67,12 +58,6 @@ class Products extends Action
      */
     public function execute()
     {
-        $result       = $this->resultJsonFactory->create();
-        $resultLayout = $this->resultLayoutFactory->create();
-        $block        = $resultLayout->getLayout()->getBlock('slider.edit.tab.product')->toHtml();
-        $block        .= $resultLayout->getLayout()->getBlock('product_grid_serializer')->toHtml();
-        $result->setData(['output' => $block]);
-
-        return $result;
+        return $this->resultLayoutFactory->create();
     }
 }

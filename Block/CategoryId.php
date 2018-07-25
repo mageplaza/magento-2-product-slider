@@ -62,6 +62,6 @@ class CategoryId extends AbstractSlider
      */
     public function getProductCacheKey()
     {
-        return 'mageplaza_product_slider_category_' . $this->getData('category_id');
+        return 'mp_product_slider_category_' . $this->getData('category_id');
     }
 }

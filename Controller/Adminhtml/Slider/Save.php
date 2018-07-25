@@ -83,7 +83,8 @@ class Save extends Slider
      */
     public function execute()
     {
-        $data           = $this->getRequest()->getPost('slider');
+        $data           = $this->getRequest()->getPost();
+        \Zend_Debug::dump($data); die;
         $resultRedirect = $this->resultRedirectFactory->create();
 
         if ($data) {

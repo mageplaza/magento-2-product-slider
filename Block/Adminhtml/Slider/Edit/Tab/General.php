@@ -19,7 +19,7 @@
  * @license     https://www.mageplaza.com/LICENSE.txt
  */
 
-namespace Mageplaza\Productslider\Block\Adminhtml\Slider\Edit\Tab\General;
+namespace Mageplaza\Productslider\Block\Adminhtml\Slider\Edit\Tab;
 
 use Magento\Backend\Block\Template\Context;
 use Magento\Backend\Block\Widget\Form\Generic;
@@ -32,11 +32,12 @@ use Magento\Framework\Registry;
 use Magento\Framework\Stdlib\DateTime;
 use Magento\Store\Model\System\Store;
 use Mageplaza\Productslider\Model\Config\Source\Location;
+use Mageplaza\Productslider\Model\Config\Source\ProductType;
 use Mageplaza\Productslider\Model\ResourceModel\SliderFactory;
 
 /**
  * Class General
- * @package Mageplaza\Productslider\Block\Adminhtml\Slider\Edit\Tab\General
+ * @package Mageplaza\Productslider\Block\Adminhtml\Slider\Edit\Tab
  */
 class General extends Generic implements TabInterface
 {
@@ -71,16 +72,22 @@ class General extends Generic implements TabInterface
     protected $_location;
 
     /**
+     * @var ProductType
+     */
+    protected $_productType;
+
+    /**
      * General constructor.
-     * @param \Mageplaza\Productslider\Model\ResourceModel\SliderFactory $resourceModelSliderFactory
-     * @param \Magento\Customer\Api\GroupRepositoryInterface $groupRepository
-     * @param \Magento\Framework\Api\SearchCriteriaBuilder $searchCriteriaBuilder
-     * @param \Magento\Framework\Convert\DataObject $objectConverter
-     * @param \Mageplaza\Productslider\Model\Config\Source\Location $location
-     * @param \Magento\Backend\Block\Template\Context $context
-     * @param \Magento\Framework\Registry $registry
-     * @param \Magento\Framework\Data\FormFactory $formFactory
-     * @param \Magento\Store\Model\System\Store $systemStore
+     * @param SliderFactory $resourceModelSliderFactory
+     * @param GroupRepositoryInterface $groupRepository
+     * @param SearchCriteriaBuilder $searchCriteriaBuilder
+     * @param DataObject $objectConverter
+     * @param Location $location
+     * @param Context $context
+     * @param Registry $registry
+     * @param FormFactory $formFactory
+     * @param Store $systemStore
+     * @param ProductType $productType
      * @param array $data
      */
     public function __construct(
@@ -93,6 +100,7 @@ class General extends Generic implements TabInterface
         Registry $registry,
         FormFactory $formFactory,
         Store $systemStore,
+        ProductType $productType,
         array $data = []
     )
     {
@@ -102,6 +110,7 @@ class General extends Generic implements TabInterface
         $this->_objectConverter            = $objectConverter;
         $this->_systemStore                = $systemStore;
         $this->_location                   = $location;
+        $this->_productType                = $productType;
 
         parent::__construct($context, $registry, $formFactory, $data);
     }
@@ -113,65 +122,60 @@ class General extends Generic implements TabInterface
     protected function _prepareForm()
     {
         /** @var \Mageplaza\Productslider\Model\Slider $slider */
-        $slider        = $this->_coreRegistry->registry('mageplaza_productslider_slider');
-        $resourceModel = $this->_resourceModelSliderFactory->create();
+        $slider = $this->_coreRegistry->registry('mageplaza_productslider_slider');
 
         $form = $this->_formFactory->create();
         $form->setHtmlIdPrefix('slider_');
         $form->setFieldNameSuffix('slider');
-        $fieldset = $form->addFieldset(
-            'base_fieldset',
-            [
-                'legend' => __('General Information'),
-                'class'  => 'fieldset-wide'
-            ]
-        );
+        $fieldset = $form->addFieldset('base_fieldset', [
+            'legend' => __('General Information'),
+            'class'  => 'fieldset-wide'
+        ]);
+
         if ($slider->getId()) {
-            $fieldset->addField(
-                'slider_id',
-                'hidden',
-                ['name' => 'slider_id']
-            );
+            $fieldset->addField('slider_id', 'hidden', ['name' => 'slider_id']);
         }
+
         $fieldset->addField('name', 'text', [
-                'name'     => 'name',
-                'label'    => __('Name'),
-                'title'    => __('Name'),
-                'required' => true,
-            ]
-        );
-        $fieldset->addField('title', 'text', [
-                'name'  => 'title',
-                'label' => __('Title'),
-                'title' => __('Title'),
-            ]
-        );
-        $fieldset->addField('description', 'text', [
-                'name'  => 'description',
-                'label' => __('Description'),
-                'title' => __('Description'),
-            ]
-        );
-        $fieldset->addField('limit_number', 'text', [
-                'name'  => 'limit_number',
-                'label' => __('Limit number of products'),
-                'title' => __('Limit number of products'),
-            ]
-        );
+            'name'     => 'name',
+            'label'    => __('Name'),
+            'title'    => __('Name'),
+            'required' => true,
+        ]);
         $fieldset->addField('status', 'select', [
-                'name'     => 'status',
-                'label'    => __('Status'),
-                'title'    => __('Status'),
-                'required' => true,
-                'options'  => [
-                    '1' => __('Active'),
-                    '0' => __('Inactive')
-                ],
+            'name'     => 'status',
+            'label'    => __('Status'),
+            'title'    => __('Status'),
+            'required' => true,
+            'options'  => [
+                '1' => __('Active'),
+                '0' => __('Inactive')
             ]
-        );
+        ]);
         if (!$slider->getId()) {
             $slider->setData('status', 1);
         }
+
+        $fieldset->addField('location', 'select', [
+            'name'   => 'location',
+            'label'  => __('Position'),
+            'title'  => __('Position'),
+            'values' => $this->_location->toOptionArray()
+        ]);
+
+        $productType = $fieldset->addField('product_type', 'select', [
+            'name'   => 'product_type',
+            'label'  => __('Type'),
+            'title'  => __('Type'),
+            'values' => $this->_productType->toOptionArray()
+        ]);
+
+        $categoryIds = $fieldset->addField('categories_ids', '\Mageplaza\Productslider\Block\Adminhtml\Slider\Edit\Tab\Renderer\Category', [
+                'name'  => 'categories_ids',
+                'label' => __('Categories'),
+                'title' => __('Categories')
+            ]
+        );
 
         if (!$this->_storeManager->isSingleStoreMode()) {
             /** @var \Magento\Framework\Data\Form\Element\Renderer\RendererInterface $rendererBlock */
@@ -189,9 +193,7 @@ class General extends Generic implements TabInterface
                 'value' => $this->_storeManager->getStore()->getId()
             ]);
         }
-        $slider->setData('store_ids', $resourceModel->getStoresByRuleId($slider->getId()));
 
-        $slider->setData('customer_group_ids', $resourceModel->getCustomerGroupByRuleId($slider->getId()));
         $customerGroups = $this->_groupRepository->getList($this->_searchCriteriaBuilder->create())->getItems();
         $fieldset->addField('customer_group_ids', 'multiselect', [
                 'name'     => 'customer_group_ids[]',
@@ -202,17 +204,12 @@ class General extends Generic implements TabInterface
                 'note'     => __('Select customer group(s) to display the block to')
             ]
         );
-        $fieldset->addField('location', 'select', [
-            'name'   => 'location',
-            'label'  => __('Position'),
-            'title'  => __('Position'),
-            'values' => $this->_location->toOptionArray()
-        ]);
+
         $fieldset->addField('time_cache', 'text', [
                 'name'  => 'time_cache',
-                'label' => __('Cache Lifetime (Seconds)'),
-                'title' => __('Cache Lifetime (Seconds)'),
-                'note'  => __('86400 by default, if not set. To refresh instantly, clear the Blocks HTML Output cache.')
+                'label' => __('Cache Lifetime'),
+                'title' => __('Cache Lifetime'),
+                'note'  => __('seconds. 86400 by default, if not set. To refresh instantly, clear the Blocks HTML Output cache.')
             ]
         );
         $dateFormat = $this->_localeDate->getDateFormat(\IntlDateFormatter::SHORT);
@@ -231,6 +228,13 @@ class General extends Generic implements TabInterface
                 'input_format' => DateTime::DATE_INTERNAL_FORMAT,
                 'date_format'  => $dateFormat
             ]
+        );
+
+        $this->setChild('form_after',
+            $this->getLayout()->createBlock('Magento\Backend\Block\Widget\Form\Element\Dependence')
+                ->addFieldMap($productType->getHtmlId(), $productType->getName())
+                ->addFieldMap($categoryIds->getHtmlId(), $categoryIds->getName())
+                ->addFieldDependence($categoryIds->getName(), $productType->getName(), ProductType::CATEGORY)
         );
 
         $form->setValues($slider->getData());

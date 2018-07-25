@@ -19,15 +19,15 @@
  * @license     https://www.mageplaza.com/LICENSE.txt
  */
 
-namespace Mageplaza\Productslider\Block\System\Config\Form\Field;
+namespace Mageplaza\Productslider\Block\Adminhtml\Config\Field;
 
 use Magento\Config\Block\System\Config\Form\Field\FieldArray\AbstractFieldArray;
 
 /**
- * Class Active
- * @package Mageplaza\Productslider\Block\System\Config\Form\Field
+ * Class Responsive
+ * @package Mageplaza\Productslider\Block\Adminhtml\Config\Field
  */
-class Active extends AbstractFieldArray
+class Responsive extends AbstractFieldArray
 {
     /**
      * @inheritdoc
