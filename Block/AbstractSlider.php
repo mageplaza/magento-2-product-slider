@@ -224,6 +224,9 @@ abstract class AbstractSlider extends AbstractProduct implements BlockInterface
             if ($key == 'item_slider') {
                 $sliderOptions = $sliderOptions . $this->getResponsiveConfig();
             } else if ($key != 'responsive') {
+                if(in_array($key, ['loop', 'nav', 'dots', 'lazyLoad', 'autoplay', 'autoplayHoverPause'])){
+                    $value = $value ? 'true' : 'false';
+                }
                 $sliderOptions = $sliderOptions . $key . ':' . $value . ',';
             }
         }
