@@ -34,16 +34,33 @@ class Additional implements ArrayInterface
     const SHOW_REVIEW = 3;
 
     /**
-     * Return array of options as value-label pairs
+     * Options getter
      *
-     * @return array Format: array(array('value' => '<value>', 'label' => '<label>'), ...)
+     * @return array
      */
     public function toOptionArray()
     {
+        $options = [];
+
+        foreach ($this->toArray() as $value => $label) {
+            $options[] = [
+                'value' => $value,
+                'label' => $label
+            ];
+        }
+
+        return $options;
+    }
+
+    /**
+     * @return array
+     */
+    protected function toArray()
+    {
         return [
-            ['value' => self::SHOW_PRICE, 'label' => __('Price')],
-            ['value' => self::SHOW_CART, 'label' => __('Add to cart button')],
-            ['value' => self::SHOW_REVIEW, 'label' => __('Review information')]
+            self::SHOW_PRICE  => __('Price'),
+            self::SHOW_CART   => __('Add to cart button'),
+            self::SHOW_REVIEW => __('Review information')
         ];
     }
 }

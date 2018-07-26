@@ -25,11 +25,16 @@
         <label translate="true">Mageplaza Product Slider</label>
         <description>Product Slider</description>
         <parameters>
-            <parameter name="heading" xsi:type="text" required="false" visible="true">
+            <parameter name="title" xsi:type="text" required="false" visible="true">
                 <label translate="true">Title</label>
             </parameter>
-            <parameter name="product_type" xsi:type="select" required="false" visible="true"
-                       source_model="Mageplaza\Productslider\Model\Config\Source\ProductTypeWidget">
+            <parameter name="description" xsi:type="text" required="false" visible="true">
+                <label translate="true">Description</label>
+            </parameter>
+            <parameter name="products_count" xsi:type="text" required="false" visible="true">
+                <label translate="true">Limit number of products</label>
+            </parameter>
+            <parameter name="type" xsi:type="select" required="true" visible="true" source_model="Mageplaza\Productslider\Model\Config\Source\ProductTypeWidget">
                 <label translate="true">Select Slider</label>
             </parameter>
         </parameters>

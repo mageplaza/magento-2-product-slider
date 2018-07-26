@@ -15,7 +15,7 @@
  *
  * @category    Mageplaza
  * @package     Mageplaza_Productslider
- * @copyright   Copyright (c) Mageplaza (http://www.mageplaza.com/)
+ * @copyright   Copyright (c) Mageplaza (https://www.mageplaza.com/)
  * @license     https://www.mageplaza.com/LICENSE.txt
  */
 
@@ -76,13 +76,13 @@ class Edit extends Slider
     public function execute()
     {
         $slider = $this->_initSlider();
-        if ($this->getRequest()->getParam('slider_id') && !$slider->getId()) {
+        if ($this->getRequest()->getParam('id') && !$slider->getId()) {
             $this->messageManager->addErrorMessage(__('This Slider no longer exists.'));
             $resultRedirect = $this->resultRedirectFactory->create();
             $resultRedirect->setPath(
-                'mpproductslider/*/edit',
+                '*/*/edit',
                 [
-                    'slider_id' => $slider->getId(),
+                    'id' => $slider->getId(),
                     '_current'  => true
                 ]
             );

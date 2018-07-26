@@ -15,7 +15,7 @@
  *
  * @category    Mageplaza
  * @package     Mageplaza_Productslider
- * @copyright   Copyright (c) Mageplaza (http://www.mageplaza.com/)
+ * @copyright   Copyright (c) Mageplaza (https://www.mageplaza.com/)
  * @license     https://www.mageplaza.com/LICENSE.txt
  */
 
@@ -87,7 +87,7 @@ class Edit extends Container
      */
     protected function _construct()
     {
-        $this->_objectId   = 'slider_id';
+        $this->_objectId   = 'id';
         $this->_blockGroup = 'Mageplaza_Productslider';
         $this->_controller = 'adminhtml_slider';
 
@@ -119,9 +119,9 @@ class Edit extends Container
             
             function showHideProductTab(){
                 if($('#slider_product_type').val() == 'custom'){
-                    $('#slider_tabs_slider_products').parent().show();
+                    $('#slider_tabs_products').parent().show();
                 } else {
-                    $('#slider_tabs_slider_products').parent().hide();
+                    $('#slider_tabs_products').parent().hide();
                 }
             }
         });

@@ -16,7 +16,7 @@
  *
  * @category    Mageplaza
  * @package     Mageplaza_Productslider
- * @copyright   Copyright (c) Mageplaza (http://www.mageplaza.com/)
+ * @copyright   Copyright (c) Mageplaza (https://www.mageplaza.com/)
  * @license     https://www.mageplaza.com/LICENSE.txt
  */
 -->
@@ -41,13 +41,13 @@
             <argument name="class" xsi:type="string">Magento\Framework\View\Element\UiComponent\DataProvider\DataProvider</argument>
             <argument name="name" xsi:type="string">mpproductslider_slider_listing_data_source</argument>
             <argument name="primaryFieldName" xsi:type="string">slider_id</argument>
-            <argument name="requestFieldName" xsi:type="string">slider_id</argument>
+            <argument name="requestFieldName" xsi:type="string">id</argument>
             <argument name="data" xsi:type="array">
                 <item name="config" xsi:type="array">
                     <item name="component" xsi:type="string">Magento_Ui/js/grid/provider</item>
                     <item name="update_url" xsi:type="url" path="mui/index/render"/>
                     <item name="storageConfig" xsi:type="array">
-                        <item name="indexField" xsi:type="string">post_id</item>
+                        <item name="indexField" xsi:type="string">slider_id</item>
                     </item>
                 </item>
             </argument>
@@ -97,14 +97,14 @@
                 <argument name="actions" xsi:type="array">
                     <item name="0" xsi:type="array">
                         <item name="type" xsi:type="string">enable</item>
-                        <item name="label" xsi:type="string" translate="true">Active</item>
+                        <item name="label" xsi:type="string" translate="true">Enable</item>
                         <item name="url" xsi:type="url" path="mpproductslider/slider/massStatus">
                             <param name="status">1</param>
                         </item>
                     </item>
                     <item name="1" xsi:type="array">
                         <item name="type" xsi:type="string">disable</item>
-                        <item name="label" xsi:type="string" translate="true">Inactive</item>
+                        <item name="label" xsi:type="string" translate="true">Disable</item>
                         <item name="url" xsi:type="url" path="mpproductslider/slider/massStatus">
                             <param name="status">0</param>
                         </item>
@@ -229,7 +229,7 @@
                 </item>
             </argument>
         </column>
-        <actionsColumn name="actions" class="Mageplaza\Productslider\Ui\Component\Listing\Column\SliderActions">
+        <actionsColumn name="actions" class="Mageplaza\Productslider\Ui\Component\Listing\Columns\SliderActions">
             <argument name="data" xsi:type="array">
                 <item name="config" xsi:type="array">
                     <item name="resizeEnabled" xsi:type="boolean">false</item>

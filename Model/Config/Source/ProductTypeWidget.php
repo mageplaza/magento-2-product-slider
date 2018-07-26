@@ -21,40 +21,21 @@
 
 namespace Mageplaza\Productslider\Model\Config\Source;
 
-use Magento\Framework\Option\ArrayInterface;
-
 /**
  * Class ProductTypeWidget
  * @package Mageplaza\Productslider\Model\Config\Source
  */
-class ProductTypeWidget implements ArrayInterface
+class ProductTypeWidget extends ProductType
 {
-    const NEW_PRODUCTS         = 'new';
-    const BEST_SELLER_PRODUCTS = 'best-seller';
-    const FEATURED_PRODUCTS    = 'featured';
-    const MOSTVIEWED_PRODUCTS  = 'mostviewed';
-    const ONSALE_PRODUCTS      = 'onsale';
-    const RECENT_PRODUCT       = 'recent';
-    const WISHLIST_PRODUCT     = 'wishlist';
-    const CATEGORYID           = 'categoryId';
-    const CUSTOM_PRODUCTS      = 'custom';
-
     /**
-     * Return array of options as value-label pairs
-     *
-     * @return array Format: array(array('value' => '<value>', 'label' => '<label>'), ...)
+     * @return array
      */
-    public function toOptionArray()
+    public function toArray()
     {
-        $options = [
-            ['value' => self::NEW_PRODUCTS, 'label' => __('New Products')],
-            ['value' => self::BEST_SELLER_PRODUCTS, 'label' => __('Best Seller Products')],
-            ['value' => self::FEATURED_PRODUCTS, 'label' => __('Featured Products')],
-            ['value' => self::MOSTVIEWED_PRODUCTS, 'label' => __('Most Viewed Products')],
-            ['value' => self::ONSALE_PRODUCTS, 'label' => __('OnSale Products')],
-            ['value' => self::RECENT_PRODUCT, 'label' => __('Recent Products')],
-            ['value' => self::WISHLIST_PRODUCT, 'label' => __('WishList Products')],
-        ];
+        $options = parent::toArray();
+
+        unset($options[self::CATEGORY]);
+        unset($options[self::CUSTOM_PRODUCTS]);
 
         return $options;
     }

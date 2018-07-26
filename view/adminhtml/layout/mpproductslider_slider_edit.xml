@@ -32,15 +32,15 @@
                 <block class="Mageplaza\Productslider\Block\Adminhtml\Slider\Edit\Tab\Products" name="mageplaza_productslider_slider_edit_tab_products"/>
                 <block class="Mageplaza\Productslider\Block\Adminhtml\Slider\Edit\Tab\Design" name="mageplaza_productslider_slider_edit_tab_design"/>
                 <action method="addTab">
-                    <argument name="name" xsi:type="string">slider_general</argument>
+                    <argument name="name" xsi:type="string">general</argument>
                     <argument name="block" xsi:type="string">mageplaza_productslider_slider_edit_tab_general</argument>
                 </action>
                 <action method="addTab">
-                    <argument name="name" xsi:type="string">slider_products</argument>
+                    <argument name="name" xsi:type="string">products</argument>
                     <argument name="block" xsi:type="string">mageplaza_productslider_slider_edit_tab_products</argument>
                 </action>
                 <action method="addTab">
-                    <argument name="name" xsi:type="string">slider_design</argument>
+                    <argument name="name" xsi:type="string">design</argument>
                     <argument name="block" xsi:type="string">mageplaza_productslider_slider_edit_tab_design</argument>
                 </action>
             </block>

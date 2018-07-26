@@ -15,7 +15,7 @@
  *
  * @category    Mageplaza
  * @package     Mageplaza_Productslider
- * @copyright   Copyright (c) Mageplaza (http://www.mageplaza.com/)
+ * @copyright   Copyright (c) Mageplaza (https://www.mageplaza.com/)
  * @license     https://www.mageplaza.com/LICENSE.txt
  */
 
@@ -23,11 +23,11 @@ namespace Mageplaza\Productslider\Block\Adminhtml\Slider\Edit\Tab;
 
 use Magento\Backend\Block\Template\Context;
 use Magento\Backend\Block\Widget\Grid\Extended;
+use Magento\Backend\Block\Widget\Tab\TabInterface;
 use Magento\Backend\Helper\Data;
 use Magento\Catalog\Model\ResourceModel\Product\CollectionFactory;
 use Mageplaza\Productslider\Helper\Data as HeplerData;
 use Mageplaza\Productslider\Model\SliderFactory;
-use Magento\Backend\Block\Widget\Tab\TabInterface;
 
 /**
  * Class Products
@@ -87,7 +87,7 @@ class Products extends Extended implements TabInterface
         $this->setDefaultDir('DESC');
         $this->setSaveParametersInSession(true);
         $this->setUseAjax(true);
-        if ($this->getRequest()->getParam('slider_id')) {
+        if ($this->getRequest()->getParam('id')) {
             $this->setDefaultFilter(['in_product' => 1]);
         }
     }
@@ -211,13 +211,12 @@ class Products extends Extended implements TabInterface
     }
 
     /**
-     * @return mixed
-     * @throws \Zend_Serializer_Exception
+     * @return array
      */
     protected function _getSelectedProducts()
     {
         $slider     = $this->getSlider();
-        $productIds = $slider->getProductIds() ? $this->_helperData->unserialize($slider->getProductIds()) : [];
+        $productIds = $slider->getProductIds() ? explode('&', $slider->getProductIds()) : [];
 
         return $productIds;
     }
@@ -227,7 +226,7 @@ class Products extends Extended implements TabInterface
      */
     protected function getSlider()
     {
-        $sliderId = $this->getRequest()->getParam('slider_id');
+        $sliderId = $this->getRequest()->getParam('id');
         $slider   = $this->_sliderFactory->create();
         if ($sliderId) {
             $slider->load($sliderId);
@@ -237,13 +236,12 @@ class Products extends Extended implements TabInterface
     }
 
     /**
-     * @return array|mixed
-     * @throws \Zend_Serializer_Exception
+     * @return array
      */
     public function getSelectedProducts()
     {
         $slider   = $this->getSlider();
-        $selected = $slider->getProductIds() ? $this->_helperData->unserialize($slider->getProductIds()) : [];
+        $selected = $slider->getProductIds() ? explode('&', $slider->getProductIds()) : [];
 
         if (!is_array($selected)) {
             $selected = [];

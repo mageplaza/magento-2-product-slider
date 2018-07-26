@@ -15,7 +15,7 @@
  *
  * @category    Mageplaza
  * @package     Mageplaza_Productslider
- * @copyright   Copyright (c) Mageplaza (http://www.mageplaza.com/)
+ * @copyright   Copyright (c) Mageplaza (https://www.mageplaza.com/)
  * @license     https://www.mageplaza.com/LICENSE.txt
  */
 
@@ -28,19 +28,20 @@ namespace Mageplaza\Productslider\Block;
 class CustomProducts extends AbstractSlider
 {
     /**
-     * @return $this|array
-     * @throws \Zend_Serializer_Exception
+     * @return $this|mixed
      */
     public function getProductCollection()
     {
-        return $this->getCustomProductsCollection();
-    }
+        $productIds = $this->getSlider()->getProductIds();
+        if (!is_array($productIds)) {
+            $productIds = explode('&', $productIds);
+        }
 
-    /**
-     * @return string
-     */
-    public function getProductCacheKey()
-    {
-        return 'mageplaza_product_slider_customproducts';
+        $collection = $this->_productCollectionFactory->create()
+            ->addIdFilter($productIds)
+            ->setPageSize($this->getProductsCount());
+        $this->_addProductAttributesAndPrices($collection);
+
+        return $collection;
     }
 }

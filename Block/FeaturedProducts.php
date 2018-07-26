@@ -33,14 +33,17 @@ class FeaturedProducts extends AbstractSlider
      */
     public function getProductCollection()
     {
-        return $this->getFeaturedProductsCollection();
-    }
+        $visibleProducts = $this->_catalogProductVisibility->getVisibleInCatalogIds();
 
-    /**
-     * @return string
-     */
-    public function getProductCacheKey()
-    {
-        return 'mageplaza_product_slider_featured';
+        $collection = $this->_productCollectionFactory->create()->setVisibility($visibleProducts);
+        $collection->addMinimalPrice()
+            ->addFinalPrice()
+            ->addTaxPercents()
+            ->addAttributeToSelect('*')
+            ->addStoreFilter($this->getStoreId())
+            ->setPageSize($this->getProductsCount())
+            ->addAttributeToFilter('is_featured', '1');
+
+        return $collection;
     }
 }

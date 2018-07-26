@@ -15,7 +15,7 @@
  *
  * @category    Mageplaza
  * @package     Mageplaza_Productslider
- * @copyright   Copyright (c) Mageplaza (http://www.mageplaza.com/)
+ * @copyright   Copyright (c) Mageplaza (https://www.mageplaza.com/)
  * @license     https://www.mageplaza.com/LICENSE.txt
  */
 
@@ -34,8 +34,8 @@ class Responsive extends AbstractFieldArray
      */
     protected function _prepareToRender()
     {
-        $this->addColumn('col_1', ['label' => __('Screen size max'), 'renderer' => false]);
-        $this->addColumn('col_2', ['label' => __('Number of items'), 'renderer' => false]);
+        $this->addColumn('size', ['label' => __('Screen size max'), 'renderer' => false]);
+        $this->addColumn('items', ['label' => __('Number of items'), 'renderer' => false]);
 
         $this->_addAfter       = false;
         $this->_addButtonLabel = __('Add');

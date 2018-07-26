@@ -15,11 +15,19 @@
  *
  * @category    Mageplaza
  * @package     Mageplaza_Productslider
- * @copyright   Copyright (c) Mageplaza (http://www.mageplaza.com/)
+ * @copyright   Copyright (c) Mageplaza (https://www.mageplaza.com/)
  * @license     https://www.mageplaza.com/LICENSE.txt
  */
 
 namespace Mageplaza\Productslider\Block;
+
+use Magento\Catalog\Block\Product\Context;
+use Magento\Catalog\Model\CategoryFactory;
+use Magento\Catalog\Model\Product\Visibility;
+use Magento\Catalog\Model\ResourceModel\Product\CollectionFactory;
+use Magento\Framework\App\Http\Context as HttpContext;
+use Magento\Framework\Stdlib\DateTime\DateTime;
+use Mageplaza\Productslider\Helper\Data;
 
 /**
  * Class CategoryId
@@ -28,24 +36,36 @@ namespace Mageplaza\Productslider\Block;
 class CategoryId extends AbstractSlider
 {
     /**
-     * Default category id
-     */
-    const DEFAULT_CATEGORY = 2;
-
-    /**
-     * @var \Mageplaza\Productslider\Model\SliderFactory
-     */
-    protected $_sliderFactory;
-
-    /**
-     * @var \Magento\Catalog\Model\ResourceModel\Product\CollectionFactory
-     */
-    protected $_productCollectionFactory;
-
-    /**
      * @var \Magento\Catalog\Model\CategoryFactory
      */
     protected $_categoryFactory;
+
+    /**
+     * CategoryId constructor.
+     * @param Context $context
+     * @param CollectionFactory $productCollectionFactory
+     * @param Visibility $catalogProductVisibility
+     * @param DateTime $dateTime
+     * @param Data $helperData
+     * @param HttpContext $httpContext
+     * @param CategoryFactory $categoryFactory
+     * @param array $data
+     */
+    public function __construct(
+        Context $context,
+        CollectionFactory $productCollectionFactory,
+        Visibility $catalogProductVisibility,
+        DateTime $dateTime,
+        Data $helperData,
+        HttpContext $httpContext,
+        CategoryFactory $categoryFactory,
+        array $data = []
+    )
+    {
+        $this->_categoryFactory = $categoryFactory;
+
+        parent::__construct($context, $productCollectionFactory, $catalogProductVisibility, $dateTime, $helperData, $httpContext, $data);
+    }
 
     /**
      * Get Product Collection by Category Ids
@@ -54,14 +74,55 @@ class CategoryId extends AbstractSlider
      */
     public function getProductCollection()
     {
-        return $this->getCategoryIdsCollection();
+        $productIds = $this->getProductIdsByCategory();
+        $collection = [];
+        if (!empty($productIds)) {
+            $collection = $this->_productCollectionFactory->create()->addIdFilter($productIds)->setPageSize($this->getProductsCount());;
+            $this->_addProductAttributesAndPrices($collection);
+        }
+
+        return $collection;
     }
 
     /**
-     * @return string
+     * Get ProductIds by Category
+     *
+     * @return array
      */
-    public function getProductCacheKey()
+    public function getProductIdsByCategory()
     {
-        return 'mp_product_slider_category_' . $this->getData('category_id');
+        $productIds = [];
+        $catIds     = $this->getSliderCategoryIds();
+        foreach ($catIds as $catId) {
+            $category   = $this->_categoryFactory->create()->load($catId);
+            $collection = $this->_productCollectionFactory->create()
+                ->addAttributeToSelect('*')
+                ->addCategoryFilter($category);
+
+            foreach ($collection as $item) {
+                $productIds[] = $item->getData('entity_id');
+            }
+        }
+
+        return $productIds;
+    }
+
+    /**
+     * Get Slider CategoryIds
+     *
+     * @return array|int|mixed
+     */
+    public function getSliderCategoryIds()
+    {
+        if ($this->getData('category_id')) {
+            return $this->getData('category_id');
+        }
+        if ($this->getSlider()) {
+            $catIds = explode(',', $this->getSlider()->getCategoriesIds());
+
+            return $catIds;
+        }
+
+        return 2;
     }
 }

@@ -34,7 +34,7 @@
                     <comment>Select Yes to enable this module</comment>
                 </field>
                 <field id="display_information" translate="label comment" type="multiselect" sortOrder="20" showInDefault="1" showInWebsite="1" showInStore="1">
-                    <label>Display Additional Information</label>
+                    <label>Default Display Additional Information</label>
                     <source_model>Mageplaza\Productslider\Model\Config\Source\Additional</source_model>
                 </field>
             </group>

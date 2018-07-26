@@ -15,7 +15,7 @@
  *
  * @category    Mageplaza
  * @package     Mageplaza_Productslider
- * @copyright   Copyright (c) Mageplaza (http://www.mageplaza.com/)
+ * @copyright   Copyright (c) Mageplaza (https://www.mageplaza.com/)
  * @license     https://www.mageplaza.com/LICENSE.txt
  */
 
@@ -37,14 +37,14 @@ class Delete extends Slider
         $resultRedirect = $this->resultRedirectFactory->create();
         try {
             $this->_sliderFactory->create()
-                ->load($this->getRequest()->getParam('slider_id'))
+                ->load($this->getRequest()->getParam('id'))
                 ->delete();
             $this->messageManager->addSuccessMessage(__('The Slider has been deleted.'));
         } catch (\Exception $e) {
             // display error message
             $this->messageManager->addErrorMessage($e->getMessage());
             // go back to edit form
-            $resultRedirect->setPath('*/*/edit', ['slider_id' => $this->getRequest()->getParam('slider_id')]);
+            $resultRedirect->setPath('*/*/edit', ['id' => $this->getRequest()->getParam('id')]);
 
             return $resultRedirect;
         }

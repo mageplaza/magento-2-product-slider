@@ -15,11 +15,11 @@
  *
  * @category    Mageplaza
  * @package     Mageplaza_Productslider
- * @copyright   Copyright (c) Mageplaza (http://www.mageplaza.com/)
+ * @copyright   Copyright (c) Mageplaza (https://www.mageplaza.com/)
  * @license     https://www.mageplaza.com/LICENSE.txt
  */
 
-namespace Mageplaza\Productslider\Ui\Component\Listing\Column;
+namespace Mageplaza\Productslider\Ui\Component\Listing\Columns;
 
 use Magento\Framework\UrlInterface;
 use Magento\Framework\View\Element\UiComponent\ContextInterface;
@@ -32,19 +32,6 @@ use Magento\Ui\Component\Listing\Columns\Column;
  */
 class SliderActions extends Column
 {
-    /**
-     * Url path  to edit
-     *
-     * @var string
-     */
-    const URL_PATH_EDIT = 'mpproductslider/slider/edit';
-    /**
-     * Url path  to delete
-     *
-     * @var string
-     */
-    const URL_PATH_DELETE = 'mpproductslider/slider/delete';
-
     /**
      * URL builder
      *
@@ -86,12 +73,7 @@ class SliderActions extends Column
                 if (isset($item['slider_id'])) {
                     $item[$this->getData('name')] = [
                         'edit' => [
-                            'href'  => $this->_urlBuilder->getUrl(
-                                static::URL_PATH_EDIT,
-                                [
-                                    'slider_id' => $item['slider_id']
-                                ]
-                            ),
+                            'href'  => $this->_urlBuilder->getUrl('mpproductslider/slider/edit', ['id' => $item['slider_id']]),
                             'label' => __('Edit')
                         ]
                     ];

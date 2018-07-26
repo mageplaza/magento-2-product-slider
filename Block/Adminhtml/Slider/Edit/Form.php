@@ -15,7 +15,7 @@
  *
  * @category    Mageplaza
  * @package     Mageplaza_Productslider
- * @copyright   Copyright (c) Mageplaza (http://www.mageplaza.com/)
+ * @copyright   Copyright (c) Mageplaza (https://www.mageplaza.com/)
  * @license     https://www.mageplaza.com/LICENSE.txt
  */
 
@@ -40,7 +40,7 @@ class Form extends Generic
             [
                 'data' => [
                     'id'      => 'edit_form',
-                    'action'  => $this->getData('action'),
+                    'action'  => $this->getUrl('*/*/save', ['id' => $this->getRequest()->getParam('id')]),
                     'method'  => 'post',
                     'enctype' => 'multipart/form-data'
                 ]

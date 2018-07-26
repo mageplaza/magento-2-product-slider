@@ -15,7 +15,7 @@
  *
  * @category    Mageplaza
  * @package     Mageplaza_Productslider
- * @copyright   Copyright (c) Mageplaza (http://www.mageplaza.com/)
+ * @copyright   Copyright (c) Mageplaza (https://www.mageplaza.com/)
  * @license     https://www.mageplaza.com/LICENSE.txt
  */
 
@@ -35,7 +35,6 @@ use Mageplaza\Productslider\Model\Config\Source\Additional;
  */
 class Design extends Generic implements TabInterface
 {
-
     /**
      * @var \Magento\Store\Model\System\Store
      */
@@ -71,14 +70,13 @@ class Design extends Generic implements TabInterface
     {
         $this->_helperData = $helperData;
         $this->_additional = $additional;
-        
+
         parent::__construct($context, $registry, $formFactory, $data);
     }
 
     /**
-     * @return \Magento\Backend\Block\Widget\Form\Generic
+     * @return $this
      * @throws \Magento\Framework\Exception\LocalizedException
-     * @throws \Zend_Serializer_Exception
      */
     protected function _prepareForm()
     {
@@ -113,35 +111,29 @@ class Design extends Generic implements TabInterface
         ]);
 
         $fieldset->addField('display_additional', 'multiselect', [
-                'name'   => 'display_additional',
-                'label'  => __('Display additional information'),
-                'title'  => __('Display additional information'),
-                'values' => $this->_additional->toOptionArray(),
-                'note'   => __('Select information or button(s) to display with products.')
-            ]);
-        if ($displayData = $slider->getDisplayAdditional()) {
-            $slider->setData('display_additional', $this->_helperData->unserialize($displayData));
-        }
+            'name'   => 'display_additional',
+            'label'  => __('Display additional information'),
+            'title'  => __('Display additional information'),
+            'values' => $this->_additional->toOptionArray(),
+            'note'   => __('Select information or button(s) to display with products.')
+        ]);
 
         $isResponsive = $fieldset->addField('is_responsive', 'select', [
-                'name'    => 'is_responsive',
-                'label'   => __('Is Responsive'),
-                'title'   => __('Is Responsive'),
-                'options' => [
-                    '1' => __('Yes'),
-                    '0' => __('No'),
-                    '2' => __('Use Config')
-                ]
-            ]);
-        
+            'name'    => 'is_responsive',
+            'label'   => __('Is Responsive'),
+            'title'   => __('Is Responsive'),
+            'options' => [
+                '1' => __('Yes'),
+                '0' => __('No'),
+                '2' => __('Use Config')
+            ]
+        ]);
+
         $responsiveItem = $fieldset->addField('responsive_items', 'Mageplaza\Productslider\Block\Adminhtml\Slider\Edit\Tab\Renderer\Responsive', [
-                'name'  => 'responsive_items',
-                'label' => __('Max Items slider'),
-                'title' => __('Max Items slider'),
-            ]);
-        if ($responsiveData = $slider->getResponsiveItems()) {
-            $slider->setData('responsive_items', $this->_helperData->unserialize($responsiveData));
-        }
+            'name'  => 'responsive_items',
+            'label' => __('Max Items slider'),
+            'title' => __('Max Items slider'),
+        ]);
 
         $this->setChild('form_after',
             $this->getLayout()->createBlock('Magento\Backend\Block\Widget\Form\Element\Dependence')

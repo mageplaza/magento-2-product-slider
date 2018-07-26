@@ -15,7 +15,7 @@
  *
  * @category    Mageplaza
  * @package     Mageplaza_Productslider
- * @copyright   Copyright (c) Mageplaza (http://www.mageplaza.com/)
+ * @copyright   Copyright (c) Mageplaza (https://www.mageplaza.com/)
  * @license     https://www.mageplaza.com/LICENSE.txt
  */
 
@@ -76,9 +76,9 @@ abstract class Slider extends Action
      */
     protected function _initSlider()
     {
-        $sliderId = (int)$this->getRequest()->getParam('slider_id');
         $slider   = $this->_sliderFactory->create();
 
+        $sliderId = (int)$this->getRequest()->getParam('id');
         if ($sliderId) {
             $slider->load($sliderId);
         }

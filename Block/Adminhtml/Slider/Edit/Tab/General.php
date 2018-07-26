@@ -15,7 +15,7 @@
  *
  * @category    Mageplaza
  * @package     Mageplaza_Productslider
- * @copyright   Copyright (c) Mageplaza (http://www.mageplaza.com/)
+ * @copyright   Copyright (c) Mageplaza (https://www.mageplaza.com/)
  * @license     https://www.mageplaza.com/LICENSE.txt
  */
 
@@ -132,10 +132,6 @@ class General extends Generic implements TabInterface
             'class'  => 'fieldset-wide'
         ]);
 
-        if ($slider->getId()) {
-            $fieldset->addField('slider_id', 'hidden', ['name' => 'slider_id']);
-        }
-
         $fieldset->addField('name', 'text', [
             'name'     => 'name',
             'label'    => __('Name'),
@@ -148,8 +144,8 @@ class General extends Generic implements TabInterface
             'title'    => __('Status'),
             'required' => true,
             'options'  => [
-                '1' => __('Active'),
-                '0' => __('Inactive')
+                '1' => __('Enable'),
+                '0' => __('Disable')
             ]
         ]);
         if (!$slider->getId()) {

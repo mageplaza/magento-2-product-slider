@@ -15,7 +15,7 @@
  *
  * @category    Mageplaza
  * @package     Mageplaza_Productslider
- * @copyright   Copyright (c) Mageplaza (http://www.mageplaza.com/)
+ * @copyright   Copyright (c) Mageplaza (https://www.mageplaza.com/)
  * @license     https://www.mageplaza.com/LICENSE.txt
  */
 
@@ -28,20 +28,32 @@ namespace Mageplaza\Productslider\Block;
 class NewProducts extends AbstractSlider
 {
     /**
-     * Get New product collection
-     *
-     * @return $this
+     * @inheritdoc
      */
     public function getProductCollection()
     {
-        return $this->getNewProductsCollection();
-    }
+        $visibleProducts = $this->_catalogProductVisibility->getVisibleInCatalogIds();
+        $collection      = $this->_productCollectionFactory->create()->setVisibility($visibleProducts);
+        $collection      = $this->_addProductAttributesAndPrices($collection)
+            ->addAttributeToFilter(
+                'news_from_date',
+                ['date' => true, 'to' => $this->getEndOfDayDate()],
+                'left')
+            ->addAttributeToFilter(
+                'news_to_date',
+                [
+                    'or' => [
+                        0 => ['date' => true, 'from' => $this->getStartOfDayDate()],
+                        1 => ['is' => new \Zend_Db_Expr('null')],
+                    ]
+                ],
+                'left')
+            ->addAttributeToSort(
+                'news_from_date',
+                'desc')
+            ->addStoreFilter($this->getStoreId())
+            ->setPageSize($this->getProductsCount());
 
-    /**
-     * @return string
-     */
-    public function getProductCacheKey()
-    {
-        return 'mageplaza_product_slider_newproducts';
+        return $collection;
     }
 }

@@ -15,14 +15,20 @@
  *
  * @category    Mageplaza
  * @package     Mageplaza_Productslider
- * @copyright   Copyright (c) Mageplaza (http://www.mageplaza.com/)
+ * @copyright   Copyright (c) Mageplaza (https://www.mageplaza.com/)
  * @license     https://www.mageplaza.com/LICENSE.txt
  */
 
 namespace Mageplaza\Productslider\Block\Widget;
 
+use Magento\Catalog\Block\Product\Context;
+use Magento\Catalog\Model\Product\Visibility;
+use Magento\Catalog\Model\ResourceModel\Product\CollectionFactory;
+use Magento\Framework\App\Http\Context as HttpContext;
+use Magento\Framework\Stdlib\DateTime\DateTime;
 use Mageplaza\Productslider\Block\AbstractSlider;
-use Mageplaza\Productslider\Model\Config\Source\ProductTypeWidget;
+use Mageplaza\Productslider\Helper\Data;
+use Mageplaza\Productslider\Model\Config\Source\ProductType;
 
 /**
  * Class Slider
@@ -31,15 +37,40 @@ use Mageplaza\Productslider\Model\Config\Source\ProductTypeWidget;
 class Slider extends AbstractSlider
 {
     /**
-     * Path to template file.
-     *
-     * @var string
+     * @var ProductType
      */
-    protected $_template = 'Mageplaza_Productslider::widget/productslider.phtml';
+    protected $productType;
 
     /**
-     * Get Product Collection by Product Type
-     * @return $this|array
+     * Slider constructor.
+     * @param Context $context
+     * @param CollectionFactory $productCollectionFactory
+     * @param Visibility $catalogProductVisibility
+     * @param DateTime $dateTime
+     * @param Data $helperData
+     * @param HttpContext $httpContext
+     * @param ProductType $productType
+     * @param array $data
+     */
+    public function __construct(
+        Context $context,
+        CollectionFactory $productCollectionFactory,
+        Visibility $catalogProductVisibility,
+        DateTime $dateTime,
+        Data $helperData,
+        HttpContext $httpContext,
+        ProductType $productType,
+        array $data = []
+    )
+    {
+        $this->productType = $productType;
+
+        parent::__construct($context, $productCollectionFactory, $catalogProductVisibility, $dateTime, $helperData, $httpContext, $data);
+    }
+
+    /**
+     * @return array
+     * @throws \Magento\Framework\Exception\LocalizedException
      */
     public function getProductCollection()
     {
@@ -48,39 +79,18 @@ class Slider extends AbstractSlider
         if ($this->hasData('product_type')) {
             $productType = $this->getData('product_type');
 
-            switch ($productType) {
-                case ProductTypeWidget::NEW_PRODUCTS :
-                    $collection = $this->getNewProductsCollection();
-                    break;
-                case ProductTypeWidget::BEST_SELLER_PRODUCTS :
-                    $collection = $this->getBestSellerProductsCollection();
-                    break;
-                case ProductTypeWidget::FEATURED_PRODUCTS :
-                    $collection = $this->getFeaturedProductsCollection();
-                    break;
-                case ProductTypeWidget::MOSTVIEWED_PRODUCTS :
-                    $collection = $this->getMostViewedProductsCollection();
-                    break;
-                case ProductTypeWidget::ONSALE_PRODUCTS :
-                    $collection = $this->getOnSaleProductCollection();
-                    break;
-                case ProductTypeWidget::RECENT_PRODUCT :
-                    $collection = $this->getRecentProducts();
-                    break;
-                case ProductTypeWidget::WISHLIST_PRODUCT :
-                    $collection = $this->getWishlistProductsCollection();
-                    break;
-            }
+            $collection = $this->getLayout()->createBlock($this->productType->getBlockMap($productType))
+                ->getProductCollection();
         }
 
         return $collection;
     }
 
     /**
-     * @return string
+     * @return bool|mixed
      */
-    public function getProductCacheKey()
+    public function getDisplayAdditional()
     {
-        return 'mageplaza_product_slider_widget';
+        return $this->_helperData->getModuleConfig('general/display_information');
     }
 }
