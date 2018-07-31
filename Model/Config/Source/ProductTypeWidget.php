@@ -39,4 +39,18 @@ class ProductTypeWidget extends ProductType
 
         return $options;
     }
+
+    public function toOptionArray()
+    {
+        $options = [];
+
+        foreach ($this->toArray() as $value => $label) {
+            $options[] = [
+                'value' => $value,
+                'label' => $label
+            ];
+        }
+
+        return $options;
+    }
 }

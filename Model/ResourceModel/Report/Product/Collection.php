@@ -21,13 +21,13 @@
 
 namespace Mageplaza\ProductSlider\Model\ResourceModel\Report\Product;
 
-use Magento\Reports\Model\ResourceModel\Product;
+use Magento\Reports\Model\ResourceModel\Product\Collection as ReportCollection;
 
 /**
  * Class Collection
  * @package Mageplaza\ProductSlider\Model\ResourceModel\Report\Product
  */
-class Collection extends Product\Collection
+class Collection extends ReportCollection
 {
     /**
      * @param string $from

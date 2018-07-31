@@ -34,8 +34,16 @@
             <parameter name="products_count" xsi:type="text" required="false" visible="true">
                 <label translate="true">Limit number of products</label>
             </parameter>
-            <parameter name="type" xsi:type="select" required="true" visible="true" source_model="Mageplaza\Productslider\Model\Config\Source\ProductTypeWidget">
+            <parameter name="product_type" xsi:type="select" required="true" visible="true" source_model="Mageplaza\Productslider\Model\Config\Source\ProductTypeWidget">
                 <label translate="true">Select Slider</label>
+            </parameter>
+            <parameter name="template" xsi:type="select" required="true" visible="true">
+                <label translate="true">Template</label>
+                <options>
+                    <option name="slider" value="Mageplaza_Productslider::widget/productslider.phtml" selected="true">
+                        <label translate="true">Default Slider Template</label>
+                    </option>
+                </options>
             </parameter>
         </parameters>
     </widget>

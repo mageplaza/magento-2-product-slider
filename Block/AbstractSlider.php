@@ -27,7 +27,6 @@ use Magento\Catalog\Model\Product\Visibility;
 use Magento\Catalog\Model\ResourceModel\Product\CollectionFactory;
 use Magento\Framework\App\Http\Context as HttpContext;
 use Magento\Framework\Stdlib\DateTime\DateTime;
-use Magento\Widget\Block\BlockInterface;
 use Mageplaza\Productslider\Helper\Data;
 use Mageplaza\Productslider\Model\Config\Source\Additional;
 
@@ -35,7 +34,7 @@ use Mageplaza\Productslider\Model\Config\Source\Additional;
  * Class AbstractSlider
  * @package Mageplaza\Productslider\Block
  */
-abstract class AbstractSlider extends AbstractProduct implements BlockInterface
+abstract class AbstractSlider extends AbstractProduct
 {
     /**
      * @var \Magento\Framework\Stdlib\DateTime\DateTime

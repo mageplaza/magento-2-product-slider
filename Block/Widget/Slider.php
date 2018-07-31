@@ -29,13 +29,16 @@ use Magento\Framework\Stdlib\DateTime\DateTime;
 use Mageplaza\Productslider\Block\AbstractSlider;
 use Mageplaza\Productslider\Helper\Data;
 use Mageplaza\Productslider\Model\Config\Source\ProductType;
+use Magento\Widget\Block\BlockInterface;
 
 /**
  * Class Slider
  * @package Mageplaza\Productslider\Block\Widget
  */
-class Slider extends AbstractSlider
+class Slider extends AbstractSlider implements BlockInterface
 {
+
+    protected $_template = "widget/productslider.phtml";
     /**
      * @var ProductType
      */
@@ -91,6 +94,24 @@ class Slider extends AbstractSlider
      */
     public function getDisplayAdditional()
     {
-        return $this->_helperData->getModuleConfig('general/display_information');
+        $display = $this->_helperData->getModuleConfig('general/display_information');
+        if (!is_array($display)) {
+            $display = explode(',', $display);
+        }
+        return $display;
     }
+
+    public function getHelperData()
+    {
+        return $this->_helperData;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getTitle()
+    {
+        return $this->getData('title');
+    }
+
 }
