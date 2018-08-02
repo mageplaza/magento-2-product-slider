@@ -37,8 +37,11 @@ use Magento\Widget\Block\BlockInterface;
  */
 class Slider extends AbstractSlider implements BlockInterface
 {
+    /**
+     * @var string
+     */
+    protected $_template = "Mageplaza_Productslider::productslider.phtml";
 
-    protected $_template = "widget/productslider.phtml";
     /**
      * @var ProductType
      */
@@ -113,5 +116,4 @@ class Slider extends AbstractSlider implements BlockInterface
     {
         return $this->getData('title');
     }
-
 }
