@@ -68,7 +68,7 @@ class ProductType implements ArrayInterface
             self::BEST_SELLER_PRODUCTS => __('Best Seller Products'),
             self::FEATURED_PRODUCTS    => __('Featured Products'),
             self::MOSTVIEWED_PRODUCTS  => __('Most Viewed Products'),
-            self::ONSALE_PRODUCTS      => __('OnSale Products'),
+            self::ONSALE_PRODUCTS      => __('On Sale Products'),
             self::RECENT_PRODUCT       => __('Recent Products'),
 //            self::WISHLIST_PRODUCT     => __('WishList Products'),
             self::CATEGORY             => __('Select By Category'),

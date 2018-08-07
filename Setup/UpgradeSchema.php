@@ -58,7 +58,7 @@ class UpgradeSchema implements UpgradeSchemaInterface
                 ->addColumn('description', Table::TYPE_TEXT, '64k', [], 'Description')
                 ->addColumn('store_ids', Table::TYPE_TEXT, 255, [])
                 ->addColumn('customer_group_ids', Table::TYPE_TEXT, 255, [])
-                ->addColumn('limit_number', Table::TYPE_SMALLINT, null, ['unsigned' => true, 'nullable' => false], 'Limit Number Of Products')
+                ->addColumn('limit_number', Table::TYPE_SMALLINT, null, ['unsigned' => true, 'nullable' => false], 'Limit the number of products')
                 ->addColumn('location', Table::TYPE_TEXT, 255, [], 'Location')
                 ->addColumn('time_cache', Table::TYPE_TEXT, 255, [], 'Cache Lifetime')
                 ->addColumn('from_date', Table::TYPE_DATE, null, ['nullable' => true, 'default' => null], 'From')

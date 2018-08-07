@@ -106,8 +106,8 @@ class Design extends Generic implements TabInterface
         ]);
         $fieldset->addField('limit_number', 'text', [
             'name'  => 'limit_number',
-            'label' => __('Limit number of products'),
-            'title' => __('Limit number of products'),
+            'label' => __('Limit the number of products'),
+            'title' => __('Limit the number of products'),
         ]);
 
         $fieldset->addField('display_additional', 'multiselect', [
