@@ -10,7 +10,7 @@ When you enable **Magento 2 Product Slider** module and create the product slide
 ## Documentations
 
 - [Installation guide](https://www.mageplaza.com/install-magento-2-extension/)
-- [User Guide])(https://docs.mageplaza.com/product-slider-m2/)
+- [User Guide](https://docs.mageplaza.com/product-slider-m2/)
 - [Introduction page](https://www.mageplaza.com/magento-2-product-slider-extension/)
 - [FAQs](https://www.mageplaza.com/faqs/)
 - [Contribute on Github](https://github.com/mageplaza/magento-2-product-slider/)
