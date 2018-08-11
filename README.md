@@ -9,14 +9,14 @@ When you enable **Magento 2 Product Slider** module and create the product slide
 
 ## Documentations
 
-- Installation Guide: https://docs.mageplaza.com/kb/installation.html
-- User Guide: https://docs.mageplaza.com/product-slider-m2/
-- Product Page: https://www.mageplaza.com/magento-2-product-slider-extension/
-- FAQs: https://www.mageplaza.com/faqs/
-- Contribute on Github: https://github.com/mageplaza/magento-2-product-slider/
-- Get premium support from Mageplaza: Purchase Support package https://www.mageplaza.com/magento-2-extension-support-package/
-- Changelog: https://www.mageplaza.com/changelog/m2-product-slider.txt
-- License: https://www.mageplaza.com/LICENSE.txt
+- [Installation guide](https://www.mageplaza.com/install-magento-2-extension/)
+- [User Guide])(https://docs.mageplaza.com/product-slider-m2/)
+- [Introduction page](https://www.mageplaza.com/magento-2-product-slider-extension/)
+- [FAQs](https://www.mageplaza.com/faqs/)
+- [Contribute on Github](https://github.com/mageplaza/magento-2-product-slider/)
+- Get premium support from Mageplaza: [Purchase Support package](https://www.mageplaza.com/magento-2-extension-support-package/)
+- [Changelog](https://github.com/mageplaza/magento-2-product-slider/releases)
+- [License](https://www.mageplaza.com/LICENSE.txt)
 
 ## How to install
 
