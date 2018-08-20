@@ -96,4 +96,62 @@ class Data extends AbstractData
 
         return $collection;
     }
+
+    /**
+     * Retrieve all configuration options for product slider
+     *
+     * @return string
+     * @throws \Zend_Serializer_Exception
+     */
+    public function getAllOptions()
+    {
+        $sliderOptions = '';
+        $allConfig     = $this->getModuleConfig('slider_design');
+        foreach ($allConfig as $key => $value) {
+            if ($key == 'item_slider') {
+                $sliderOptions = $sliderOptions . $this->getResponseValue();
+            } else if ($key != 'responsive') {
+                if(in_array($key, ['loop', 'nav', 'dots', 'lazyLoad', 'autoplay', 'autoplayHoverPause'])){
+                    $value = $value ? 'true' : 'false';
+                }
+                $sliderOptions = $sliderOptions . $key . ':' . $value . ',';
+            }
+        }
+
+        return '{' . $sliderOptions . '}';
+    }
+
+    /**
+     * @return bool
+     */
+    public function isResponsive()
+    {
+        if ($this->getModuleConfig('slider_design/responsive') == 1) {
+            return true;
+        }
+
+        return false;
+    }
+
+    /**
+     * Retrieve responsive values for product slider
+     *
+     * @return string
+     * @throws \Zend_Serializer_Exception
+     */
+    public function getResponseValue()
+    {
+        $responsiveOptions = '';
+        $responsiveConfig = $this->isResponsive() ? $this->unserialize($this->getModuleConfig('slider_design/item_slider')) : [];
+
+        foreach ($responsiveConfig as $config) {
+            if ($config['size'] && $config['items']) {
+                $responsiveOptions = $responsiveOptions . $config['size'] . ':{items:' . $config['items'] . '},';
+            }
+        }
+
+        $responsiveOptions = rtrim($responsiveOptions, ',');
+
+        return 'responsive:{' . $responsiveOptions . '}';
+    }
 }

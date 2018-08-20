@@ -31,6 +31,10 @@
             <parameter name="description" xsi:type="text" required="false" visible="true">
                 <label translate="true">Description</label>
             </parameter>
+            <parameter name="show_pager" xsi:type="select" visible="false"
+                       source_model="Magento\Config\Model\Config\Source\Yesno">
+                <label translate="true">Display Page Control</label>
+            </parameter>
             <parameter name="products_count" xsi:type="text" required="false" visible="true">
                 <label translate="true">Limit the number of products</label>
             </parameter>

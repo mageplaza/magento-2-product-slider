@@ -38,14 +38,19 @@ use Magento\Widget\Block\BlockInterface;
 class Slider extends AbstractSlider implements BlockInterface
 {
     /**
-     * @var string
+     * Display products type - new products
      */
-    protected $_template = "Mageplaza_Productslider::productslider.phtml";
+    const DISPLAY_TYPE_NEW_PRODUCTS = 'new';
 
     /**
      * @var ProductType
      */
     protected $productType;
+
+    /**
+     * @var \Magento\Framework\Serialize\Serializer\Json
+     */
+    private $serializer;
 
     /**
      * Slider constructor.
@@ -66,12 +71,22 @@ class Slider extends AbstractSlider implements BlockInterface
         Data $helperData,
         HttpContext $httpContext,
         ProductType $productType,
+        \Magento\Framework\Serialize\Serializer\Json $serializer = null,
         array $data = []
     )
     {
         $this->productType = $productType;
 
         parent::__construct($context, $productCollectionFactory, $catalogProductVisibility, $dateTime, $helperData, $httpContext, $data);
+        $this->serializer = $serializer ?: \Magento\Framework\App\ObjectManager::getInstance()
+            ->get(\Magento\Framework\Serialize\Serializer\Json::class);
+    }
+
+    public function _construct()
+    {
+        parent::_construct();
+
+        $this->setTemplate('Mageplaza_Productslider::widget/productslider.phtml');
     }
 
     /**
@@ -87,9 +102,27 @@ class Slider extends AbstractSlider implements BlockInterface
 
             $collection = $this->getLayout()->createBlock($this->productType->getBlockMap($productType))
                 ->getProductCollection();
+            $collection->setPageSize($this->getPageSize())->setCurPage($this->getCurrentPage());
         }
 
         return $collection;
+    }
+
+    /**
+     * Get key pieces for caching block content
+     *
+     * @return array
+     */
+    public function getCacheKeyInfo()
+    {
+        return array_merge(
+            parent::getCacheKeyInfo(),
+            [
+                $this->getDisplayType(),
+                intval($this->getRequest()->getParam($this->getData('page_var_name'), 1)),
+                $this->serializer->serialize($this->getRequest()->getParams())
+            ]
+        );
     }
 
     /**
@@ -110,10 +143,54 @@ class Slider extends AbstractSlider implements BlockInterface
     }
 
     /**
+     * Retrieve display type for products
+     *
+     * @return string
+     */
+    public function getDisplayType()
+    {
+        if (!$this->hasData('product_type')) {
+            $this->setData('product_type', self::DISPLAY_TYPE_NEW_PRODUCTS);
+        }
+        return $this->getData('product_type');
+    }
+
+    /**
+     * Get number of current page based on query value
+     *
+     * @return int
+     */
+    public function getCurrentPage()
+    {
+        return abs((int)$this->getRequest()->getParam($this->getData('page_var_name')));
+    }
+
+    /**
+     * Retrieve how many products should be displayed on page
+     *
+     * @return int
+     */
+    protected function getPageSize()
+    {
+        return $this->getProductsCount();
+    }
+
+    /**
      * @return mixed
      */
     public function getTitle()
     {
         return $this->getData('title');
+    }
+
+    /**
+     * Retrieve all configuration options for product slider
+     *
+     * @return string
+     * @throws \Zend_Serializer_Exception
+     */
+    public function getAllOptions()
+    {
+        return $this->_helperData->getAllOptions();
     }
 }

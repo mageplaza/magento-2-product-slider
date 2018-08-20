@@ -242,7 +242,7 @@ abstract class AbstractSlider extends AbstractProduct
         if ($slider && $slider->getIsResponsive()) {
             try {
                 if ($slider->getIsResponsive() == 2) {
-                    $responsiveConfig = $this->_helperData->getModuleConfig('slider_design/responsive') ? $this->_helperData->unserialize($this->_helperData->getModuleConfig('slider_design/item_slider')) : [];
+                    return $responsiveConfig = $this->_helperData->getResponseValue();
                 } else {
                     $responsiveConfig = $slider->getResponsiveItems() ? $this->_helperData->unserialize($slider->getResponsiveItems()) : [];
                 }
