@@ -71,15 +71,11 @@ class Slider extends AbstractSlider implements BlockInterface
         Data $helperData,
         HttpContext $httpContext,
         ProductType $productType,
-        \Magento\Framework\Serialize\Serializer\Json $serializer = null,
         array $data = []
     )
     {
-        $this->productType = $productType;
-
         parent::__construct($context, $productCollectionFactory, $catalogProductVisibility, $dateTime, $helperData, $httpContext, $data);
-        $this->serializer = $serializer ?: \Magento\Framework\App\ObjectManager::getInstance()
-            ->get(\Magento\Framework\Serialize\Serializer\Json::class);
+        $this->productType = $productType;
     }
 
     public function _construct()
@@ -115,12 +111,19 @@ class Slider extends AbstractSlider implements BlockInterface
      */
     public function getCacheKeyInfo()
     {
+        if ($this->_helperData->versionCompare('2.2.0')) {
+            $this->serializer = \Magento\Framework\App\ObjectManager::getInstance()
+                ->get(\Magento\Framework\Serialize\Serializer\Json::class);
+            $params = $this->serializer->serialize($this->getRequest()->getParams());
+        }
+        else $params = serialize($this->getRequest()->getParams());
+
         return array_merge(
             parent::getCacheKeyInfo(),
             [
-                $this->getDisplayType(),
+                $this->getData('page_var_name'),
                 intval($this->getRequest()->getParam($this->getData('page_var_name'), 1)),
-                $this->serializer->serialize($this->getRequest()->getParams())
+                $params
             ]
         );
     }
@@ -173,6 +176,15 @@ class Slider extends AbstractSlider implements BlockInterface
     protected function getPageSize()
     {
         return $this->getProductsCount();
+    }
+
+    /**
+     * Get limited number
+     * @return int|mixed
+     */
+    public function getProductsCount()
+    {
+        return $this->getData('products_count')?: 10;
     }
 
     /**
