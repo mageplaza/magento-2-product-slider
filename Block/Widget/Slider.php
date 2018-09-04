@@ -48,11 +48,6 @@ class Slider extends AbstractSlider implements BlockInterface
     protected $productType;
 
     /**
-     * @var \Magento\Framework\Serialize\Serializer\Json
-     */
-    private $serializer;
-
-    /**
      * Slider constructor.
      * @param Context $context
      * @param CollectionFactory $productCollectionFactory
@@ -78,6 +73,9 @@ class Slider extends AbstractSlider implements BlockInterface
         $this->productType = $productType;
     }
 
+    /**
+     * @inheritdoc
+     */
     public function _construct()
     {
         parent::_construct();
