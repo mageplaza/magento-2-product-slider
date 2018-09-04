@@ -1,15 +1,26 @@
 # Magento 2 Product Slider by Mageplaza
 
+
+## How does it work?
+
+When you enable **Magento 2 Product Slider** module and create the product sliders in the configuration, lists of your products will slide out in the lively and attractive way on the storefront with the animation effects you have chosen before. Along with product image, your clients can also see the price information, rating for the product and even Add to Cart button to proceed to the checkout whenever they need.
+
+[![Latest Stable Version](https://poser.pugx.org/mageplaza/magento-2-product-slider/v/stable)](https://packagist.org/packages/mageplaza/mageplaza/magento-2-product-slider)
+[![Total Downloads](https://poser.pugx.org/mageplaza/magento-2-product-slider/downloads)](https://packagist.org/packages/mageplaza/magento-2-product-slider)
+
+
+![magento 2 product slider](https://www.mageplaza.com/assets/img/extensions-images/magento-2-product-slider/product-slider-effect.gif)
+
 ## Documentations
 
-- Installation Guide: https://docs.mageplaza.com/kb/installation.html
-- User Guide: https://docs.mageplaza.com/product-slider-m2/
-- Product Page: https://www.mageplaza.com/magento-2-product-slider-extension/
-- FAQs: https://www.mageplaza.com/faqs/
-- Contribute on Github: https://github.com/mageplaza/magento-2-product-slider/
-- Get premium support from Mageplaza: Purchase Support package https://www.mageplaza.com/magento-2-extension-support-package/
-- Changelog: https://www.mageplaza.com/changelog/m2-product-slider.txt
-- License: https://www.mageplaza.com/LICENSE.txt
+- [Installation guide](https://www.mageplaza.com/install-magento-2-extension/)
+- [User Guide](https://docs.mageplaza.com/product-slider-m2/)
+- [Introduction page](https://www.mageplaza.com/magento-2-product-slider-extension/)
+- [FAQs](https://www.mageplaza.com/faqs/)
+- [Contribute on Github](https://github.com/mageplaza/magento-2-product-slider/)
+- Get premium support from Mageplaza: [Purchase Support package](https://www.mageplaza.com/magento-2-extension-support-package/)
+- [Changelog](https://github.com/mageplaza/magento-2-product-slider/releases)
+- [License](https://www.mageplaza.com/LICENSE.txt)
 
 ## How to install
 
@@ -42,11 +53,6 @@ Supporting the following Product slider types:
 
 
 
-## How does it work?
-
-When you enable Magento 2 Product Slider module and create the product sliders in the configuration, lists of your products will slide out in the lively and attractive way on the storefront with the animation effects you have chosen before. Along with product image, your clients can also see the price information, rating for the product and even Add to Cart button to proceed to the checkout whenever they need.
-
-![magento 2 product slider](https://www.mageplaza.com/assets/img/extensions-images/magento-2-product-slider/product-slider-effect.gif)
 
 ## Supports multiple slider types
 
