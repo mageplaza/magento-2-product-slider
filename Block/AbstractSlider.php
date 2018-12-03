@@ -130,6 +130,10 @@ abstract class AbstractSlider extends AbstractProduct
      */
     public function getDisplayAdditional()
     {
+        if(!$this->getSlider()){
+            return [];
+        }
+
         $display = $this->getSlider()->getDisplayAdditional();
         if (!is_array($display)) {
             $display = explode(',', $display);
