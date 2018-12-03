@@ -186,8 +186,8 @@ abstract class AbstractSlider extends AbstractProduct
      */
     public function getTitle()
     {
-        if ($title = $this->hasData('title')) {
-            return $title;
+        if ($this->hasData('title')) {
+            return $this->getData('title');
         }
 
         if ($this->getSlider()) {
