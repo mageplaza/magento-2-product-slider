@@ -93,6 +93,8 @@ class CategoryId extends AbstractSlider
     {
         $productIds = [];
         $catIds     = $this->getSliderCategoryIds();
+        $catIds = !is_array($catIds) ? explode(',', $catIds) : $catIds;
+
         foreach ($catIds as $catId) {
             $category   = $this->_categoryFactory->create()->load($catId);
             $collection = $this->_productCollectionFactory->create()
