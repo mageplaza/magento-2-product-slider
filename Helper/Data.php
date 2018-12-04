@@ -173,8 +173,8 @@ class Data extends AbstractData
             return true;
         }else if(is_string($val)){
             return (strtolower($val) == 'true') || ($val == '1');
-        }else{
-            return false;
         }
+
+        return false;
     }
 }
