@@ -154,4 +154,27 @@ class Data extends AbstractData
 
         return 'responsive:{' . $responsiveOptions . '}';
     }
+
+    /**
+     * Takes a value and parses into a bool.
+     * This is stricter hat PHP `boolval` and will only class the following as true:
+     * - Boolean `true`
+     * - Integer `1`
+     * - String "true" (case insensitive)
+     * - String "1"
+     *
+     * @param mixed $val
+     * @return bool
+     */
+    public function parseBool($val){
+        if(is_bool($val)){
+            return $val;
+        }else if(is_int($val) && ($val === 1)){
+            return true;
+        }else if(is_string($val)){
+            return (strtolower($val) == 'true') || ($val == '1');
+        }else{
+            return false;
+        }
+    }
 }

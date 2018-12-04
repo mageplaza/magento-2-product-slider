@@ -83,9 +83,9 @@ abstract class AbstractSlider extends AbstractProduct
     {
         $this->_productCollectionFactory = $productCollectionFactory;
         $this->_catalogProductVisibility = $catalogProductVisibility;
-        $this->_date                     = $dateTime;
-        $this->_helperData               = $helperData;
-        $this->httpContext               = $httpContext;
+        $this->_date = $dateTime;
+        $this->_helperData = $helperData;
+        $this->httpContext = $httpContext;
 
         parent::__construct($context, $data);
     }
@@ -99,7 +99,7 @@ abstract class AbstractSlider extends AbstractProduct
 
         $this->addData([
             'cache_lifetime' => $this->getSlider() ? $this->getSlider()->getTimeCache() : 86400,
-            'cache_tags'     => [\Magento\Catalog\Model\Product::CACHE_TAG]
+            'cache_tags' => [\Magento\Catalog\Model\Product::CACHE_TAG]
         ]);
 
         $this->setTemplate('Mageplaza_Productslider::productslider.phtml');
@@ -130,7 +130,7 @@ abstract class AbstractSlider extends AbstractProduct
      */
     public function getDisplayAdditional()
     {
-        if(!$this->getSlider()){
+        if (!$this->getSlider()) {
             return [];
         }
 
@@ -147,7 +147,8 @@ abstract class AbstractSlider extends AbstractProduct
      */
     public function canShowPrice()
     {
-        return in_array(Additional::SHOW_PRICE, $this->getDisplayAdditional());
+        return in_array(Additional::SHOW_PRICE, $this->getDisplayAdditional()) ||
+            $this->_helperData->parseBool($this->getData('show_price'));
     }
 
     /**
@@ -155,7 +156,8 @@ abstract class AbstractSlider extends AbstractProduct
      */
     public function canShowReview()
     {
-        return in_array(Additional::SHOW_REVIEW, $this->getDisplayAdditional());
+        return in_array(Additional::SHOW_REVIEW, $this->getDisplayAdditional()) ||
+            $this->_helperData->parseBool($this->getData('show_review'));
     }
 
     /**
@@ -163,7 +165,8 @@ abstract class AbstractSlider extends AbstractProduct
      */
     public function canShowAddToCart()
     {
-        return in_array(Additional::SHOW_CART, $this->getDisplayAdditional());
+        return in_array(Additional::SHOW_CART, $this->getDisplayAdditional()) ||
+            $this->_helperData->parseBool($this->getData('show_add_to_cart'));
     }
 
     /**
@@ -221,13 +224,13 @@ abstract class AbstractSlider extends AbstractProduct
     public function getAllOptions()
     {
         $sliderOptions = '';
-        $allConfig     = $this->_helperData->getModuleConfig('slider_design');
+        $allConfig = $this->_helperData->getModuleConfig('slider_design');
 
         foreach ($allConfig as $key => $value) {
             if ($key == 'item_slider') {
                 $sliderOptions = $sliderOptions . $this->getResponsiveConfig();
             } else if ($key != 'responsive') {
-                if(in_array($key, ['loop', 'nav', 'dots', 'lazyLoad', 'autoplay', 'autoplayHoverPause'])){
+                if (in_array($key, ['loop', 'nav', 'dots', 'lazyLoad', 'autoplay', 'autoplayHoverPause'])) {
                     $value = $value ? 'true' : 'false';
                 }
                 $sliderOptions = $sliderOptions . $key . ':' . $value . ',';
