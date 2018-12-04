@@ -22,6 +22,8 @@
 
 $mode  = 'grid';
 $title = $block->getTitle();
+$sliderId = $block->getSliderId();
+
 if ($items = $block->getProductCollection()): ?>
     <div class="mp-product-slider-block block widget block-products-list <?php echo $mode; ?>">
         <h2 class="mp-product-slider-title"><?php echo $block->getTitle(); ?></h2>
@@ -31,7 +33,7 @@ if ($items = $block->getProductCollection()): ?>
         <div class="products-<?php echo $mode; ?> <?php echo $mode; ?>">
             <ol class="product-items widget-viewed-grid">
                 <?php $iterator = 1; ?>
-                <div id="mp-list-items-<?php echo $block->getSliderId(); ?>" class="owl-carousel owl-theme">
+                <div id="mp-list-items-<?php echo $sliderId; ?>" class="owl-carousel owl-theme">
                     <?php foreach ($items as $_item): ?>
                         <?php echo ($iterator++ == 1) ? '<li class="product-item product-slider"">' : '</li><li class="product-item product-slider"">' ?>
                         <div class="slider-product-item-info">
@@ -96,7 +98,7 @@ if ($items = $block->getProductCollection()): ?>
     </div>
     <script>
         require(['jquery', 'mageplaza/core/owl.carousel'], function ($) {
-            $('#mp-list-items-<?php echo $block->getSliderId(); ?>').owlCarousel(<?php echo($block->getAllOptions())?>);
+            $('#mp-list-items-<?php echo $sliderId; ?>').owlCarousel(<?php echo($block->getAllOptions())?>);
         });
     </script>
 <?php endif; ?>
