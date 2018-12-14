@@ -1,0 +1,54 @@
+# Numerous always-ignore extensions
+.bash_history
+.bashrc
+*.diff
+*.err
+*.orig
+*.log
+*.rej
+.ssh
+*.swo
+*.swp
+*.zip
+*.vi
+*~
+
+
+# IOS/Mac specific
+*.DS_Store
+
+
+# ASP.NET/Windows specific
+Thumbs.db
+Thumbs.db:encryptable
+Desktop.ini
+[Oo]bj
+[Bb]in
+
+
+# Other OS or Editor folders/files
+._*
+.cache
+*.Cache
+.project
+.settings
+.tmproj
+*.esproj
+nbproject
+*.sublime-project
+*.sublime-workspace
+/.idea
+*-autosave.kra
+/.vscode
+
+
+## compilers etc.
+composer.phar
+*.sass-cache
+/node_modules
+npm-debug.log
+yarn-error.log
+/.vagrant
+
+
+# Project specific
