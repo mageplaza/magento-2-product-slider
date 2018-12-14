@@ -157,7 +157,7 @@ class Data extends AbstractData
 
     /**
      * Takes a value and parses into a bool.
-     * This is stricter hat PHP `boolval` and will only class the following as true:
+     * This is stricter than PHP `boolval` and will only class the following as true:
      * - Boolean `true`
      * - Integer `1`
      * - String "true" (case insensitive)
