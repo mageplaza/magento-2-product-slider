@@ -228,7 +228,13 @@ abstract class AbstractSlider extends AbstractProduct
 
         foreach ($allConfig as $key => $value) {
             if ($key == 'item_slider') {
-                $sliderOptions = $sliderOptions . $this->getResponsiveConfig();
+                if(!empty($this->getSlider())) {
+                    // we have a slider - get it's own responsive config
+                    $sliderOptions = $sliderOptions . $this->getResponsiveConfig();
+                } else {
+                    // no slider - probably a block or similar - get the default responsive config
+                    $sliderOptions = $sliderOptions . $this->_helperData->getResponseValue();
+                }
             } else if ($key != 'responsive') {
                 if (in_array($key, ['loop', 'nav', 'dots', 'lazyLoad', 'autoplay', 'autoplayHoverPause'])) {
                     $value = $value ? 'true' : 'false';
