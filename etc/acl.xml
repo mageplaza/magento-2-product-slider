@@ -25,14 +25,14 @@
         <resources>
             <resource id="Magento_Backend::admin">
                 <resource id="Magento_Backend::content">
-                    <resource id="Mageplaza_Productslider::productslider" title="Product Sliders" sortOrder="30">
+                    <resource id="Mageplaza_Productslider::productslider" title="Mageplaza Product Sliders" sortOrder="30">
                         <resource id="Mageplaza_Productslider::slider" title="Sliders" sortOrder="10"/>
                     </resource>
                 </resource>
                 <resource id="Magento_Backend::stores">
                     <resource id="Magento_Backend::stores_settings">
                         <resource id="Magento_Config::config">
-                            <resource id="Mageplaza_Productslider::configuration" title="Product Sliders"/>
+                            <resource id="Mageplaza_Productslider::configuration" title="Mageplaza Product Sliders"/>
                         </resource>
                     </resource>
                 </resource>
