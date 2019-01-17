@@ -130,10 +130,9 @@ abstract class AbstractSlider extends AbstractProduct
      */
     public function getDisplayAdditional()
     {
-        $display = $this->getSlider()->getDisplayAdditional();
-        if (!is_array($display)) {
-            $display = explode(',', $display);
-        }
+        if($this->getSlider()) $display = $this->getSlider()->getDisplayAdditional();
+        else $display = $this->_helperData->getModuleConfig('general/display_information');
+        if (!is_array($display)) $display = explode(',', $display);
 
         return $display;
     }
@@ -183,7 +182,7 @@ abstract class AbstractSlider extends AbstractProduct
     public function getTitle()
     {
         if ($title = $this->hasData('title')) {
-            return $title;
+            return $this->getData('title');
         }
 
         if ($this->getSlider()) {
@@ -221,7 +220,11 @@ abstract class AbstractSlider extends AbstractProduct
 
         foreach ($allConfig as $key => $value) {
             if ($key == 'item_slider') {
-                $sliderOptions = $sliderOptions . $this->getResponsiveConfig();
+                if(!empty($this->getSlider())) {
+                    $sliderOptions = $sliderOptions . $this->getResponsiveConfig();
+                } else {
+                    $sliderOptions = $sliderOptions . $this->_helperData->getResponseValue();
+                }
             } else if ($key != 'responsive') {
                 if(in_array($key, ['loop', 'nav', 'dots', 'lazyLoad', 'autoplay', 'autoplayHoverPause'])){
                     $value = $value ? 'true' : 'false';
