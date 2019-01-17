@@ -97,18 +97,13 @@ class CategoryId extends AbstractSlider
         if (is_array($catIds)) {
             foreach ($catIds as $catId) {
                 $category   = $this->_categoryFactory->create()->load($catId);
-                $collection->addAttributeToSelect('*')
-                    ->addCategoryFilter($category);
-
+                $collection->addAttributeToSelect('*')->addCategoryFilter($category);
             }
-        }
-        else {
+        } else {
             $category = $this->_categoryFactory->create()->load($catIds);
-            $collection->addAttributeToSelect('*')
-                ->addCategoryFilter($category);
-
-
+            $collection->addAttributeToSelect('*')->addCategoryFilter($category);
         }
+
         foreach ($collection as $item) {
             $productIds[] = $item->getData('entity_id');
         }

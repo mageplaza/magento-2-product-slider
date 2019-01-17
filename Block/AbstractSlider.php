@@ -114,6 +114,7 @@ abstract class AbstractSlider extends AbstractProduct
      * Get Key pieces for caching block content
      *
      * @return array
+     * @throws \Magento\Framework\Exception\NoSuchEntityException
      */
     public function getCacheKeyInfo()
     {
@@ -126,13 +127,19 @@ abstract class AbstractSlider extends AbstractProduct
     }
 
     /**
-     * @return mixed
+     * @return array|mixed
      */
     public function getDisplayAdditional()
     {
-        if($this->getSlider()) $display = $this->getSlider()->getDisplayAdditional();
-        else $display = $this->_helperData->getModuleConfig('general/display_information');
-        if (!is_array($display)) $display = explode(',', $display);
+        if($this->getSlider()) {
+            $display = $this->getSlider()->getDisplayAdditional();
+        } else {
+            $display = $this->_helperData->getModuleConfig('general/display_information');
+        }
+
+        if (!is_array($display)) {
+            $display = explode(',', $display);
+        }
 
         return $display;
     }
@@ -219,13 +226,13 @@ abstract class AbstractSlider extends AbstractProduct
         $allConfig     = $this->_helperData->getModuleConfig('slider_design');
 
         foreach ($allConfig as $key => $value) {
-            if ($key == 'item_slider') {
+            if ($key === 'item_slider') {
                 if(!empty($this->getSlider())) {
                     $sliderOptions = $sliderOptions . $this->getResponsiveConfig();
                 } else {
                     $sliderOptions = $sliderOptions . $this->_helperData->getResponseValue();
                 }
-            } else if ($key != 'responsive') {
+            } else if ($key !== 'responsive') {
                 if(in_array($key, ['loop', 'nav', 'dots', 'lazyLoad', 'autoplay', 'autoplayHoverPause'])){
                     $value = $value ? 'true' : 'false';
                 }
@@ -244,7 +251,7 @@ abstract class AbstractSlider extends AbstractProduct
         $slider = $this->getSlider();
         if ($slider && $slider->getIsResponsive()) {
             try {
-                if ($slider->getIsResponsive() == 2) {
+                if ($slider->getIsResponsive() === 2) {
                     return $responsiveConfig = $this->_helperData->getResponseValue();
                 } else {
                     $responsiveConfig = $slider->getResponsiveItems() ? $this->_helperData->unserialize($slider->getResponsiveItems()) : [];
