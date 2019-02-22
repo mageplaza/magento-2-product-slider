@@ -205,6 +205,7 @@ class General extends Generic implements TabInterface
                 'name'  => 'time_cache',
                 'label' => __('Cache Lifetime'),
                 'title' => __('Cache Lifetime'),
+                'class'  => 'validate-digits',
                 'note'  => __('seconds. 86400 by default, if not set. To refresh instantly, clear the Blocks HTML Output cache.')
             ]
         );
