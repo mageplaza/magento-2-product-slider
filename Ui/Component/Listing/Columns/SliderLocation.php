@@ -91,7 +91,7 @@ class SliderLocation extends Column
                 break;
             case Location::CATEGORY_CONTENT_BOTTOM :
                 $location['type']     = 'Category Page';
-                $location['location'] = 'Top of Bottom';
+                $location['location'] = 'Bottom of Content';
                 break;
             case Location::CATEGORY_SIDEBAR_TOP :
                 $location['type']     = 'Category Page';
@@ -107,7 +107,7 @@ class SliderLocation extends Column
                 break;
             case Location::PRODUCT_CONTENT_BOTTOM :
                 $location['type']     = 'Product Page';
-                $location['location'] = 'Top of Bottom';
+                $location['location'] = 'Bottom of Content';
                 break;
             case Location::CHECKOUT_CONTENT_TOP :
                 $location['type']     = 'Checkout Page';
@@ -115,7 +115,7 @@ class SliderLocation extends Column
                 break;
             case Location::CHECKOUT_CONTENT_BOTTOM :
                 $location['type']     = 'Checkout Page';
-                $location['location'] = 'Top of Bottom';
+                $location['location'] = 'Bottom of Content';
                 break;
         }
 
