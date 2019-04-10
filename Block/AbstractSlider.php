@@ -135,29 +135,29 @@ abstract class AbstractSlider extends AbstractProduct
             if (!is_array($display)) {
                 $display = explode(',', $display);
             }
+            return $display;
         }
-        else {
-            if ($this->hasData('showPrice')) {
-                if($this->getData('showPrice')){
-                    $showPrice = '1';
-                }
+        
+        if ($this->hasData('showPrice')) {
+            if($this->getData('showPrice')){
+                $showPrice = '1';
             }
-            if ($this->hasData('showCart')) {
-                if($this->getData('showCart')){
-                    $showCart = '2';
-                }
+        }
+        if ($this->hasData('showCart')) {
+            if($this->getData('showCart')){
+                $showCart = '2';
             }
-            if ($this->hasData('showReview')) {
-                if($this->getData('showReview')){
-                    $showReview = '3';
-                }
+        }
+        if ($this->hasData('showReview')) {
+            if($this->getData('showReview')){
+                $showReview = '3';
             }
-            $displayOptions = isset($showPrice) ? $showPrice . ',' : '';
-            $displayOptions .= isset($showCart) ? $showCart . ',' : '';
-            $displayOptions .= isset($showReview) ? $showReview : '';
+        }
+        $displayOptions = isset($showPrice) ? $showPrice . ',' : '';
+        $displayOptions .= isset($showCart) ? $showCart . ',' : '';
+        $displayOptions .= isset($showReview) ? $showReview : '';
 
-            $display = explode(',', $displayOptions);
-        }
+        $display = explode(',', $displayOptions);
 
         return $display;
     }
