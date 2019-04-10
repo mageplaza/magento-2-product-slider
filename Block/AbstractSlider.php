@@ -130,9 +130,33 @@ abstract class AbstractSlider extends AbstractProduct
      */
     public function getDisplayAdditional()
     {
-        $display = $this->getSlider()->getDisplayAdditional();
-        if (!is_array($display)) {
-            $display = explode(',', $display);
+        if($this->getSlider() && $this->getSlider()->getDisplayAdditional()) {
+            $display = $this->getSlider()->getDisplayAdditional();
+            if (!is_array($display)) {
+                $display = explode(',', $display);
+            }
+        }
+        else {
+            if ($this->hasData('showPrice')) {
+                if($this->getData('showPrice')){
+                    $showPrice = '1';
+                }
+            }
+            if ($this->hasData('showCart')) {
+                if($this->getData('showCart')){
+                    $showCart = '2';
+                }
+            }
+            if ($this->hasData('showReview')) {
+                if($this->getData('showReview')){
+                    $showReview = '3';
+                }
+            }
+            $displayOptions = isset($showPrice) ? $showPrice . ',' : '';
+            $displayOptions .= isset($showCart) ? $showCart . ',' : '';
+            $displayOptions .= isset($showReview) ? $showReview : '';
+
+            $display = explode(',', $displayOptions);
         }
 
         return $display;
@@ -168,6 +192,11 @@ abstract class AbstractSlider extends AbstractProduct
      */
     public function getSliderId()
     {
+        if ($this->hasData('sliderId')) {
+            $sliderId = $this->getData('sliderId');
+            return $sliderId;
+        }
+
         if ($this->getSlider()) {
             return $this->getSlider()->getSliderId();
         }
@@ -182,8 +211,8 @@ abstract class AbstractSlider extends AbstractProduct
      */
     public function getTitle()
     {
-        if ($title = $this->hasData('title')) {
-            return $title;
+        if ($this->hasData('title')) {
+            return $this->getData('title');
         }
 
         if ($this->getSlider()) {
