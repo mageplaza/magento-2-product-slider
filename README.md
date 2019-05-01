@@ -1,4 +1,4 @@
-# Magento 2 Product Slider by Mageplaza
+# The #1 Product Slider for Magento 2
 
 
 ## How does it work?
