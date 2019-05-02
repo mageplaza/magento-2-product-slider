@@ -23,6 +23,6 @@
 <config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Backend:etc/menu.xsd">
     <menu>
         <add id="Mageplaza_Productslider::productslider" title="Product Sliders" module="Mageplaza_Productslider" sortOrder="100" resource="Mageplaza_Productslider::productslider" parent="Magento_Backend::content"/>
-        <add id="Mageplaza_Productslider::slider" title="Manage Slider" module="Mageplaza_Productslider" sortOrder="20" parent="Mageplaza_Productslider::productslider" action="mpproductslider/slider/index" resource="Mageplaza_Productslider::slider"/>
+        <add id="Mageplaza_Productslider::slider" title="Manage Sliders" module="Mageplaza_Productslider" sortOrder="20" parent="Mageplaza_Productslider::productslider" action="mpproductslider/slider/index" resource="Mageplaza_Productslider::slider"/>
     </menu>
 </config>
