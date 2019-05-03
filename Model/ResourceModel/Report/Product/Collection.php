@@ -19,13 +19,13 @@
  * @license     https://www.mageplaza.com/LICENSE.txt
  */
 
-namespace Mageplaza\ProductSlider\Model\ResourceModel\Report\Product;
+namespace Mageplaza\Productslider\Model\ResourceModel\Report\Product;
 
 use Magento\Reports\Model\ResourceModel\Product\Collection as ReportCollection;
 
 /**
  * Class Collection
- * @package Mageplaza\ProductSlider\Model\ResourceModel\Report\Product
+ * @package Mageplaza\Productslider\Model\ResourceModel\Report\Product
  */
 class Collection extends ReportCollection
 {
