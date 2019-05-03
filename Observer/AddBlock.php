@@ -24,6 +24,7 @@ namespace Mageplaza\Productslider\Observer;
 use Magento\Framework\App\RequestInterface;
 use Magento\Framework\Event\Observer;
 use Magento\Framework\Event\ObserverInterface;
+use Magento\Framework\View\Layout;
 use Mageplaza\Productslider\Helper\Data;
 use Mageplaza\Productslider\Model\Config\Source\ProductType;
 
@@ -39,7 +40,7 @@ class AddBlock implements ObserverInterface
     protected $request;
 
     /**
-     * @var \Mageplaza\Productslider\Helper\Data
+     * @var Data
      */
     protected $helperData;
 
@@ -58,10 +59,9 @@ class AddBlock implements ObserverInterface
         RequestInterface $request,
         Data $helperData,
         ProductType $productType
-    )
-    {
-        $this->request     = $request;
-        $this->helperData  = $helperData;
+    ) {
+        $this->request = $request;
+        $this->helperData = $helperData;
         $this->productType = $productType;
     }
 
@@ -79,10 +79,10 @@ class AddBlock implements ObserverInterface
             'sidebar' => 'catalog.leftnav'
         ]);
         if ($type !== false) {
-            /** @var \Magento\Framework\View\Layout $layout */
-            $layout         = $observer->getEvent()->getLayout();
+            /** @var Layout $layout */
+            $layout = $observer->getEvent()->getLayout();
             $fullActionName = $this->request->getFullActionName();
-            $output         = $observer->getTransport()->getOutput();
+            $output = $observer->getTransport()->getOutput();
             foreach ($this->helperData->getActiveSliders() as $slider) {
                 list($pageType, $location) = explode('.', $slider->getLocation());
                 if ($fullActionName == $pageType || $pageType == 'allpage') {
@@ -90,7 +90,7 @@ class AddBlock implements ObserverInterface
                         ->setSlider($slider)
                         ->toHtml();
 
-                    if (strpos($location, $type)!== false) {
+                    if (strpos($location, $type) !== false) {
                         if (strpos($location, 'top') !== false) {
                             $output = "<div id=\"mageplaza-productslider-block-before-{$type}-{$slider->getId()}\">$content</div>" . $output;
                         } else {

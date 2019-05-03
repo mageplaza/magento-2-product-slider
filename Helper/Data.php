@@ -29,6 +29,7 @@ use Magento\Store\Model\StoreManagerInterface;
 use Mageplaza\Core\Helper\AbstractData;
 use Mageplaza\Productslider\Model\ResourceModel\Slider\Collection;
 use Mageplaza\Productslider\Model\SliderFactory;
+use Zend_Serializer_Exception;
 
 /**
  * Class Data
@@ -69,10 +70,9 @@ class Data extends AbstractData
         DateTime $date,
         HttpContext $httpContext,
         SliderFactory $sliderFactory
-    )
-    {
-        $this->date          = $date;
-        $this->httpContext   = $httpContext;
+    ) {
+        $this->date = $date;
+        $this->httpContext = $httpContext;
         $this->sliderFactory = $sliderFactory;
 
         parent::__construct($context, $objectManager, $storeManager);
@@ -101,17 +101,17 @@ class Data extends AbstractData
      * Retrieve all configuration options for product slider
      *
      * @return string
-     * @throws \Zend_Serializer_Exception
+     * @throws Zend_Serializer_Exception
      */
     public function getAllOptions()
     {
         $sliderOptions = '';
-        $allConfig     = $this->getModuleConfig('slider_design');
+        $allConfig = $this->getModuleConfig('slider_design');
         foreach ($allConfig as $key => $value) {
             if ($key == 'item_slider') {
                 $sliderOptions = $sliderOptions . $this->getResponseValue();
-            } else if ($key != 'responsive') {
-                if(in_array($key, ['loop', 'nav', 'dots', 'lazyLoad', 'autoplay', 'autoplayHoverPause'])){
+            } elseif ($key != 'responsive') {
+                if (in_array($key, ['loop', 'nav', 'dots', 'lazyLoad', 'autoplay', 'autoplayHoverPause'])) {
                     $value = $value ? 'true' : 'false';
                 }
                 $sliderOptions = $sliderOptions . $key . ':' . $value . ',';
@@ -137,7 +137,7 @@ class Data extends AbstractData
      * Retrieve responsive values for product slider
      *
      * @return string
-     * @throws \Zend_Serializer_Exception
+     * @throws Zend_Serializer_Exception
      */
     public function getResponseValue()
     {

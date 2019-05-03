@@ -25,9 +25,12 @@ use Magento\Backend\Block\Template\Context;
 use Magento\Backend\Block\Widget\Form\Generic;
 use Magento\Backend\Block\Widget\Tab\TabInterface;
 use Magento\Framework\Data\FormFactory;
+use Magento\Framework\Exception\LocalizedException;
 use Magento\Framework\Registry;
+use Magento\Store\Model\System\Store;
 use Mageplaza\Productslider\Helper\Data;
 use Mageplaza\Productslider\Model\Config\Source\Additional;
+use Mageplaza\Productslider\Model\Slider;
 
 /**
  * Class Design
@@ -36,27 +39,27 @@ use Mageplaza\Productslider\Model\Config\Source\Additional;
 class Design extends Generic implements TabInterface
 {
     /**
-     * @var \Magento\Store\Model\System\Store
+     * @var Store
      */
     protected $systemStore;
 
     /**
-     * @var \Mageplaza\Productslider\Model\Config\Source\Additional
+     * @var Additional
      */
     protected $_additional;
 
     /**
-     * @var \Mageplaza\Productslider\Helper\Data
+     * @var Data
      */
     protected $_helperData;
 
     /**
      * Design constructor.
-     * @param \Mageplaza\Productslider\Helper\Data $helperData
-     * @param \Mageplaza\Productslider\Model\Config\Source\Additional $additional
-     * @param \Magento\Backend\Block\Template\Context $context
-     * @param \Magento\Framework\Registry $registry
-     * @param \Magento\Framework\Data\FormFactory $formFactory
+     * @param Data $helperData
+     * @param Additional $additional
+     * @param Context $context
+     * @param Registry $registry
+     * @param FormFactory $formFactory
      * @param array $data
      */
     public function __construct(
@@ -66,8 +69,7 @@ class Design extends Generic implements TabInterface
         Registry $registry,
         FormFactory $formFactory,
         array $data = []
-    )
-    {
+    ) {
         $this->_helperData = $helperData;
         $this->_additional = $additional;
 
@@ -76,11 +78,11 @@ class Design extends Generic implements TabInterface
 
     /**
      * @return $this
-     * @throws \Magento\Framework\Exception\LocalizedException
+     * @throws LocalizedException
      */
     protected function _prepareForm()
     {
-        /** @var \Mageplaza\Productslider\Model\Slider $slider */
+        /** @var Slider $slider */
         $slider = $this->_coreRegistry->registry('mageplaza_productslider_slider');
 
         $form = $this->_formFactory->create();
@@ -135,7 +137,8 @@ class Design extends Generic implements TabInterface
             'title' => __('Max Items slider'),
         ]);
 
-        $this->setChild('form_after',
+        $this->setChild(
+            'form_after',
             $this->getLayout()->createBlock('Magento\Backend\Block\Widget\Form\Element\Dependence')
                 ->addFieldMap($isResponsive->getHtmlId(), $isResponsive->getName())
                 ->addFieldMap($responsiveItem->getHtmlId(), $responsiveItem->getName())

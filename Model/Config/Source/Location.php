@@ -29,19 +29,19 @@ use Magento\Framework\Option\ArrayInterface;
  */
 class Location implements ArrayInterface
 {
-    const ALLPAGE_CONTENT_TOP     = 'allpage.content-top';
-    const ALLPAGE_CONTENT_BOTTOM  = 'allpage.content-bottom';
-    const ALLPAGE_SIDEBAR_TOP     = 'allpage.sidebar-top';
-    const ALLPAGE_SIDEBAR_BOTTOM  = 'allpage.sidebar-bottom';
-    const HOMEPAGE_CONTENT_TOP    = 'cms_index_index.content-top';
+    const ALLPAGE_CONTENT_TOP = 'allpage.content-top';
+    const ALLPAGE_CONTENT_BOTTOM = 'allpage.content-bottom';
+    const ALLPAGE_SIDEBAR_TOP = 'allpage.sidebar-top';
+    const ALLPAGE_SIDEBAR_BOTTOM = 'allpage.sidebar-bottom';
+    const HOMEPAGE_CONTENT_TOP = 'cms_index_index.content-top';
     const HOMEPAGE_CONTENT_BOTTOM = 'cms_index_index.content-bottom';
-    const CATEGORY_CONTENT_TOP    = 'catalog_category_view.content-top';
+    const CATEGORY_CONTENT_TOP = 'catalog_category_view.content-top';
     const CATEGORY_CONTENT_BOTTOM = 'catalog_category_view.content-bottom';
-    const CATEGORY_SIDEBAR_TOP    = 'catalog_category_view.sidebar-top';
+    const CATEGORY_SIDEBAR_TOP = 'catalog_category_view.sidebar-top';
     const CATEGORY_SIDEBAR_BOTTOM = 'catalog_category_view.sidebar-bottom';
-    const PRODUCT_CONTENT_TOP     = 'catalog_product_view.content-top';
-    const PRODUCT_CONTENT_BOTTOM  = 'catalog_product_view.content-bottom';
-    const CHECKOUT_CONTENT_TOP    = 'checkout_cart_index.content-top';
+    const PRODUCT_CONTENT_TOP = 'catalog_product_view.content-top';
+    const PRODUCT_CONTENT_BOTTOM = 'catalog_product_view.content-bottom';
+    const CHECKOUT_CONTENT_TOP = 'checkout_cart_index.content-top';
     const CHECKOUT_CONTENT_BOTTOM = 'checkout_cart_index.content-bottom';
 
     /**

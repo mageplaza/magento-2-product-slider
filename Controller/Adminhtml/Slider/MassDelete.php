@@ -21,10 +21,17 @@
 
 namespace Mageplaza\Productslider\Controller\Adminhtml\Slider;
 
+use Exception;
 use Magento\Backend\App\Action;
 use Magento\Backend\App\Action\Context;
+use Magento\Backend\Model\View\Result\Redirect;
+use Magento\Framework\App\ResponseInterface;
+use Magento\Framework\Controller\ResultFactory;
+use Magento\Framework\Controller\ResultInterface;
+use Magento\Framework\Exception\LocalizedException;
 use Magento\Ui\Component\MassAction\Filter;
 use Mageplaza\Productslider\Model\ResourceModel\Slider\CollectionFactory;
+use Mageplaza\Productslider\Model\Slider;
 
 /**
  * Class MassDelete
@@ -35,14 +42,14 @@ class MassDelete extends Action
     /**
      * Mass Action Filter
      *
-     * @var \Magento\Ui\Component\MassAction\Filter
+     * @var Filter
      */
     protected $_filter;
 
     /**
      * Collection Factory
      *
-     * @var \Mageplaza\Productslider\Model\ResourceModel\Slider\CollectionFactory
+     * @var CollectionFactory
      */
     protected $_collectionFactory;
 
@@ -56,18 +63,17 @@ class MassDelete extends Action
         Context $context,
         Filter $filter,
         CollectionFactory $collectionFactory
-    )
-    {
-        $this->_filter            = $filter;
+    ) {
+        $this->_filter = $filter;
         $this->_collectionFactory = $collectionFactory;
 
         parent::__construct($context);
     }
 
     /**
-     * @return $this|\Magento\Framework\App\ResponseInterface|\Magento\Framework\Controller\ResultInterface
-     * @throws \Exception
-     * @throws \Magento\Framework\Exception\LocalizedException
+     * @return $this|ResponseInterface|ResultInterface
+     * @throws Exception
+     * @throws LocalizedException
      */
     public function execute()
     {
@@ -75,13 +81,13 @@ class MassDelete extends Action
 
         $delete = 0;
         foreach ($collection as $item) {
-            /** @var \Mageplaza\Productslider\Model\Slider $item */
+            /** @var Slider $item */
             $item->delete();
             $delete++;
         }
         $this->messageManager->addSuccessMessage(__('A total of %1 record(s) have been deleted.', $delete));
-        /** @var \Magento\Backend\Model\View\Result\Redirect $resultRedirect */
-        $resultRedirect = $this->resultFactory->create(\Magento\Framework\Controller\ResultFactory::TYPE_REDIRECT);
+        /** @var Redirect $resultRedirect */
+        $resultRedirect = $this->resultFactory->create(ResultFactory::TYPE_REDIRECT);
 
         return $resultRedirect->setPath('*/*/');
     }

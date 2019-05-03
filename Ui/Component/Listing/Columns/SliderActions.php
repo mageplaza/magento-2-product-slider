@@ -35,15 +35,15 @@ class SliderActions extends Column
     /**
      * URL builder
      *
-     * @var \Magento\Framework\UrlInterface
+     * @var UrlInterface
      */
     protected $_urlBuilder;
 
     /**
      * SliderActions constructor.
-     * @param \Magento\Framework\UrlInterface $urlBuilder
-     * @param \Magento\Framework\View\Element\UiComponent\ContextInterface $context
-     * @param \Magento\Framework\View\Element\UiComponentFactory $uiComponentFactory
+     * @param UrlInterface $urlBuilder
+     * @param ContextInterface $context
+     * @param UiComponentFactory $uiComponentFactory
      * @param array $components
      * @param array $data
      */
@@ -53,8 +53,7 @@ class SliderActions extends Column
         UiComponentFactory $uiComponentFactory,
         array $components = [],
         array $data = []
-    )
-    {
+    ) {
         $this->_urlBuilder = $urlBuilder;
 
         parent::__construct($context, $uiComponentFactory, $components, $data);

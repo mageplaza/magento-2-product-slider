@@ -29,15 +29,15 @@ use Magento\Framework\Option\ArrayInterface;
  */
 class ProductType implements ArrayInterface
 {
-    const NEW_PRODUCTS         = 'new';
+    const NEW_PRODUCTS = 'new';
     const BEST_SELLER_PRODUCTS = 'best-seller';
-    const FEATURED_PRODUCTS    = 'featured';
-    const MOSTVIEWED_PRODUCTS  = 'mostviewed';
-    const ONSALE_PRODUCTS      = 'onsale';
-    const RECENT_PRODUCT       = 'recent';
-    const WISHLIST_PRODUCT     = 'wishlist';
-    const CATEGORY             = 'category';
-    const CUSTOM_PRODUCTS      = 'custom';
+    const FEATURED_PRODUCTS = 'featured';
+    const MOSTVIEWED_PRODUCTS = 'mostviewed';
+    const ONSALE_PRODUCTS = 'onsale';
+    const RECENT_PRODUCT = 'recent';
+    const WISHLIST_PRODUCT = 'wishlist';
+    const CATEGORY = 'category';
+    const CUSTOM_PRODUCTS = 'custom';
 
     /**
      * Options getter
@@ -70,7 +70,7 @@ class ProductType implements ArrayInterface
             self::MOSTVIEWED_PRODUCTS  => __('Most Viewed Products'),
             self::ONSALE_PRODUCTS      => __('On Sale Products'),
             self::RECENT_PRODUCT       => __('Recent Products'),
-//            self::WISHLIST_PRODUCT     => __('WishList Products'),
+            //            self::WISHLIST_PRODUCT     => __('WishList Products'),
             self::CATEGORY             => __('Select By Category'),
             self::CUSTOM_PRODUCTS      => __('Custom Specific Products'),
         ];

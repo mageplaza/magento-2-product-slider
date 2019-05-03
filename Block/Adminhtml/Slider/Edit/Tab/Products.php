@@ -21,13 +21,18 @@
 
 namespace Mageplaza\Productslider\Block\Adminhtml\Slider\Edit\Tab;
 
+use Exception;
 use Magento\Backend\Block\Template\Context;
+use Magento\Backend\Block\Widget\Grid\Column;
 use Magento\Backend\Block\Widget\Grid\Extended;
 use Magento\Backend\Block\Widget\Tab\TabInterface;
 use Magento\Backend\Helper\Data;
 use Magento\Catalog\Model\ResourceModel\Product\CollectionFactory;
+use Magento\Framework\Exception\LocalizedException;
 use Mageplaza\Productslider\Helper\Data as HeplerData;
+use Mageplaza\Productslider\Model\Slider;
 use Mageplaza\Productslider\Model\SliderFactory;
+use Zend_Serializer_Exception;
 
 /**
  * Class Products
@@ -36,27 +41,27 @@ use Mageplaza\Productslider\Model\SliderFactory;
 class Products extends Extended implements TabInterface
 {
     /**
-     * @var \Magento\Catalog\Model\ResourceModel\Product\CollectionFactory
+     * @var CollectionFactory
      */
     protected $_productCollectionFactory;
 
     /**
-     * @var \Mageplaza\Productslider\Model\SliderFactory
+     * @var SliderFactory
      */
     protected $_sliderFactory;
 
     /**
-     * @var \Mageplaza\Productslider\Helper\Data
+     * @var HeplerData
      */
     protected $_helperData;
 
     /**
      * Products constructor.
-     * @param \Mageplaza\Productslider\Helper\Data $helperData
-     * @param \Magento\Backend\Block\Template\Context $context
-     * @param \Magento\Backend\Helper\Data $backendHelper
-     * @param \Mageplaza\Productslider\Model\SliderFactory $sliderFactory
-     * @param \Magento\Catalog\Model\ResourceModel\Product\CollectionFactory $productCollectionFactory
+     * @param HeplerData $helperData
+     * @param Context $context
+     * @param Data $backendHelper
+     * @param SliderFactory $sliderFactory
+     * @param CollectionFactory $productCollectionFactory
      * @param array $data
      */
     public function __construct(
@@ -66,10 +71,9 @@ class Products extends Extended implements TabInterface
         SliderFactory $sliderFactory,
         CollectionFactory $productCollectionFactory,
         array $data = []
-    )
-    {
-        $this->_helperData               = $helperData;
-        $this->_sliderFactory            = $sliderFactory;
+    ) {
+        $this->_helperData = $helperData;
+        $this->_sliderFactory = $sliderFactory;
         $this->_productCollectionFactory = $productCollectionFactory;
 
         parent::__construct($context, $backendHelper, $data);
@@ -108,8 +112,8 @@ class Products extends Extended implements TabInterface
 
     /**
      * @return $this
-     * @throws \Exception
-     * @throws \Zend_Serializer_Exception
+     * @throws Exception
+     * @throws Zend_Serializer_Exception
      */
     protected function _prepareColumns()
     {
@@ -174,7 +178,7 @@ class Products extends Extended implements TabInterface
     }
 
     /**
-     * @param  object $row
+     * @param object $row
      * @return string
      */
     public function getRowUrl($row)
@@ -183,10 +187,10 @@ class Products extends Extended implements TabInterface
     }
 
     /**
-     * @param \Magento\Backend\Block\Widget\Grid\Column $column
+     * @param Column $column
      * @return $this
-     * @throws \Magento\Framework\Exception\LocalizedException
-     * @throws \Zend_Serializer_Exception
+     * @throws LocalizedException
+     * @throws Zend_Serializer_Exception
      */
     protected function _addColumnFilterToCollection($column)
     {
@@ -215,19 +219,19 @@ class Products extends Extended implements TabInterface
      */
     protected function _getSelectedProducts()
     {
-        $slider     = $this->getSlider();
+        $slider = $this->getSlider();
         $productIds = $slider->getProductIds() ? explode('&', $slider->getProductIds()) : [];
 
         return $productIds;
     }
 
     /**
-     * @return \Mageplaza\Productslider\Model\Slider
+     * @return Slider
      */
     protected function getSlider()
     {
         $sliderId = $this->getRequest()->getParam('id');
-        $slider   = $this->_sliderFactory->create();
+        $slider = $this->_sliderFactory->create();
         if ($sliderId) {
             $slider->load($sliderId);
         }
@@ -240,7 +244,7 @@ class Products extends Extended implements TabInterface
      */
     public function getSelectedProducts()
     {
-        $slider   = $this->getSlider();
+        $slider = $this->getSlider();
         $selected = $slider->getProductIds() ? explode('&', $slider->getProductIds()) : [];
 
         if (!is_array($selected)) {

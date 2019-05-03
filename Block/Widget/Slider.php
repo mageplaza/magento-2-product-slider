@@ -25,11 +25,15 @@ use Magento\Catalog\Block\Product\Context;
 use Magento\Catalog\Model\Product\Visibility;
 use Magento\Catalog\Model\ResourceModel\Product\CollectionFactory;
 use Magento\Framework\App\Http\Context as HttpContext;
+use Magento\Framework\App\ObjectManager;
+use Magento\Framework\Exception\LocalizedException;
+use Magento\Framework\Serialize\Serializer\Json;
 use Magento\Framework\Stdlib\DateTime\DateTime;
+use Magento\Widget\Block\BlockInterface;
 use Mageplaza\Productslider\Block\AbstractSlider;
 use Mageplaza\Productslider\Helper\Data;
 use Mageplaza\Productslider\Model\Config\Source\ProductType;
-use Magento\Widget\Block\BlockInterface;
+use Zend_Serializer_Exception;
 
 /**
  * Class Slider
@@ -67,8 +71,7 @@ class Slider extends AbstractSlider implements BlockInterface
         HttpContext $httpContext,
         ProductType $productType,
         array $data = []
-    )
-    {
+    ) {
         parent::__construct($context, $productCollectionFactory, $catalogProductVisibility, $dateTime, $helperData, $httpContext, $data);
         $this->productType = $productType;
     }
@@ -85,7 +88,7 @@ class Slider extends AbstractSlider implements BlockInterface
 
     /**
      * @return array
-     * @throws \Magento\Framework\Exception\LocalizedException
+     * @throws LocalizedException
      */
     public function getProductCollection()
     {
@@ -110,11 +113,12 @@ class Slider extends AbstractSlider implements BlockInterface
     public function getCacheKeyInfo()
     {
         if ($this->_helperData->versionCompare('2.2.0')) {
-            $this->serializer = \Magento\Framework\App\ObjectManager::getInstance()
-                ->get(\Magento\Framework\Serialize\Serializer\Json::class);
+            $this->serializer = ObjectManager::getInstance()
+                ->get(Json::class);
             $params = $this->serializer->serialize($this->getRequest()->getParams());
+        } else {
+            $params = serialize($this->getRequest()->getParams());
         }
-        else $params = serialize($this->getRequest()->getParams());
 
         return array_merge(
             parent::getCacheKeyInfo(),
@@ -135,6 +139,7 @@ class Slider extends AbstractSlider implements BlockInterface
         if (!is_array($display)) {
             $display = explode(',', $display);
         }
+
         return $display;
     }
 
@@ -153,6 +158,7 @@ class Slider extends AbstractSlider implements BlockInterface
         if (!$this->hasData('product_type')) {
             $this->setData('product_type', self::DISPLAY_TYPE_NEW_PRODUCTS);
         }
+
         return $this->getData('product_type');
     }
 
@@ -182,7 +188,7 @@ class Slider extends AbstractSlider implements BlockInterface
      */
     public function getProductsCount()
     {
-        return $this->getData('products_count')?: 10;
+        return $this->getData('products_count') ?: 10;
     }
 
     /**
@@ -197,7 +203,7 @@ class Slider extends AbstractSlider implements BlockInterface
      * Retrieve all configuration options for product slider
      *
      * @return string
-     * @throws \Zend_Serializer_Exception
+     * @throws Zend_Serializer_Exception
      */
     public function getAllOptions()
     {

@@ -77,14 +77,23 @@ Edit,Edit
 "Slider Design Configuration","Slider Design Configuration"
 Responsive,Responsive
 "Loop Slider","Loop Slider"
+"Select Yes to re-display the slider after it shows the last item","Select Yes to re-display the slider after it shows the last item"
 "Margin Between Items","Margin Between Items"
+"pixel. This is the distance between two items in the slider","pixel. This is the distance between two items in the slider"
 "Next/Prev buttons","Next/Prev buttons"
+"Select Yes to display the Next/Pre button in the slider","Select Yes to display the Next/Pre button in the slider"
 "Show Dots Navigation","Show Dots Navigation"
+"Select Yes to display dot navigation of the slider","Select Yes to display dot navigation of the slider"
 "Lazy load images","Lazy load images"
+"Select Yes to lazy load images","Select Yes to lazy load images"
 Autoplay,Autoplay
+"Select Yes to allow auto-displaying the next products","Select Yes to allow auto-displaying the next products"
 "Autoplay TimeOut","Autoplay TimeOut"
+"ms. This is the time which an item is auto-moved to the left","ms. This is the time which an item is auto-moved to the left"
 "Autoplay HoverPause","Autoplay HoverPause"
+"Select Yes to stop the slider when hovering the mouse over the slider area","Select Yes to stop the slider when hovering the mouse over the slider area"
 "Mageplaza Product Slider","Mageplaza Product Slider"
+"Display Page Control","Display Page Control"
 "Select Slider","Select Slider"
 "Add New Slider","Add New Slider"
 Delete,Delete

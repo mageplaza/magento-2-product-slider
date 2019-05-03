@@ -36,7 +36,7 @@ use Mageplaza\Productslider\Model\ResourceModel\Report\Product\CollectionFactory
 class MostViewedProducts extends AbstractSlider
 {
     /**
-     * @var \Mageplaza\Productslider\Model\ResourceModel\Report\Product\CollectionFactory
+     * @var MostViewedCollectionFactory
      */
     protected $_mostViewedProductsFactory;
 
@@ -60,8 +60,7 @@ class MostViewedProducts extends AbstractSlider
         HttpContext $httpContext,
         MostViewedCollectionFactory $mostViewedProductsFactory,
         array $data = []
-    )
-    {
+    ) {
         $this->_mostViewedProductsFactory = $mostViewedProductsFactory;
 
         parent::__construct($context, $productCollectionFactory, $catalogProductVisibility, $dateTime, $helperData, $httpContext, $data);

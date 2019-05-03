@@ -34,22 +34,21 @@ class Edit extends Container
     /**
      * Core registry
      *
-     * @var \Magento\Framework\Registry
+     * @var Registry
      */
     protected $_coreRegistry;
 
     /**
      * Edit constructor.
-     * @param \Magento\Framework\Registry $coreRegistry
-     * @param \Magento\Backend\Block\Widget\Context $context
+     * @param Registry $coreRegistry
+     * @param Context $context
      * @param array $data
      */
     public function __construct(
         Registry $coreRegistry,
         Context $context,
         array $data = []
-    )
-    {
+    ) {
         parent::__construct($context, $data);
 
         $this->_coreRegistry = $coreRegistry;
@@ -87,7 +86,7 @@ class Edit extends Container
      */
     protected function _construct()
     {
-        $this->_objectId   = 'id';
+        $this->_objectId = 'id';
         $this->_blockGroup = 'Mageplaza_Productslider';
         $this->_controller = 'adminhtml_slider';
 

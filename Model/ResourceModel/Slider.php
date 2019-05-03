@@ -21,6 +21,7 @@
 
 namespace Mageplaza\Productslider\Model\ResourceModel;
 
+use Magento\Framework\Model\AbstractModel;
 use Magento\Framework\Model\ResourceModel\Db\AbstractDb;
 use Magento\Framework\Model\ResourceModel\Db\Context;
 use Mageplaza\Productslider\Helper\Data;
@@ -46,8 +47,7 @@ class Slider extends AbstractDb
         Context $context,
         Data $helper,
         $connectionName = null
-    )
-    {
+    ) {
         $this->helper = $helper;
 
         parent::__construct($context, $connectionName);
@@ -66,7 +66,7 @@ class Slider extends AbstractDb
     /**
      * @inheritdoc
      */
-    protected function _beforeSave(\Magento\Framework\Model\AbstractModel $object)
+    protected function _beforeSave(AbstractModel $object)
     {
         $storeIds = $object->getStoreIds();
         if (is_array($storeIds)) {
@@ -96,7 +96,7 @@ class Slider extends AbstractDb
     /**
      * @inheritdoc
      */
-    protected function _afterLoad(\Magento\Framework\Model\AbstractModel $object)
+    protected function _afterLoad(AbstractModel $object)
     {
         parent::_afterLoad($object);
 

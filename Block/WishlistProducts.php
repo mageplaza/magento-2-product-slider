@@ -60,8 +60,7 @@ class WishlistProducts extends AbstractSlider
         HttpContext $httpContext,
         WishlistCollectionFactory $wishlistCollectionFactory,
         array $data = []
-    )
-    {
+    ) {
         $this->_wishlistCollectionFactory = $wishlistCollectionFactory;
 
         parent::__construct($context, $productCollectionFactory, $catalogProductVisibility, $dateTime, $helperData, $httpContext, $data);
@@ -75,7 +74,7 @@ class WishlistProducts extends AbstractSlider
         $collection = [];
 
         if ($this->_customer->isLoggedIn()) {
-            $wishlist   = $this->_wishlistCollectionFactory->create()
+            $wishlist = $this->_wishlistCollectionFactory->create()
                 ->addCustomerIdFilter($this->_customer->getCustomerId());
             $productIds = null;
 
@@ -89,4 +88,3 @@ class WishlistProducts extends AbstractSlider
         return $collection;
     }
 }
-

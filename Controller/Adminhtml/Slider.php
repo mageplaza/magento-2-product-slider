@@ -40,31 +40,30 @@ abstract class Slider extends Action
     /**
      * Slider Factory
      *
-     * @var \Mageplaza\Productslider\Model\SliderFactory
+     * @var SliderFactory
      */
     protected $_sliderFactory;
 
     /**
      * Core registry
      *
-     * @var \Magento\Framework\Registry
+     * @var Registry
      */
     protected $_coreRegistry;
 
     /**
      * Slider constructor.
-     * @param \Mageplaza\Productslider\Model\SliderFactory $sliderFactory
-     * @param \Magento\Framework\Registry $coreRegistry
-     * @param \Magento\Backend\App\Action\Context $context
+     * @param SliderFactory $sliderFactory
+     * @param Registry $coreRegistry
+     * @param Context $context
      */
     public function __construct(
         Context $context,
         SliderFactory $sliderFactory,
         Registry $coreRegistry
-    )
-    {
+    ) {
         $this->_sliderFactory = $sliderFactory;
-        $this->_coreRegistry  = $coreRegistry;
+        $this->_coreRegistry = $coreRegistry;
 
         parent::__construct($context);
     }
@@ -76,7 +75,7 @@ abstract class Slider extends Action
      */
     protected function _initSlider()
     {
-        $slider   = $this->_sliderFactory->create();
+        $slider = $this->_sliderFactory->create();
 
         $sliderId = (int)$this->getRequest()->getParam('id');
         if ($sliderId) {

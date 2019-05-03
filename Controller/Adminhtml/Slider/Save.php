@@ -21,11 +21,16 @@
 
 namespace Mageplaza\Productslider\Controller\Adminhtml\Slider;
 
+use Exception;
 use Magento\Backend\App\Action\Context;
+use Magento\Framework\App\ResponseInterface;
+use Magento\Framework\Controller\Result\Redirect;
+use Magento\Framework\Controller\ResultInterface;
 use Magento\Framework\Registry;
 use Magento\Framework\Stdlib\DateTime\Filter\Date;
 use Mageplaza\Productslider\Controller\Adminhtml\Slider;
 use Mageplaza\Productslider\Model\SliderFactory;
+use Zend_Filter_Input;
 
 /**
  * Class Save
@@ -36,7 +41,7 @@ class Save extends Slider
     /**
      * Date filter
      *
-     * @var \Magento\Framework\Stdlib\DateTime\Filter\Date
+     * @var Date
      */
     protected $_dateFilter;
 
@@ -52,22 +57,21 @@ class Save extends Slider
         SliderFactory $sliderFactory,
         Registry $coreRegistry,
         Date $dateFilter
-    )
-    {
+    ) {
         $this->_dateFilter = $dateFilter;
 
         parent::__construct($context, $sliderFactory, $coreRegistry);
     }
 
     /**
-     * @return \Magento\Framework\App\ResponseInterface|\Magento\Framework\Controller\Result\Redirect|\Magento\Framework\Controller\ResultInterface
+     * @return ResponseInterface|Redirect|ResultInterface
      */
     public function execute()
     {
         $resultRedirect = $this->resultRedirectFactory->create();
 
         if ($data = $this->getRequest()->getPost('slider')) {
-            $data   = $this->_filterData($data);
+            $data = $this->_filterData($data);
             $slider = $this->_initSlider();
 
             try {
@@ -80,7 +84,7 @@ class Save extends Slider
 
                     return $resultRedirect;
                 }
-            } catch (\Exception $e) {
+            } catch (Exception $e) {
                 $this->messageManager->addExceptionMessage($e, __('Something went wrong while saving the Slider. %1', $e->getMessage()));
                 $this->_getSession()->setMageplazaProductsliderSliderData($data);
                 $resultRedirect->setPath('*/*/edit', [
@@ -105,8 +109,8 @@ class Save extends Slider
      */
     protected function _filterData($data)
     {
-        $inputFilter = new \Zend_Filter_Input(['from_date' => $this->_dateFilter,], [], $data);
-        $data        = $inputFilter->getUnescaped();
+        $inputFilter = new Zend_Filter_Input(['from_date' => $this->_dateFilter,], [], $data);
+        $data = $inputFilter->getUnescaped();
 
         if (isset($data['responsive_items'])) {
             unset($data['responsive_items']['__empty']);

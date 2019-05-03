@@ -22,6 +22,8 @@
 namespace Mageplaza\Productslider\Controller\Adminhtml\Slider;
 
 use Magento\Backend\App\Action;
+use Magento\Backend\App\Action\Context;
+use Magento\Framework\Controller\ResultInterface;
 use Magento\Framework\View\Result\LayoutFactory;
 
 /**
@@ -31,29 +33,28 @@ use Magento\Framework\View\Result\LayoutFactory;
 class ProductsGrid extends Action
 {
     /**
-     * @var \Magento\Framework\View\Result\LayoutFactory
+     * @var LayoutFactory
      */
     protected $_resultLayoutFactory;
 
     /**
      * ProductsGrid constructor.
-     * @param \Magento\Backend\App\Action\Context $context
-     * @param \Magento\Framework\View\Result\LayoutFactory $resultLayoutFactory
+     * @param Context $context
+     * @param LayoutFactory $resultLayoutFactory
      */
     public function __construct(
-        Action\Context $context,
+        Context $context,
         LayoutFactory $resultLayoutFactory
-    )
-    {
+    ) {
         $this->_resultLayoutFactory = $resultLayoutFactory;
-        
+
         parent::__construct($context);
     }
 
     /**
      * Save action
      *
-     * @return \Magento\Framework\Controller\ResultInterface
+     * @return ResultInterface
      */
     public function execute()
     {

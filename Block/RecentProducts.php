@@ -36,7 +36,7 @@ use Mageplaza\Productslider\Helper\Data;
 class RecentProducts extends AbstractSlider
 {
     /**
-     * @var \Magento\Reports\Block\Product\Viewed
+     * @var ReportProductViewed
      */
     protected $reportProductViewed;
 
@@ -60,8 +60,7 @@ class RecentProducts extends AbstractSlider
         HttpContext $httpContext,
         ReportProductViewed $reportProductViewed,
         array $data = []
-    )
-    {
+    ) {
         $this->reportProductViewed = $reportProductViewed;
 
         parent::__construct($context, $productCollectionFactory, $catalogProductVisibility, $dateTime, $helperData, $httpContext, $data);

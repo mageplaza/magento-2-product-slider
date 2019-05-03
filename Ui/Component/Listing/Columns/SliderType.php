@@ -51,8 +51,7 @@ class SliderType extends Column
         ProductType $productType,
         array $components = [],
         array $data = []
-    )
-    {
+    ) {
         $this->productType = $productType;
 
         parent::__construct($context, $uiComponentFactory, $components, $data);

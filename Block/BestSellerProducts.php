@@ -60,8 +60,7 @@ class BestSellerProducts extends AbstractSlider
         HttpContext $httpContext,
         BestSellersCollectionFactory $bestSellersCollectionFactory,
         array $data = []
-    )
-    {
+    ) {
         $this->_bestSellersCollectionFactory = $bestSellersCollectionFactory;
 
         parent::__construct($context, $productCollectionFactory, $catalogProductVisibility, $dateTime, $helperData, $httpContext, $data);
@@ -73,7 +72,7 @@ class BestSellerProducts extends AbstractSlider
      */
     public function getProductCollection()
     {
-        $productIds  = [];
+        $productIds = [];
         $bestSellers = $this->_bestSellersCollectionFactory->create()
             ->setPeriod('month');
 

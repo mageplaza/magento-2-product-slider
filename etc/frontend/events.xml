@@ -21,7 +21,7 @@
  */
 -->
 <config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:Event/etc/events.xsd">
-        <event name="core_layout_render_element">
+    <event name="core_layout_render_element">
         <observer name="mageplaza.productslider.addblock" instance="Mageplaza\Productslider\Observer\AddBlock"/>
     </event>
 </config>

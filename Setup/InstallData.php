@@ -21,6 +21,8 @@
 
 namespace Mageplaza\Productslider\Setup;
 
+use Magento\Catalog\Model\Product;
+use Magento\Eav\Model\Entity\Attribute\ScopedAttributeInterface;
 use Magento\Eav\Setup\EavSetupFactory;
 use Magento\Framework\Setup\InstallDataInterface;
 use Magento\Framework\Setup\ModuleContextInterface;
@@ -57,7 +59,7 @@ class InstallData implements InstallDataInterface
         $installer->startSetup();
 
         $eavSetup = $this->eavSetupFactory->create(['setup' => $setup]);
-        $eavSetup->addAttribute(\Magento\Catalog\Model\Product::ENTITY, 'is_featured', [
+        $eavSetup->addAttribute(Product::ENTITY, 'is_featured', [
                 'type'                    => 'int',
                 'backend'                 => '',
                 'frontend'                => '',
@@ -66,7 +68,7 @@ class InstallData implements InstallDataInterface
                 'input'                   => 'boolean',
                 'class'                   => '',
                 'source'                  => '',
-                'global'                  => \Magento\Eav\Model\Entity\Attribute\ScopedAttributeInterface::SCOPE_GLOBAL,
+                'global'                  => ScopedAttributeInterface::SCOPE_GLOBAL,
                 'visible'                 => true,
                 'required'                => false,
                 'user_defined'            => true,
@@ -79,8 +81,7 @@ class InstallData implements InstallDataInterface
                 'unique'                  => false,
                 'sort_order'              => 10,
                 'apply_to'                => 'simple,virtual,bundle,downloadable,grouped,configurable'
-            ]
-        );
+            ]);
 
         $installer->endSetup();
     }

@@ -36,9 +36,9 @@ use Magento\Framework\Model\AbstractModel;
  * @method mixed getActiveTo()
  * @method mixed getStatus()
  * @method mixed getSerializedData()
- * @method Slider setCreatedAt(\string $createdAt)
+ * @method Slider setCreatedAt(string $createdAt)
  * @method string getCreatedAt()
- * @method Slider setUpdatedAt(\string $updatedAt)
+ * @method Slider setUpdatedAt(string $updatedAt)
  * @method string getUpdatedAt()
  */
 class Slider extends AbstractModel

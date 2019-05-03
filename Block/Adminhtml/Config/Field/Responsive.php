@@ -37,7 +37,7 @@ class Responsive extends AbstractFieldArray
         $this->addColumn('size', ['label' => __('Screen size max'), 'renderer' => false]);
         $this->addColumn('items', ['label' => __('Number of items'), 'renderer' => false]);
 
-        $this->_addAfter       = false;
+        $this->_addAfter = false;
         $this->_addButtonLabel = __('Add');
     }
 }

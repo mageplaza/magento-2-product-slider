@@ -22,8 +22,12 @@
 namespace Mageplaza\Productslider\Controller\Adminhtml\Slider;
 
 use Magento\Backend\App\Action\Context;
+use Magento\Framework\App\ResponseInterface;
 use Magento\Framework\Controller\Result\JsonFactory;
+use Magento\Framework\Controller\Result\Redirect;
+use Magento\Framework\Controller\ResultInterface;
 use Magento\Framework\Registry;
+use Magento\Framework\View\Result\Page;
 use Magento\Framework\View\Result\PageFactory;
 use Mageplaza\Productslider\Controller\Adminhtml\Slider;
 use Mageplaza\Productslider\Model\SliderFactory;
@@ -37,14 +41,14 @@ class Edit extends Slider
     /**
      * Page factory
      *
-     * @var \Magento\Framework\View\Result\PageFactory
+     * @var PageFactory
      */
     protected $_resultPageFactory;
 
     /**
      * Result JSON factory
      *
-     * @var \Magento\Framework\Controller\Result\JsonFactory
+     * @var JsonFactory
      */
     protected $_resultJsonFactory;
 
@@ -62,8 +66,7 @@ class Edit extends Slider
         Registry $coreRegistry,
         PageFactory $resultPageFactory,
         JsonFactory $resultJsonFactory
-    )
-    {
+    ) {
         $this->_resultPageFactory = $resultPageFactory;
         $this->_resultJsonFactory = $resultJsonFactory;
 
@@ -71,7 +74,7 @@ class Edit extends Slider
     }
 
     /**
-     * @return \Magento\Framework\App\ResponseInterface|\Magento\Framework\Controller\Result\Redirect|\Magento\Framework\Controller\ResultInterface|\Magento\Framework\View\Result\Page
+     * @return ResponseInterface|Redirect|ResultInterface|Page
      */
     public function execute()
     {
@@ -82,8 +85,8 @@ class Edit extends Slider
             $resultRedirect->setPath(
                 '*/*/edit',
                 [
-                    'id' => $slider->getId(),
-                    '_current'  => true
+                    'id'       => $slider->getId(),
+                    '_current' => true
                 ]
             );
 

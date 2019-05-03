@@ -23,6 +23,7 @@ namespace Mageplaza\Productslider\Controller\Adminhtml\Slider;
 
 use Magento\Backend\App\Action;
 use Magento\Backend\App\Action\Context;
+use Magento\Framework\Controller\ResultInterface;
 use Magento\Framework\View\Result\LayoutFactory;
 
 /**
@@ -32,7 +33,7 @@ use Magento\Framework\View\Result\LayoutFactory;
 class Products extends Action
 {
     /**
-     * @var \Magento\Framework\View\Result\LayoutFactory
+     * @var LayoutFactory
      */
     protected $resultLayoutFactory;
 
@@ -44,8 +45,7 @@ class Products extends Action
     public function __construct(
         Context $context,
         LayoutFactory $resultLayoutFactory
-    )
-    {
+    ) {
         $this->resultLayoutFactory = $resultLayoutFactory;
 
         parent::__construct($context);
@@ -54,7 +54,7 @@ class Products extends Action
     /**
      * Save action
      *
-     * @return \Magento\Framework\Controller\ResultInterface
+     * @return ResultInterface
      */
     public function execute()
     {

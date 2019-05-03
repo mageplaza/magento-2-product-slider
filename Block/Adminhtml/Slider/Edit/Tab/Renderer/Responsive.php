@@ -52,8 +52,7 @@ class Responsive extends AbstractElement
         Escaper $escaper,
         LayoutInterface $layout,
         array $data = []
-    )
-    {
+    ) {
         $this->layout = $layout;
 
         parent::__construct($factoryElement, $factoryCollection, $escaper, $data);

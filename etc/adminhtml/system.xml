@@ -54,42 +54,42 @@
                         <field id="responsive">1</field>
                     </depends>
                 </field>
-                <field id="loop" translate="label" type="select" sortOrder="30" showInDefault="1" showInWebsite="1" showInStore="1">
+                <field id="loop" translate="label comment" type="select" sortOrder="30" showInDefault="1" showInWebsite="1" showInStore="1">
                     <label>Loop Slider</label>
                     <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
                     <validate>validate-digits</validate>
                     <comment>Select Yes to re-display the slider after it shows the last item</comment>
                 </field>
-                <field id="margin" translate="label" type="text" sortOrder="40" showInDefault="1" showInWebsite="1" showInStore="1">
+                <field id="margin" translate="label comment" type="text" sortOrder="40" showInDefault="1" showInWebsite="1" showInStore="1">
                     <label>Margin Between Items</label>
                     <validate>validate-digits</validate>
                     <comment>pixel. This is the distance between two items in the slider</comment>
                 </field>
-                <field id="nav" translate="label" type="select" sortOrder="60" showInDefault="1" showInWebsite="1" showInStore="1">
+                <field id="nav" translate="label comment" type="select" sortOrder="60" showInDefault="1" showInWebsite="1" showInStore="1">
                     <label>Next/Prev buttons</label>
                     <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
                     <validate>validate-digits</validate>
                     <comment>Select Yes to display the Next/Pre button in the slider</comment>
                 </field>
-                <field id="dots" translate="label" type="select" sortOrder="70" showInDefault="1" showInWebsite="1" showInStore="1">
+                <field id="dots" translate="label comment" type="select" sortOrder="70" showInDefault="1" showInWebsite="1" showInStore="1">
                     <label>Show Dots Navigation</label>
                     <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
                     <validate>validate-digits</validate>
                     <comment>Select Yes to display dot navigation of the slider</comment>
                 </field>
-                <field id="lazyLoad" translate="label" type="select" sortOrder="80" showInDefault="1" showInWebsite="1" showInStore="1">
+                <field id="lazyLoad" translate="label comment" type="select" sortOrder="80" showInDefault="1" showInWebsite="1" showInStore="1">
                     <label>Lazy load images</label>
                     <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
                     <validate>validate-digits</validate>
                     <comment>Select Yes to lazy load images</comment>
                 </field>
-                <field id="autoplay" translate="label" type="select" sortOrder="90" showInDefault="1" showInWebsite="1" showInStore="1">
+                <field id="autoplay" translate="label comment" type="select" sortOrder="90" showInDefault="1" showInWebsite="1" showInStore="1">
                     <label>Autoplay</label>
                     <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
                     <validate>validate-digits</validate>
                     <comment>Select Yes to allow auto-displaying the next products</comment>
                 </field>
-                <field id="autoplayTimeout" translate="label" type="text" sortOrder="100" showInDefault="1" showInWebsite="1" showInStore="1">
+                <field id="autoplayTimeout" translate="label comment" type="text" sortOrder="100" showInDefault="1" showInWebsite="1" showInStore="1">
                     <label>Autoplay TimeOut</label>
                     <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
                     <validate>validate-digits</validate>
@@ -98,7 +98,7 @@
                         <field id="autoplay">1</field>
                     </depends>
                 </field>
-                <field id="autoplayHoverPause" translate="label" type="select" sortOrder="110" showInDefault="1" showInWebsite="1" showInStore="1">
+                <field id="autoplayHoverPause" translate="label comment" type="select" sortOrder="110" showInDefault="1" showInWebsite="1" showInStore="1">
                     <label>Autoplay HoverPause</label>
                     <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
                     <validate>validate-digits</validate>

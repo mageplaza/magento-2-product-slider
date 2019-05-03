@@ -21,6 +21,10 @@
 
 namespace Mageplaza\Productslider\Controller\Adminhtml\Slider;
 
+use Exception;
+use Magento\Framework\App\ResponseInterface;
+use Magento\Framework\Controller\Result\Redirect;
+use Magento\Framework\Controller\ResultInterface;
 use Mageplaza\Productslider\Controller\Adminhtml\Slider;
 
 /**
@@ -30,7 +34,7 @@ use Mageplaza\Productslider\Controller\Adminhtml\Slider;
 class Delete extends Slider
 {
     /**
-     * @return \Magento\Framework\App\ResponseInterface|\Magento\Framework\Controller\Result\Redirect|\Magento\Framework\Controller\ResultInterface
+     * @return ResponseInterface|Redirect|ResultInterface
      */
     public function execute()
     {
@@ -40,7 +44,7 @@ class Delete extends Slider
                 ->load($this->getRequest()->getParam('id'))
                 ->delete();
             $this->messageManager->addSuccessMessage(__('The Slider has been deleted.'));
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             // display error message
             $this->messageManager->addErrorMessage($e->getMessage());
             // go back to edit form

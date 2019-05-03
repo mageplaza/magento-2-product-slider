@@ -22,6 +22,7 @@
 namespace Mageplaza\Productslider\Block\Adminhtml\Slider\Edit\Tab\Renderer;
 
 use Magento\Catalog\Model\Category as CategoryModel;
+use Magento\Catalog\Model\ResourceModel\Category\Collection;
 use Magento\Catalog\Model\ResourceModel\Category\CollectionFactory as CategoryCollectionFactory;
 use Magento\Catalog\Ui\Component\Product\Form\Categories\Options;
 use Magento\Framework\AuthorizationInterface;
@@ -38,17 +39,17 @@ use Magento\Framework\UrlInterface;
 class Category extends Multiselect
 {
     /**
-     * @var \Magento\Catalog\Model\ResourceModel\Category\CollectionFactory
+     * @var CategoryCollectionFactory
      */
     public $collectionFactory;
 
     /**
-     * @var \Magento\Framework\AuthorizationInterface
+     * @var AuthorizationInterface
      */
     public $authorization;
 
     /**
-     * @var \Magento\Framework\UrlInterface
+     * @var UrlInterface
      */
     protected $_urlBuilder;
 
@@ -77,12 +78,11 @@ class Category extends Multiselect
         AuthorizationInterface $authorization,
         UrlInterface $urlBuilder,
         array $data = []
-    )
-    {
-        $this->_option           = $options;
+    ) {
+        $this->_option = $options;
         $this->collectionFactory = $collectionFactory;
-        $this->authorization     = $authorization;
-        $this->_urlBuilder       = $urlBuilder;
+        $this->authorization = $authorization;
+        $this->_urlBuilder = $urlBuilder;
 
         parent::__construct($factoryElement, $factoryCollection, $escaper, $data);
     }
@@ -203,8 +203,8 @@ class Category extends Multiselect
      */
     public function getCategoriesTree()
     {
-        /* @var $collection \Magento\Catalog\Model\ResourceModel\Category\Collection */
-        $collection   = $this->collectionFactory->create();
+        /* @var $collection Collection */
+        $collection = $this->collectionFactory->create();
         $categoryById = [
             CategoryModel::TREE_ROOT_ID => [
                 'value'    => CategoryModel::TREE_ROOT_ID,
@@ -219,8 +219,8 @@ class Category extends Multiselect
                 }
             }
 
-            $categoryById[$category->getId()]['is_active']        = 1;
-            $categoryById[$category->getId()]['label']            = $category->getName();
+            $categoryById[$category->getId()]['is_active'] = 1;
+            $categoryById[$category->getId()]['label'] = $category->getName();
             $categoryById[$category->getParentId()]['optgroup'][] = &$categoryById[$category->getId()];
         }
 
