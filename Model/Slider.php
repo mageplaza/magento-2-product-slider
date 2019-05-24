@@ -65,16 +65,6 @@ class Slider extends AbstractModel
     protected $_eventPrefix = 'mageplaza_productslider_slider';
 
     /**
-     * Initialize resource model
-     *
-     * @return void
-     */
-    protected function _construct()
-    {
-        $this->_init('Mageplaza\Productslider\Model\ResourceModel\Slider');
-    }
-
-    /**
      * Get identities
      *
      * @return array
@@ -82,5 +72,43 @@ class Slider extends AbstractModel
     public function getIdentities()
     {
         return [self::CACHE_TAG . '_' . $this->getId()];
+    }
+
+    /**
+     * @param \Magento\Framework\DataObject $dataObject
+     *
+     * @return array|bool
+     * @throws \Exception
+     */
+    public function validateData(\Magento\Framework\DataObject $dataObject)
+    {
+        $result   = [];
+        $fromDate = $toDate = null;
+
+        if ($dataObject->hasFromDate() && $dataObject->hasToDate()) {
+            $fromDate = $dataObject->getFromDate();
+            $toDate   = $dataObject->getToDate();
+        }
+
+        if ($fromDate && $toDate) {
+            $fromDate = new \DateTime($fromDate);
+            $toDate   = new \DateTime($toDate);
+
+            if ($fromDate > $toDate) {
+                $result[] = __('End Date must follow Start Date.');
+            }
+        }
+
+        return !empty($result) ? $result : true;
+    }
+
+    /**
+     * Initialize resource model
+     *
+     * @return void
+     */
+    protected function _construct()
+    {
+        $this->_init('Mageplaza\Productslider\Model\ResourceModel\Slider');
     }
 }
