@@ -29,9 +29,9 @@ use Magento\Framework\Option\ArrayInterface;
  */
 class Additional implements ArrayInterface
 {
-    const SHOW_PRICE = 1;
-    const SHOW_CART = 2;
-    const SHOW_REVIEW = 3;
+    const SHOW_PRICE  = '1';
+    const SHOW_CART   = '2';
+    const SHOW_REVIEW = '3';
 
     /**
      * Options getter

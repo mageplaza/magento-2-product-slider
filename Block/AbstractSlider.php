@@ -151,7 +151,7 @@ abstract class AbstractSlider extends AbstractProduct
      */
     public function canShowPrice()
     {
-        return in_array(Additional::SHOW_PRICE, $this->getDisplayAdditional());
+        return in_array(Additional::SHOW_PRICE, $this->getDisplayAdditional(), true);
     }
 
     /**
@@ -159,7 +159,7 @@ abstract class AbstractSlider extends AbstractProduct
      */
     public function canShowReview()
     {
-        return in_array(Additional::SHOW_REVIEW, $this->getDisplayAdditional());
+        return in_array(Additional::SHOW_REVIEW, $this->getDisplayAdditional(), true);
     }
 
     /**
@@ -167,7 +167,7 @@ abstract class AbstractSlider extends AbstractProduct
      */
     public function canShowAddToCart()
     {
-        return in_array(Additional::SHOW_CART, $this->getDisplayAdditional());
+        return in_array(Additional::SHOW_CART, $this->getDisplayAdditional(), true);
     }
 
     /**
@@ -229,10 +229,10 @@ abstract class AbstractSlider extends AbstractProduct
 
         foreach ($allConfig as $key => $value) {
             if ($key === 'item_slider') {
-                if (!empty($this->getSlider())) {
-                    $sliderOptions = $sliderOptions . $this->getResponsiveConfig();
+                if (empty($this->getSlider())) {
+                    $sliderOptions .= $this->_helperData->getResponseValue();
                 } else {
-                    $sliderOptions = $sliderOptions . $this->_helperData->getResponseValue();
+                    $sliderOptions .= $this->getResponsiveConfig();
                 }
             } elseif ($key !== 'responsive') {
                 if (in_array($key, ['loop', 'nav', 'dots', 'lazyLoad', 'autoplay', 'autoplayHoverPause'])) {
@@ -253,8 +253,8 @@ abstract class AbstractSlider extends AbstractProduct
         $slider = $this->getSlider();
         if ($slider && $slider->getIsResponsive()) {
             try {
-                if ($slider->getIsResponsive() === 2) {
-                    return $responsiveConfig = $this->_helperData->getResponseValue();
+                if ($slider->getIsResponsive() === '2') {
+                    return $this->_helperData->getResponseValue();
                 } else {
                     $responsiveConfig = $slider->getResponsiveItems() ? $this->_helperData->unserialize($slider->getResponsiveItems()) : [];
                 }

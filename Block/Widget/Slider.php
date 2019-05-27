@@ -124,7 +124,7 @@ class Slider extends AbstractSlider implements BlockInterface
             parent::getCacheKeyInfo(),
             [
                 $this->getData('page_var_name'),
-                intval($this->getRequest()->getParam($this->getData('page_var_name'), 1)),
+                (int)$this->getRequest()->getParam($this->getData('page_var_name'), 1),
                 $params
             ]
         );
