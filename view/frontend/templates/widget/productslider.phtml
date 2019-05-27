@@ -27,7 +27,7 @@ $mode = 'grid';
 $title = $block->getTitle();
 $id = $block->getData('page_var_name') . uniqid('', false);
 if ($items = $block->getProductCollection()) : ?>
-    <div class="mp-product-slider-block block widget block-products-list <?= $mode; ?>">
+    <div class="mp-product-slider-block widget block-products-list">
         <h2 class="mp-product-slider-title"><?= $block->getTitle(); ?></h2>
         <p class="mp-ps-info"><?= $block->getDescription(); ?></p>
     </div>
