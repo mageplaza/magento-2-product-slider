@@ -8,7 +8,7 @@
 - FAQs: https://www.mageplaza.com/faqs/
 - Contribute on Github: https://github.com/mageplaza/magento-2-product-slider/
 - Get premium support from Mageplaza: Purchase Support package https://www.mageplaza.com/magento-2-extension-support-package/
-- Changelog: https://www.mageplaza.com/changelog/m2-affiliate.txt
+- Changelog: https://www.mageplaza.com/releases/product-slider
 - License: https://www.mageplaza.com/LICENSE.txt
 
 ## How to install
