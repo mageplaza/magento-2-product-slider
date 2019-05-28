@@ -109,8 +109,10 @@ class Save extends Slider
 
                 return;
             } catch (Exception $e) {
-                $this->messageManager->addExceptionMessage($e,
-                    __('Something went wrong while saving the Slider. %1', $e->getMessage()));
+                $this->messageManager->addExceptionMessage(
+                    $e,
+                    __('Something went wrong while saving the Slider. %1', $e->getMessage())
+                );
                 $this->_getSession()->setMageplazaProductsliderSliderData($data);
                 $this->dataPersistor->set('mageplaza_productslider_slider', $data);
                 $sliderId = $this->getRequest()->getParam('id');

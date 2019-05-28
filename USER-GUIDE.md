@@ -4,11 +4,9 @@
 
 - Installation Guide: https://docs.mageplaza.com/kb/installation.html
 - User Guide: https://docs.mageplaza.com/product-slider-m2/
-- Product Page: https://www.mageplaza.com/magento-2-product-slider-extension/
 - FAQs: https://www.mageplaza.com/faqs/
 - Contribute on Github: https://github.com/mageplaza/magento-2-product-slider/
-- Get premium support from Mageplaza: Purchase Support package https://www.mageplaza.com/magento-2-extension-support-package/
-- Changelog: https://www.mageplaza.com/changelog/m2-affiliate.txt
+- Changelog: https://www.mageplaza.com/releases/product-slider
 - License: https://www.mageplaza.com/LICENSE.txt
 
 ## How to install
@@ -22,8 +20,6 @@ php bin/magento setup:static-content:deploy
 ```
 
 ### 2. Copy and paste
-
-Download latest version at [Mageplaza](https://www.mageplaza.com/magento-2-product-slider-extension/)
 
 Magento 2 Product Slider module allows showing all suggested products friendly that match to customer’s expectation.
 
