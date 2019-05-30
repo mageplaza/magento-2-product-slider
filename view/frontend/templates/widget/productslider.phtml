@@ -52,55 +52,56 @@ if ($items = $block->getProductCollection()) : ?>
                                     </a>
                                 </strong>
 
-                                <?php if ($block->canShowReview()) : ?>
-                                    <?= $block->getReviewsSummaryHtml($_item, 'short', true) ?>
-                                <?php endif; ?>
-
-                                <?php if ($block->canShowPrice()) : ?>
-                                    <?= $block->getProductPrice($_item); ?>
-                                <?php endif; ?>
-
-                                <div class="product actions slider-product-item-actions">
-                                    <?php if ($block->canShowAddToCart()) : ?>
-                                        <div class="actions-primary">
-                                            <?php if ($_item->isSaleable()) : ?>
-                                                <?php if ($_item->getTypeInstance()->hasRequiredOptions($_item)) : ?>
-                                                    <button class="action tocart primary mageplaza-product-slider-button"
-                                                            data-mage-init='{"redirectUrl": {"url": "<?= $block->getAddToCartUrl($_item) ?>"}}'
-                                                            type="button" title="<?= __('Add to Cart') ?>">
-                                                        <span><?= __('Add to Cart') ?></span>
-                                                    </button>
-                                                <?php else : ?>
-                                                    <?php
-                                                    $postDataHelper = $this->helper('Magento\Framework\Data\Helper\PostHelper');
-                                                    $postData = $postDataHelper->getPostData($block->getAddToCartUrl($_item), ['product' => $_item->getEntityId()])
-                                                    ?>
-                                                    <button class="action tocart primary mageplaza-product-slider-button"
-                                                            data-post='<?= $postData; ?>'
-                                                            type="button" title="<?= __('Add to Cart') ?>">
-                                                        <span><?= __('Add to Cart') ?></span>
-                                                    </button>
-                                                <?php endif; ?>
-                                            <?php else : ?>
-                                                <?php if ($_item->getIsSalable()) : ?>
-                                                    <div class="stock available">
-                                                        <span><?= __('In stock') ?></span></div>
-                                                <?php else : ?>
-                                                    <div class="stock unavailable">
-                                                        <span><?= __('Out of stock') ?></span></div>
-                                                <?php endif; ?>
-                                            <?php endif; ?>
-                                        </div>
+                                    <?php if ($block->canShowReview()) : ?>
+                                        <?= $block->getReviewsSummaryHtml($_item, 'short', true) ?>
                                     <?php endif; ?>
+
+                                    <?php if ($block->canShowPrice()) : ?>
+                                        <?= $block->getProductPrice($_item); ?>
+                                    <?php endif; ?>
+
+                                    <div class="product actions slider-product-item-actions">
+                                        <?php if ($block->canShowAddToCart()) : ?>
+                                            <div class="actions-primary">
+                                                <?php if ($_item->isSaleable()) : ?>
+                                                    <?php if ($_item->getTypeInstance()->hasRequiredOptions($_item)) : ?>
+                                                        <button class="action tocart primary mageplaza-product-slider-button"
+                                                                data-mage-init='{"redirectUrl": {"url": "<?= $block->getAddToCartUrl($_item) ?>"}}'
+                                                                type="button" title="<?= __('Add to Cart') ?>">
+                                                            <span><?= __('Add to Cart') ?></span>
+                                                        </button>
+                                                    <?php else : ?>
+                                                        <?php
+                                                        $postDataHelper = $this->helper('Magento\Framework\Data\Helper\PostHelper');
+                                                        $postData = $postDataHelper->getPostData($block->getAddToCartUrl($_item), ['product' => $_item->getEntityId()])
+                                                        ?>
+                                                        <button class="action tocart primary mageplaza-product-slider-button"
+                                                                data-post='<?= $postData; ?>'
+                                                                type="button" title="<?= __('Add to Cart') ?>">
+                                                            <span><?= __('Add to Cart') ?></span>
+                                                        </button>
+                                                    <?php endif; ?>
+                                                <?php else : ?>
+                                                    <?php if ($_item->getIsSalable()) : ?>
+                                                        <div class="stock available">
+                                                            <span><?= __('In stock') ?></span></div>
+                                                    <?php else : ?>
+                                                        <div class="stock unavailable">
+                                                            <span><?= __('Out of stock') ?></span></div>
+                                                    <?php endif; ?>
+                                                <?php endif; ?>
+                                            </div>
+                                        <?php endif; ?>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                        <?= ($iterator === count($items) + 1) ? '</li>' : '' ?>
-                    <?php endforeach ?>
-                </div>
-            </ol>
+                            <?= ($iterator === count($items) + 1) ? '</li>' : '' ?>
+                        <?php endforeach ?>
+                    </div>
+                </ol>
+            </div>
+            <?= $block->getPagerHtml() ?>
         </div>
-        <?= $block->getPagerHtml() ?>
     </div>
     <script>
         require(['jquery', 'mageplaza/core/owl.carousel'], function ($) {
