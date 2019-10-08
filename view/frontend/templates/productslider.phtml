@@ -25,27 +25,29 @@ use Mageplaza\Productslider\Block\AbstractSlider;
 
 $mode = 'grid';
 $title = $block->getTitle();
-if ($items = $block->getProductCollection()) : ?>
-    <div class="mp-product-slider-block block widget block-products-list <?= $mode; ?>">
-        <h2 class="mp-product-slider-title"><?= $block->getTitle(); ?></h2>
-        <p class="mp-ps-info"><?= $block->getDescription(); ?></p>
+$blockId = $block->getSliderId();
+$items = $block->getProductCollection();
+if ($items && $items->getSize()) : ?>
+    <div class="mp-product-slider-block block widget block-products-list <?= /** @noEscape */ $mode ?>">
+        <h2 class="mp-product-slider-title"><?= $block->escapeHtml($title) ?></h2>
+        <p class="mp-ps-info"><?= $block->escapeHtml($block->getDescription()) ?></p>
     </div>
     <div class="block-content">
-        <div class="products-<?= $mode; ?> <?= $mode; ?>">
+        <div class="products-<?= /** @noEscape */  $mode ?> <?= /** @noEscape */  $mode ?>">
             <ol class="product-items widget-viewed-grid">
                 <?php $iterator = 1; ?>
-                <div id="mp-list-items-<?= $block->getSliderId(); ?>" class="owl-carousel owl-theme">
+                <div id="mp-list-items-<?= /** @noEscape */ $blockId ?>" class="owl-carousel owl-theme">
                     <?php foreach ($items as $_item) : ?>
                         <?= ($iterator++ == 1) ? '<li class="product-item product-slider"">' : '</li><li class="product-item product-slider"">' ?>
                         <div class="slider-product-item-info">
-                            <a href="<?= $block->getProductUrl($_item) ?>"
+                            <a href="<?= $block->escapeUrl($block->getProductUrl($_item)) ?>"
                                class="product photo slider-product-item-photo">
                                 <?= $block->getImage($_item, 'recently_viewed_products_grid_content_widget')->toHtml(); ?>
                             </a>
                             <div class="product details slider-product-item-details">
                                 <strong class="product name product-item-name">
                                     <a title="<?= $block->escapeHtml($_item->getName()) ?>"
-                                       href="<?= $block->getProductUrl($_item) ?>">
+                                       href="<?= $block->escapeUrl($block->getProductUrl($_item)) ?>">
                                         <?= $block->escapeHtml($_item->getName()) ?>
                                     </a>
                                 </strong>
@@ -55,7 +57,7 @@ if ($items = $block->getProductCollection()) : ?>
                                 <?php endif; ?>
 
                                 <?php if ($block->canShowPrice()) : ?>
-                                    <?= $block->getProductPrice($_item); ?>
+                                    <?= /** @noEscape */ $block->getProductPrice($_item) ?>
                                 <?php endif; ?>
 
                                 <div class="product actions slider-product-item-actions">
@@ -64,9 +66,9 @@ if ($items = $block->getProductCollection()) : ?>
                                             <?php if ($_item->isSaleable()) : ?>
                                                 <?php if ($_item->getTypeInstance()->hasRequiredOptions($_item)) : ?>
                                                     <button class="action tocart primary mageplaza-product-slider-button"
-                                                            data-mage-init='{"redirectUrl": {"url": "<?= $block->getAddToCartUrl($_item) ?>"}}'
-                                                            type="button" title="<?= __('Add to Cart') ?>">
-                                                        <span><?= __('Add to Cart') ?></span>
+                                                            data-mage-init='{"redirectUrl": {"url": "<?= /** @noEscape */  $block->getAddToCartUrl($_item) ?>"}}'
+                                                            type="button" title="<?= /** @noEscape */ __('Add to Cart') ?>">
+                                                        <span><?= /** @noEscape */ __('Add to Cart') ?></span>
                                                     </button>
                                                 <?php else : ?>
                                                     <?php
@@ -74,18 +76,18 @@ if ($items = $block->getProductCollection()) : ?>
                                                     $postData = $postDataHelper->getPostData($block->getAddToCartUrl($_item), ['product' => $_item->getEntityId()])
                                                     ?>
                                                     <button class="action tocart primary mageplaza-product-slider-button"
-                                                            data-post='<?= $postData; ?>'
-                                                            type="button" title="<?= __('Add to Cart') ?>">
-                                                        <span><?= __('Add to Cart') ?></span>
+                                                            data-post='<?= /** @noEscape */ $postData; ?>'
+                                                            type="button" title="<?= /** @noEscape */ __('Add to Cart') ?>">
+                                                        <span><?= /** @noEscape */ __('Add to Cart') ?></span>
                                                     </button>
                                                 <?php endif; ?>
                                             <?php else : ?>
                                                 <?php if ($_item->getIsSalable()) : ?>
                                                     <div class="stock available">
-                                                        <span><?= __('In stock') ?></span></div>
+                                                        <span><?= /** @noEscape */ __('In stock') ?></span></div>
                                                 <?php else : ?>
                                                     <div class="stock unavailable">
-                                                        <span><?= __('Out of stock') ?></span></div>
+                                                        <span><?= /** @noEscape */ __('Out of stock') ?></span></div>
                                                 <?php endif; ?>
                                             <?php endif; ?>
                                         </div>
@@ -102,7 +104,7 @@ if ($items = $block->getProductCollection()) : ?>
     </div>
     <script>
         require(['jquery', 'mageplaza/core/owl.carousel'], function ($) {
-            $('#mp-list-items-<?= $block->getSliderId(); ?>').owlCarousel(<?= $block->getAllOptions()?>);
+            $('#mp-list-items-<?= /** @noEscape */ $blockId ?>').owlCarousel(<?= /** @noEscape */ $block->getAllOptions()?>);
         });
     </script>
 <?php endif; ?>

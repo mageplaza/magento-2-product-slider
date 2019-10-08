@@ -180,7 +180,7 @@ abstract class AbstractSlider extends AbstractProduct
             return $this->getSlider()->getSliderId();
         }
 
-        return time();
+        return uniqid('-', false);
     }
 
     /**
