@@ -1,4 +1,4 @@
-# The #1 Product Slider for Magento 2
+# The Most Popular Product Slider for Magento 2
 
 ## How does it work?
 
