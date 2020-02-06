@@ -29,11 +29,11 @@ use Magento\Framework\App\ObjectManager;
 use Magento\Framework\Exception\LocalizedException;
 use Magento\Framework\Serialize\Serializer\Json;
 use Magento\Framework\Stdlib\DateTime\DateTime;
+use Magento\Framework\Url\EncoderInterface;
 use Magento\Widget\Block\BlockInterface;
 use Mageplaza\Productslider\Block\AbstractSlider;
 use Mageplaza\Productslider\Helper\Data;
 use Mageplaza\Productslider\Model\Config\Source\ProductType;
-use Zend_Serializer_Exception;
 
 /**
  * Class Slider
@@ -46,6 +46,8 @@ class Slider extends AbstractSlider implements BlockInterface
      */
     const DISPLAY_TYPE_NEW_PRODUCTS = 'new';
 
+    protected $_template = "Mageplaza_Productslider::widget/productslider.phtml";
+
     /**
      * @var ProductType
      */
@@ -53,12 +55,14 @@ class Slider extends AbstractSlider implements BlockInterface
 
     /**
      * Slider constructor.
+     *
      * @param Context $context
      * @param CollectionFactory $productCollectionFactory
      * @param Visibility $catalogProductVisibility
      * @param DateTime $dateTime
      * @param Data $helperData
      * @param HttpContext $httpContext
+     * @param EncoderInterface $urlEncoder
      * @param ProductType $productType
      * @param array $data
      */
@@ -69,10 +73,11 @@ class Slider extends AbstractSlider implements BlockInterface
         DateTime $dateTime,
         Data $helperData,
         HttpContext $httpContext,
+        EncoderInterface $urlEncoder,
         ProductType $productType,
         array $data = []
     ) {
-        parent::__construct($context, $productCollectionFactory, $catalogProductVisibility, $dateTime, $helperData, $httpContext, $data);
+        parent::__construct($context, $productCollectionFactory, $catalogProductVisibility, $dateTime, $helperData, $httpContext, $urlEncoder, $data);
         $this->productType = $productType;
     }
 
@@ -143,6 +148,9 @@ class Slider extends AbstractSlider implements BlockInterface
         return $display;
     }
 
+    /**
+     * @return Data
+     */
     public function getHelperData()
     {
         return $this->_helperData;
@@ -203,7 +211,6 @@ class Slider extends AbstractSlider implements BlockInterface
      * Retrieve all configuration options for product slider
      *
      * @return string
-     * @throws Zend_Serializer_Exception
      */
     public function getAllOptions()
     {

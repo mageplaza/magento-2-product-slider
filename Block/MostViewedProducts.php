@@ -26,6 +26,7 @@ use Magento\Catalog\Model\Product\Visibility;
 use Magento\Catalog\Model\ResourceModel\Product\CollectionFactory;
 use Magento\Framework\App\Http\Context as HttpContext;
 use Magento\Framework\Stdlib\DateTime\DateTime;
+use Magento\Framework\Url\EncoderInterface;
 use Mageplaza\Productslider\Helper\Data;
 use Mageplaza\Productslider\Model\ResourceModel\Report\Product\CollectionFactory as MostViewedCollectionFactory;
 
@@ -58,12 +59,13 @@ class MostViewedProducts extends AbstractSlider
         DateTime $dateTime,
         Data $helperData,
         HttpContext $httpContext,
+        EncoderInterface $urlEncoder,
         MostViewedCollectionFactory $mostViewedProductsFactory,
         array $data = []
     ) {
         $this->_mostViewedProductsFactory = $mostViewedProductsFactory;
 
-        parent::__construct($context, $productCollectionFactory, $catalogProductVisibility, $dateTime, $helperData, $httpContext, $data);
+        parent::__construct($context, $productCollectionFactory, $catalogProductVisibility, $dateTime, $helperData, $httpContext, $urlEncoder, $data);
     }
 
     /**
@@ -73,10 +75,10 @@ class MostViewedProducts extends AbstractSlider
     public function getProductCollection()
     {
         $collection = $this->_mostViewedProductsFactory->create()
-            ->addAttributeToSelect('*')
             ->setStoreId($this->getStoreId())->addViewsCount()
             ->addStoreFilter($this->getStoreId())
             ->setPageSize($this->getProductsCount());
+        $this->_addProductAttributesAndPrices($collection);
 
         return $collection;
     }

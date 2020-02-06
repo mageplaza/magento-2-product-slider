@@ -27,6 +27,7 @@ use Magento\Catalog\Model\Product\Visibility;
 use Magento\Catalog\Model\ResourceModel\Product\CollectionFactory;
 use Magento\Framework\App\Http\Context as HttpContext;
 use Magento\Framework\Stdlib\DateTime\DateTime;
+use Magento\Framework\Url\EncoderInterface;
 use Mageplaza\Productslider\Helper\Data;
 
 /**
@@ -42,12 +43,14 @@ class CategoryId extends AbstractSlider
 
     /**
      * CategoryId constructor.
+     *
      * @param Context $context
      * @param CollectionFactory $productCollectionFactory
      * @param Visibility $catalogProductVisibility
      * @param DateTime $dateTime
      * @param Data $helperData
      * @param HttpContext $httpContext
+     * @param EncoderInterface $urlEncoder
      * @param CategoryFactory $categoryFactory
      * @param array $data
      */
@@ -58,12 +61,13 @@ class CategoryId extends AbstractSlider
         DateTime $dateTime,
         Data $helperData,
         HttpContext $httpContext,
+        EncoderInterface $urlEncoder,
         CategoryFactory $categoryFactory,
         array $data = []
     ) {
         $this->_categoryFactory = $categoryFactory;
 
-        parent::__construct($context, $productCollectionFactory, $catalogProductVisibility, $dateTime, $helperData, $httpContext, $data);
+        parent::__construct($context, $productCollectionFactory, $catalogProductVisibility, $dateTime, $helperData, $httpContext, $urlEncoder, $data);
     }
 
     /**
@@ -76,8 +80,9 @@ class CategoryId extends AbstractSlider
         $productIds = $this->getProductIdsByCategory();
         $collection = [];
         if (!empty($productIds)) {
-            $collection = $this->_productCollectionFactory->create()->addIdFilter($productIds)->setPageSize($this->getProductsCount());
-            ;
+            $collection = $this->_productCollectionFactory->create()
+                ->addIdFilter($productIds)
+                ->setPageSize($this->getProductsCount());
             $this->_addProductAttributesAndPrices($collection);
         }
 
@@ -122,9 +127,7 @@ class CategoryId extends AbstractSlider
             return $this->getData('category_id');
         }
         if ($this->getSlider()) {
-            $catIds = explode(',', $this->getSlider()->getCategoriesIds());
-
-            return $catIds;
+            return explode(',', $this->getSlider()->getCategoriesIds());
         }
 
         return 2;

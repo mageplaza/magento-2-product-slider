@@ -24,8 +24,10 @@ namespace Mageplaza\Productslider\Block;
 use Magento\Catalog\Block\Product\Context;
 use Magento\Catalog\Model\Product\Visibility;
 use Magento\Catalog\Model\ResourceModel\Product\CollectionFactory;
+use Magento\Customer\Model\Session as CustomerSession;
 use Magento\Framework\App\Http\Context as HttpContext;
 use Magento\Framework\Stdlib\DateTime\DateTime;
+use Magento\Framework\Url\EncoderInterface;
 use Magento\Wishlist\Model\ResourceModel\Item\CollectionFactory as WishlistCollectionFactory;
 use Mageplaza\Productslider\Helper\Data;
 
@@ -41,14 +43,22 @@ class WishlistProducts extends AbstractSlider
     protected $_wishlistCollectionFactory;
 
     /**
+     * @var CustomerSession
+     */
+    protected $_customerSession;
+
+    /**
      * WishlistProducts constructor.
+     *
      * @param Context $context
      * @param CollectionFactory $productCollectionFactory
      * @param Visibility $catalogProductVisibility
      * @param DateTime $dateTime
      * @param Data $helperData
      * @param HttpContext $httpContext
+     * @param EncoderInterface $urlEncoder
      * @param WishlistCollectionFactory $wishlistCollectionFactory
+     * @param CustomerSession $_customerSession
      * @param array $data
      */
     public function __construct(
@@ -58,12 +68,15 @@ class WishlistProducts extends AbstractSlider
         DateTime $dateTime,
         Data $helperData,
         HttpContext $httpContext,
+        EncoderInterface $urlEncoder,
         WishlistCollectionFactory $wishlistCollectionFactory,
+        CustomerSession $_customerSession,
         array $data = []
     ) {
         $this->_wishlistCollectionFactory = $wishlistCollectionFactory;
+        $this->_customerSession = $_customerSession;
 
-        parent::__construct($context, $productCollectionFactory, $catalogProductVisibility, $dateTime, $helperData, $httpContext, $data);
+        parent::__construct($context, $productCollectionFactory, $catalogProductVisibility, $dateTime, $helperData, $httpContext, $urlEncoder, $data);
     }
 
     /**
@@ -73,16 +86,18 @@ class WishlistProducts extends AbstractSlider
     {
         $collection = [];
 
-        if ($this->_customer->isLoggedIn()) {
+        if ($this->_customerSession->isLoggedIn()) {
             $wishlist = $this->_wishlistCollectionFactory->create()
-                ->addCustomerIdFilter($this->_customer->getCustomerId());
+                ->addCustomerIdFilter($this->_customerSession->getCustomerId());
             $productIds = null;
 
             foreach ($wishlist as $product) {
                 $productIds[] = $product->getProductId();
             }
             $collection = $this->_productCollectionFactory->create()->addIdFilter($productIds);
-            $collection = $this->_addProductAttributesAndPrices($collection)->addStoreFilter($this->getStoreId())->setPageSize($this->getProductsCount());
+            $collection = $this->_addProductAttributesAndPrices($collection)
+                ->addStoreFilter($this->getStoreId())
+                ->setPageSize($this->getProductsCount());
         }
 
         return $collection;
