@@ -143,6 +143,6 @@ class Data extends AbstractData
 
         $responsiveOptions = rtrim($responsiveOptions, ',');
 
-        return 'responsive:{' . $responsiveOptions . '},';
+        return 'responsive:{' . $responsiveOptions . '}';
     }
 }
