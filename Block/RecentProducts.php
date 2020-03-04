@@ -67,7 +67,16 @@ class RecentProducts extends AbstractSlider
     ) {
         $this->reportProductViewed = $reportProductViewed;
 
-        parent::__construct($context, $productCollectionFactory, $catalogProductVisibility, $dateTime, $helperData, $httpContext, $urlEncoder, $data);
+        parent::__construct(
+            $context,
+            $productCollectionFactory,
+            $catalogProductVisibility,
+            $dateTime,
+            $helperData,
+            $httpContext,
+            $urlEncoder,
+            $data
+        );
     }
 
     /**

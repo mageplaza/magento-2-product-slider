@@ -39,6 +39,7 @@ class Products extends Action
 
     /**
      * Products constructor.
+     *
      * @param Context $context
      * @param LayoutFactory $resultLayoutFactory
      */

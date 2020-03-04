@@ -42,6 +42,7 @@ class InstallData implements InstallDataInterface
 
     /**
      * InstallData constructor.
+     *
      * @param EavSetupFactory $eavSetupFactory
      */
     public function __construct(EavSetupFactory $eavSetupFactory)
@@ -60,28 +61,28 @@ class InstallData implements InstallDataInterface
 
         $eavSetup = $this->eavSetupFactory->create(['setup' => $setup]);
         $eavSetup->addAttribute(Product::ENTITY, 'is_featured', [
-                'type'                    => 'int',
-                'backend'                 => '',
-                'frontend'                => '',
-                'label'                   => 'Featured Product',
-                'note'                    => '',
-                'input'                   => 'boolean',
-                'class'                   => '',
-                'source'                  => '',
-                'global'                  => ScopedAttributeInterface::SCOPE_GLOBAL,
-                'visible'                 => true,
-                'required'                => false,
-                'user_defined'            => true,
-                'default'                 => '',
-                'searchable'              => false,
-                'filterable'              => false,
-                'comparable'              => false,
-                'visible_on_front'        => false,
-                'used_in_product_listing' => true,
-                'unique'                  => false,
-                'sort_order'              => 10,
-                'apply_to'                => 'simple,virtual,bundle,downloadable,grouped,configurable'
-            ]);
+            'type'                    => 'int',
+            'backend'                 => '',
+            'frontend'                => '',
+            'label'                   => 'Featured Product',
+            'note'                    => '',
+            'input'                   => 'boolean',
+            'class'                   => '',
+            'source'                  => '',
+            'global'                  => ScopedAttributeInterface::SCOPE_GLOBAL,
+            'visible'                 => true,
+            'required'                => false,
+            'user_defined'            => true,
+            'default'                 => '',
+            'searchable'              => false,
+            'filterable'              => false,
+            'comparable'              => false,
+            'visible_on_front'        => false,
+            'used_in_product_listing' => true,
+            'unique'                  => false,
+            'sort_order'              => 10,
+            'apply_to'                => 'simple,virtual,bundle,downloadable,grouped,configurable'
+        ]);
 
         $installer->endSetup();
     }

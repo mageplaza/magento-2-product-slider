@@ -54,6 +54,7 @@ class Edit extends Slider
 
     /**
      * Edit constructor.
+     *
      * @param Context $context
      * @param SliderFactory $sliderFactory
      * @param Registry $coreRegistry

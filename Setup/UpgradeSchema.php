@@ -58,7 +58,13 @@ class UpgradeSchema implements UpgradeSchemaInterface
                 ->addColumn('description', Table::TYPE_TEXT, '64k', [], 'Description')
                 ->addColumn('store_ids', Table::TYPE_TEXT, 255, [])
                 ->addColumn('customer_group_ids', Table::TYPE_TEXT, 255, [])
-                ->addColumn('limit_number', Table::TYPE_SMALLINT, null, ['unsigned' => true, 'nullable' => false], 'Limit the number of products')
+                ->addColumn(
+                    'limit_number',
+                    Table::TYPE_SMALLINT,
+                    null,
+                    ['unsigned' => true, 'nullable' => false],
+                    'Limit the number of products'
+                )
                 ->addColumn('location', Table::TYPE_TEXT, 255, [], 'Location')
                 ->addColumn('time_cache', Table::TYPE_TEXT, 255, [], 'Cache Lifetime')
                 ->addColumn('from_date', Table::TYPE_DATETIME, null, [], 'From Date')
@@ -69,8 +75,20 @@ class UpgradeSchema implements UpgradeSchemaInterface
                 ->addColumn('display_additional', Table::TYPE_TEXT, 255, [], 'Display additional Information')
                 ->addColumn('is_responsive', Table::TYPE_TEXT, 255, [], 'Responsive')
                 ->addColumn('responsive_items', Table::TYPE_TEXT, 255, [], 'Max Items slider')
-                ->addColumn('created_at', Table::TYPE_TIMESTAMP, null, ['nullable' => false, 'default' => Table::TIMESTAMP_INIT], 'Creation Time')
-                ->addColumn('updated_at', Table::TYPE_TIMESTAMP, null, ['nullable' => false, 'default' => Table::TIMESTAMP_INIT_UPDATE], 'Update Time')
+                ->addColumn(
+                    'created_at',
+                    Table::TYPE_TIMESTAMP,
+                    null,
+                    ['nullable' => false, 'default' => Table::TIMESTAMP_INIT],
+                    'Creation Time'
+                )
+                ->addColumn(
+                    'updated_at',
+                    Table::TYPE_TIMESTAMP,
+                    null,
+                    ['nullable' => false, 'default' => Table::TIMESTAMP_INIT_UPDATE],
+                    'Update Time'
+                )
                 ->setComment('Product Slider Block');
 
             $setup->getConnection()->createTable($table);

@@ -25,9 +25,7 @@ use Magento\Catalog\Block\Product\Context;
 use Magento\Catalog\Model\Product\Visibility;
 use Magento\Catalog\Model\ResourceModel\Product\CollectionFactory;
 use Magento\Framework\App\Http\Context as HttpContext;
-use Magento\Framework\App\ObjectManager;
 use Magento\Framework\Exception\LocalizedException;
-use Magento\Framework\Serialize\Serializer\Json;
 use Magento\Framework\Stdlib\DateTime\DateTime;
 use Magento\Framework\Url\EncoderInterface;
 use Magento\Widget\Block\BlockInterface;
@@ -77,7 +75,16 @@ class Slider extends AbstractSlider implements BlockInterface
         ProductType $productType,
         array $data = []
     ) {
-        parent::__construct($context, $productCollectionFactory, $catalogProductVisibility, $dateTime, $helperData, $httpContext, $urlEncoder, $data);
+        parent::__construct(
+            $context,
+            $productCollectionFactory,
+            $catalogProductVisibility,
+            $dateTime,
+            $helperData,
+            $httpContext,
+            $urlEncoder,
+            $data
+        );
         $this->productType = $productType;
     }
 
@@ -117,19 +124,13 @@ class Slider extends AbstractSlider implements BlockInterface
      */
     public function getCacheKeyInfo()
     {
-        if ($this->_helperData->versionCompare('2.2.0')) {
-            $this->serializer = ObjectManager::getInstance()
-                ->get(Json::class);
-            $params = $this->serializer->serialize($this->getRequest()->getParams());
-        } else {
-            $params = serialize($this->getRequest()->getParams());
-        }
+        $params = $this->_helperData->serialize($this->getRequest()->getParams());
 
         return array_merge(
             parent::getCacheKeyInfo(),
             [
                 $this->getData('page_var_name'),
-                (int)$this->getRequest()->getParam($this->getData('page_var_name'), 1),
+                (int) $this->getRequest()->getParam($this->getData('page_var_name'), 1),
                 $params
             ]
         );
@@ -177,7 +178,7 @@ class Slider extends AbstractSlider implements BlockInterface
      */
     public function getCurrentPage()
     {
-        return abs((int)$this->getRequest()->getParam($this->getData('page_var_name')));
+        return abs((int) $this->getRequest()->getParam($this->getData('page_var_name')));
     }
 
     /**

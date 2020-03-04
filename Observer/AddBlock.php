@@ -51,6 +51,7 @@ class AddBlock implements ObserverInterface
 
     /**
      * AddBlock constructor.
+     *
      * @param RequestInterface $request
      * @param Data $helperData
      * @param ProductType $productType
@@ -60,8 +61,8 @@ class AddBlock implements ObserverInterface
         Data $helperData,
         ProductType $productType
     ) {
-        $this->request = $request;
-        $this->helperData = $helperData;
+        $this->request     = $request;
+        $this->helperData  = $helperData;
         $this->productType = $productType;
     }
 
@@ -80,9 +81,9 @@ class AddBlock implements ObserverInterface
         ]);
         if ($type !== false) {
             /** @var Layout $layout */
-            $layout = $observer->getEvent()->getLayout();
+            $layout         = $observer->getEvent()->getLayout();
             $fullActionName = $this->request->getFullActionName();
-            $output = $observer->getTransport()->getOutput();
+            $output         = $observer->getTransport()->getOutput();
             foreach ($this->helperData->getActiveSliders() as $slider) {
                 list($pageType, $location) = explode('.', $slider->getLocation());
                 if ($fullActionName == $pageType || $pageType == 'allpage') {

@@ -39,6 +39,7 @@ class ProductsGrid extends Action
 
     /**
      * ProductsGrid constructor.
+     *
      * @param Context $context
      * @param LayoutFactory $resultLayoutFactory
      */

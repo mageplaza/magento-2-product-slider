@@ -39,6 +39,7 @@ class Slider extends Action
 
     /**
      * Slider constructor.
+     *
      * @param Context $context
      * @param PageFactory $resultPageFactory
      */
