@@ -26,6 +26,7 @@ use Magento\Catalog\Model\Product\Visibility;
 use Magento\Catalog\Model\ResourceModel\Product\CollectionFactory;
 use Magento\Framework\App\Http\Context as HttpContext;
 use Magento\Framework\Stdlib\DateTime\DateTime;
+use Magento\Framework\Url\EncoderInterface;
 use Magento\Sales\Model\ResourceModel\Report\Bestsellers\CollectionFactory as BestSellersCollectionFactory;
 use Mageplaza\Productslider\Helper\Data;
 
@@ -42,12 +43,14 @@ class BestSellerProducts extends AbstractSlider
 
     /**
      * BestSellerProducts constructor.
+     *
      * @param Context $context
      * @param CollectionFactory $productCollectionFactory
      * @param Visibility $catalogProductVisibility
      * @param DateTime $dateTime
      * @param Data $helperData
      * @param HttpContext $httpContext
+     * @param EncoderInterface $urlEncoder
      * @param BestSellersCollectionFactory $bestSellersCollectionFactory
      * @param array $data
      */
@@ -58,12 +61,22 @@ class BestSellerProducts extends AbstractSlider
         DateTime $dateTime,
         Data $helperData,
         HttpContext $httpContext,
+        EncoderInterface $urlEncoder,
         BestSellersCollectionFactory $bestSellersCollectionFactory,
         array $data = []
     ) {
         $this->_bestSellersCollectionFactory = $bestSellersCollectionFactory;
 
-        parent::__construct($context, $productCollectionFactory, $catalogProductVisibility, $dateTime, $helperData, $httpContext, $data);
+        parent::__construct(
+            $context,
+            $productCollectionFactory,
+            $catalogProductVisibility,
+            $dateTime,
+            $helperData,
+            $httpContext,
+            $urlEncoder,
+            $data
+        );
     }
 
     /**
@@ -72,8 +85,10 @@ class BestSellerProducts extends AbstractSlider
      */
     public function getProductCollection()
     {
-        $productIds = [];
+        $productIds  = [];
         $bestSellers = $this->_bestSellersCollectionFactory->create()
+            ->setModel('Magento\Catalog\Model\Product')
+            ->addStoreFilter($this->getStoreId())
             ->setPeriod('month');
 
         foreach ($bestSellers as $product) {
@@ -84,8 +99,11 @@ class BestSellerProducts extends AbstractSlider
         $collection->addMinimalPrice()
             ->addFinalPrice()
             ->addTaxPercents()
-            ->addAttributeToSelect('*')
-            ->addStoreFilter($this->getStoreId())->setPageSize($this->getProductsCount());
+            ->addAttributeToSelect($this->_catalogConfig->getProductAttributes())
+            ->addStoreFilter($this->getStoreId())
+            ->addUrlRewrite()
+            ->setVisibility($this->_catalogProductVisibility->getVisibleInSiteIds())
+            ->setPageSize($this->getProductsCount());
 
         return $collection;
     }

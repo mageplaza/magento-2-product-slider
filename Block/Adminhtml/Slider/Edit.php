@@ -40,6 +40,7 @@ class Edit extends Container
 
     /**
      * Edit constructor.
+     *
      * @param Registry $coreRegistry
      * @param Context $context
      * @param array $data
@@ -86,7 +87,7 @@ class Edit extends Container
      */
     protected function _construct()
     {
-        $this->_objectId = 'id';
+        $this->_objectId   = 'id';
         $this->_blockGroup = 'Mageplaza_Productslider';
         $this->_controller = 'adminhtml_slider';
 

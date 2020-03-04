@@ -62,7 +62,7 @@
                 </field>
                 <field id="margin" translate="label comment" type="text" sortOrder="40" showInDefault="1" showInWebsite="1" showInStore="1">
                     <label>Margin Between Items</label>
-                    <validate>validate-digits</validate>
+                    <validate>validate-no-empty validate-digits</validate>
                     <comment>pixel. This is the distance between two items in the slider</comment>
                 </field>
                 <field id="nav" translate="label comment" type="select" sortOrder="60" showInDefault="1" showInWebsite="1" showInStore="1">
@@ -92,7 +92,7 @@
                 <field id="autoplayTimeout" translate="label comment" type="text" sortOrder="100" showInDefault="1" showInWebsite="1" showInStore="1">
                     <label>Autoplay TimeOut</label>
                     <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
-                    <validate>validate-digits</validate>
+                    <validate>validate-no-empty validate-digits</validate>
                     <comment>ms. This is the time which an item is auto-moved to the left</comment>
                     <depends>
                         <field id="autoplay">1</field>

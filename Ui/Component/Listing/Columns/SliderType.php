@@ -39,6 +39,7 @@ class SliderType extends Column
 
     /**
      * SliderType constructor.
+     *
      * @param ContextInterface $context
      * @param UiComponentFactory $uiComponentFactory
      * @param ProductType $productType
@@ -61,6 +62,7 @@ class SliderType extends Column
      * Prepare Data Source
      *
      * @param array $dataSource
+     *
      * @return array
      */
     public function prepareDataSource(array $dataSource)

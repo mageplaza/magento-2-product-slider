@@ -26,6 +26,7 @@ use Magento\Catalog\Model\Product\Visibility;
 use Magento\Catalog\Model\ResourceModel\Product\CollectionFactory;
 use Magento\Framework\App\Http\Context as HttpContext;
 use Magento\Framework\Stdlib\DateTime\DateTime;
+use Magento\Framework\Url\EncoderInterface;
 use Magento\Reports\Block\Product\Viewed as ReportProductViewed;
 use Mageplaza\Productslider\Helper\Data;
 
@@ -42,12 +43,14 @@ class RecentProducts extends AbstractSlider
 
     /**
      * RecentProducts constructor.
+     *
      * @param Context $context
      * @param CollectionFactory $productCollectionFactory
      * @param Visibility $catalogProductVisibility
      * @param DateTime $dateTime
      * @param Data $helperData
      * @param HttpContext $httpContext
+     * @param EncoderInterface $urlEncoder
      * @param ReportProductViewed $reportProductViewed
      * @param array $data
      */
@@ -58,12 +61,22 @@ class RecentProducts extends AbstractSlider
         DateTime $dateTime,
         Data $helperData,
         HttpContext $httpContext,
+        EncoderInterface $urlEncoder,
         ReportProductViewed $reportProductViewed,
         array $data = []
     ) {
         $this->reportProductViewed = $reportProductViewed;
 
-        parent::__construct($context, $productCollectionFactory, $catalogProductVisibility, $dateTime, $helperData, $httpContext, $data);
+        parent::__construct(
+            $context,
+            $productCollectionFactory,
+            $catalogProductVisibility,
+            $dateTime,
+            $helperData,
+            $httpContext,
+            $urlEncoder,
+            $data
+        );
     }
 
     /**

@@ -23,6 +23,7 @@ namespace Mageplaza\Productslider\Helper;
 
 use Magento\Framework\App\Helper\Context;
 use Magento\Framework\App\Http\Context as HttpContext;
+use Magento\Framework\Exception\NoSuchEntityException;
 use Magento\Framework\ObjectManagerInterface;
 use Magento\Framework\Stdlib\DateTime\DateTime;
 use Magento\Store\Model\StoreManagerInterface;
@@ -56,6 +57,7 @@ class Data extends AbstractData
 
     /**
      * Data constructor.
+     *
      * @param Context $context
      * @param ObjectManagerInterface $objectManager
      * @param StoreManagerInterface $storeManager
@@ -71,8 +73,8 @@ class Data extends AbstractData
         HttpContext $httpContext,
         SliderFactory $sliderFactory
     ) {
-        $this->date = $date;
-        $this->httpContext = $httpContext;
+        $this->date          = $date;
+        $this->httpContext   = $httpContext;
         $this->sliderFactory = $sliderFactory;
 
         parent::__construct($context, $objectManager, $storeManager);
@@ -80,13 +82,15 @@ class Data extends AbstractData
 
     /**
      * @return Collection
+     * @throws NoSuchEntityException
      */
     public function getActiveSliders()
     {
+        $customerId = $this->httpContext->getValue(\Magento\Customer\Model\Context::CONTEXT_GROUP);
         /** @var Collection $collection */
         $collection = $this->sliderFactory->create()
             ->getCollection()
-            ->addFieldToFilter('customer_group_ids', ['finset' => $this->httpContext->getValue(\Magento\Customer\Model\Context::CONTEXT_GROUP)])
+            ->addFieldToFilter('customer_group_ids', ['finset' => $customerId])
             ->addFieldToFilter('status', 1);
 
         $collection->getSelect()
@@ -101,36 +105,23 @@ class Data extends AbstractData
      * Retrieve all configuration options for product slider
      *
      * @return string
-     * @throws Zend_Serializer_Exception
      */
     public function getAllOptions()
     {
         $sliderOptions = '';
-        $allConfig = $this->getModuleConfig('slider_design');
+        $allConfig     = $this->getModuleConfig('slider_design');
         foreach ($allConfig as $key => $value) {
-            if ($key == 'item_slider') {
-                $sliderOptions = $sliderOptions . $this->getResponseValue();
-            } elseif ($key != 'responsive') {
+            if ($key === 'item_slider') {
+                $sliderOptions .= $this->getResponseValue();
+            } elseif ($key !== 'responsive') {
                 if (in_array($key, ['loop', 'nav', 'dots', 'lazyLoad', 'autoplay', 'autoplayHoverPause'])) {
                     $value = $value ? 'true' : 'false';
                 }
-                $sliderOptions = $sliderOptions . $key . ':' . $value . ',';
+                $sliderOptions .= $key . ':' . $value . ',';
             }
         }
 
         return '{' . $sliderOptions . '}';
-    }
-
-    /**
-     * @return bool
-     */
-    public function isResponsive()
-    {
-        if ($this->getModuleConfig('slider_design/responsive') == 1) {
-            return true;
-        }
-
-        return false;
     }
 
     /**
@@ -142,11 +133,13 @@ class Data extends AbstractData
     public function getResponseValue()
     {
         $responsiveOptions = '';
-        $responsiveConfig = $this->isResponsive() ? $this->unserialize($this->getModuleConfig('slider_design/item_slider')) : [];
+        $responsiveConfig  = $this->getModuleConfig('slider_design/responsive')
+            ? $this->unserialize($this->getModuleConfig('slider_design/item_slider'))
+            : [];
 
         foreach ($responsiveConfig as $config) {
             if ($config['size'] && $config['items']) {
-                $responsiveOptions = $responsiveOptions . $config['size'] . ':{items:' . $config['items'] . '},';
+                $responsiveOptions .= $config['size'] . ':{items:' . $config['items'] . '},';
             }
         }
 

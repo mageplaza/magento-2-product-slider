@@ -41,6 +41,7 @@ class Index extends Action
 
     /**
      * Index constructor.
+     *
      * @param PageFactory $resultPageFactory
      * @param Context $context
      */

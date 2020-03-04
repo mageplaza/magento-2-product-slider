@@ -41,6 +41,7 @@ class SliderActions extends Column
 
     /**
      * SliderActions constructor.
+     *
      * @param UrlInterface $urlBuilder
      * @param ContextInterface $context
      * @param UiComponentFactory $uiComponentFactory
@@ -63,6 +64,7 @@ class SliderActions extends Column
      * Prepare Data Source
      *
      * @param array $dataSource
+     *
      * @return array
      */
     public function prepareDataSource(array $dataSource)
@@ -72,7 +74,10 @@ class SliderActions extends Column
                 if (isset($item['slider_id'])) {
                     $item[$this->getData('name')] = [
                         'edit' => [
-                            'href'  => $this->_urlBuilder->getUrl('mpproductslider/slider/edit', ['id' => $item['slider_id']]),
+                            'href'  => $this->_urlBuilder->getUrl(
+                                'mpproductslider/slider/edit',
+                                ['id' => $item['slider_id']]
+                            ),
                             'label' => __('Edit')
                         ]
                     ];

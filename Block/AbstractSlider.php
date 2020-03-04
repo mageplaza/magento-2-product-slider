@@ -27,9 +27,11 @@ use Magento\Catalog\Block\Product\Context;
 use Magento\Catalog\Model\Product;
 use Magento\Catalog\Model\Product\Visibility;
 use Magento\Catalog\Model\ResourceModel\Product\CollectionFactory;
+use Magento\Framework\App\ActionInterface;
 use Magento\Framework\App\Http\Context as HttpContext;
 use Magento\Framework\Exception\NoSuchEntityException;
 use Magento\Framework\Stdlib\DateTime\DateTime;
+use Magento\Framework\Url\EncoderInterface;
 use Mageplaza\Productslider\Helper\Data;
 use Mageplaza\Productslider\Model\Config\Source\Additional;
 
@@ -65,13 +67,20 @@ abstract class AbstractSlider extends AbstractProduct
     protected $httpContext;
 
     /**
+     * @var EncoderInterface|null
+     */
+    protected $urlEncoder;
+
+    /**
      * AbstractSlider constructor.
+     *
      * @param Context $context
      * @param CollectionFactory $productCollectionFactory
      * @param Visibility $catalogProductVisibility
      * @param DateTime $dateTime
      * @param Data $helperData
      * @param HttpContext $httpContext
+     * @param EncoderInterface $urlEncoder
      * @param array $data
      */
     public function __construct(
@@ -81,13 +90,15 @@ abstract class AbstractSlider extends AbstractProduct
         DateTime $dateTime,
         Data $helperData,
         HttpContext $httpContext,
+        EncoderInterface $urlEncoder,
         array $data = []
     ) {
         $this->_productCollectionFactory = $productCollectionFactory;
         $this->_catalogProductVisibility = $catalogProductVisibility;
-        $this->_date = $dateTime;
-        $this->_helperData = $helperData;
-        $this->httpContext = $httpContext;
+        $this->_date                     = $dateTime;
+        $this->_helperData               = $helperData;
+        $this->httpContext               = $httpContext;
+        $this->urlEncoder                = $urlEncoder;
 
         parent::__construct($context, $data);
     }
@@ -147,6 +158,26 @@ abstract class AbstractSlider extends AbstractProduct
     }
 
     /**
+     * Get post parameters.
+     *
+     * @param Product $product
+     *
+     * @return array
+     */
+    public function getAddToCartPostParams(Product $product)
+    {
+        $url = $this->getAddToCartUrl($product);
+
+        return [
+            'action' => $url,
+            'data'   => [
+                'product'                               => $product->getEntityId(),
+                ActionInterface::PARAM_NAME_URL_ENCODED => $this->urlEncoder->encode($url),
+            ]
+        ];
+    }
+
+    /**
      * @return bool
      */
     public function canShowPrice()
@@ -180,7 +211,7 @@ abstract class AbstractSlider extends AbstractProduct
             return $this->getSlider()->getSliderId();
         }
 
-        return time();
+        return uniqid('-', false);
     }
 
     /**
@@ -225,7 +256,7 @@ abstract class AbstractSlider extends AbstractProduct
     public function getAllOptions()
     {
         $sliderOptions = '';
-        $allConfig = $this->_helperData->getModuleConfig('slider_design');
+        $allConfig     = $this->_helperData->getModuleConfig('slider_design');
 
         foreach ($allConfig as $key => $value) {
             if ($key === 'item_slider') {
@@ -238,7 +269,7 @@ abstract class AbstractSlider extends AbstractProduct
                 if (in_array($key, ['loop', 'nav', 'dots', 'lazyLoad', 'autoplay', 'autoplayHoverPause'])) {
                     $value = $value ? 'true' : 'false';
                 }
-                $sliderOptions = $sliderOptions . $key . ':' . $value . ',';
+                $sliderOptions .= $key . ':' . $value . ',';
             }
         }
 
@@ -255,9 +286,11 @@ abstract class AbstractSlider extends AbstractProduct
             try {
                 if ($slider->getIsResponsive() === '2') {
                     return $this->_helperData->getResponseValue();
-                } else {
-                    $responsiveConfig = $slider->getResponsiveItems() ? $this->_helperData->unserialize($slider->getResponsiveItems()) : [];
                 }
+
+                $responsiveConfig = $slider->getResponsiveItems()
+                    ? $this->_helperData->unserialize($slider->getResponsiveItems())
+                    : [];
             } catch (Exception $e) {
                 $responsiveConfig = [];
             }
@@ -265,7 +298,7 @@ abstract class AbstractSlider extends AbstractProduct
             $responsiveOptions = '';
             foreach ($responsiveConfig as $config) {
                 if ($config['size'] && $config['items']) {
-                    $responsiveOptions = $responsiveOptions . $config['size'] . ':{items:' . $config['items'] . '},';
+                    $responsiveOptions .= $config['size'] . ':{items:' . $config['items'] . '},';
                 }
             }
             $responsiveOptions = rtrim($responsiveOptions, ',');

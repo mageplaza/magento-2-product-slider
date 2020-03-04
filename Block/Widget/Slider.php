@@ -25,15 +25,13 @@ use Magento\Catalog\Block\Product\Context;
 use Magento\Catalog\Model\Product\Visibility;
 use Magento\Catalog\Model\ResourceModel\Product\CollectionFactory;
 use Magento\Framework\App\Http\Context as HttpContext;
-use Magento\Framework\App\ObjectManager;
 use Magento\Framework\Exception\LocalizedException;
-use Magento\Framework\Serialize\Serializer\Json;
 use Magento\Framework\Stdlib\DateTime\DateTime;
+use Magento\Framework\Url\EncoderInterface;
 use Magento\Widget\Block\BlockInterface;
 use Mageplaza\Productslider\Block\AbstractSlider;
 use Mageplaza\Productslider\Helper\Data;
 use Mageplaza\Productslider\Model\Config\Source\ProductType;
-use Zend_Serializer_Exception;
 
 /**
  * Class Slider
@@ -46,6 +44,8 @@ class Slider extends AbstractSlider implements BlockInterface
      */
     const DISPLAY_TYPE_NEW_PRODUCTS = 'new';
 
+    protected $_template = "Mageplaza_Productslider::widget/productslider.phtml";
+
     /**
      * @var ProductType
      */
@@ -53,12 +53,14 @@ class Slider extends AbstractSlider implements BlockInterface
 
     /**
      * Slider constructor.
+     *
      * @param Context $context
      * @param CollectionFactory $productCollectionFactory
      * @param Visibility $catalogProductVisibility
      * @param DateTime $dateTime
      * @param Data $helperData
      * @param HttpContext $httpContext
+     * @param EncoderInterface $urlEncoder
      * @param ProductType $productType
      * @param array $data
      */
@@ -69,10 +71,20 @@ class Slider extends AbstractSlider implements BlockInterface
         DateTime $dateTime,
         Data $helperData,
         HttpContext $httpContext,
+        EncoderInterface $urlEncoder,
         ProductType $productType,
         array $data = []
     ) {
-        parent::__construct($context, $productCollectionFactory, $catalogProductVisibility, $dateTime, $helperData, $httpContext, $data);
+        parent::__construct(
+            $context,
+            $productCollectionFactory,
+            $catalogProductVisibility,
+            $dateTime,
+            $helperData,
+            $httpContext,
+            $urlEncoder,
+            $data
+        );
         $this->productType = $productType;
     }
 
@@ -112,19 +124,13 @@ class Slider extends AbstractSlider implements BlockInterface
      */
     public function getCacheKeyInfo()
     {
-        if ($this->_helperData->versionCompare('2.2.0')) {
-            $this->serializer = ObjectManager::getInstance()
-                ->get(Json::class);
-            $params = $this->serializer->serialize($this->getRequest()->getParams());
-        } else {
-            $params = serialize($this->getRequest()->getParams());
-        }
+        $params = $this->_helperData->serialize($this->getRequest()->getParams());
 
         return array_merge(
             parent::getCacheKeyInfo(),
             [
                 $this->getData('page_var_name'),
-                (int)$this->getRequest()->getParam($this->getData('page_var_name'), 1),
+                (int) $this->getRequest()->getParam($this->getData('page_var_name'), 1),
                 $params
             ]
         );
@@ -143,6 +149,9 @@ class Slider extends AbstractSlider implements BlockInterface
         return $display;
     }
 
+    /**
+     * @return Data
+     */
     public function getHelperData()
     {
         return $this->_helperData;
@@ -169,7 +178,7 @@ class Slider extends AbstractSlider implements BlockInterface
      */
     public function getCurrentPage()
     {
-        return abs((int)$this->getRequest()->getParam($this->getData('page_var_name')));
+        return abs((int) $this->getRequest()->getParam($this->getData('page_var_name')));
     }
 
     /**
@@ -203,7 +212,6 @@ class Slider extends AbstractSlider implements BlockInterface
      * Retrieve all configuration options for product slider
      *
      * @return string
-     * @throws Zend_Serializer_Exception
      */
     public function getAllOptions()
     {
