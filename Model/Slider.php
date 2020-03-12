@@ -21,6 +21,9 @@
 
 namespace Mageplaza\Productslider\Model;
 
+use DateTime;
+use Exception;
+use Magento\Framework\DataObject;
 use Magento\Framework\Model\AbstractModel;
 
 /**
@@ -75,12 +78,12 @@ class Slider extends AbstractModel
     }
 
     /**
-     * @param \Magento\Framework\DataObject $dataObject
+     * @param DataObject $dataObject
      *
      * @return array|bool
-     * @throws \Exception
+     * @throws Exception
      */
-    public function validateData(\Magento\Framework\DataObject $dataObject)
+    public function validateData(DataObject $dataObject)
     {
         $result   = [];
         $fromDate = $toDate = null;
@@ -91,8 +94,8 @@ class Slider extends AbstractModel
         }
 
         if ($fromDate && $toDate) {
-            $fromDate = new \DateTime($fromDate);
-            $toDate   = new \DateTime($toDate);
+            $fromDate = new DateTime($fromDate);
+            $toDate   = new DateTime($toDate);
 
             if ($fromDate > $toDate) {
                 $result[] = __('End Date must follow Start Date.');

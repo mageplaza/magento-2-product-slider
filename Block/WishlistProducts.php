@@ -74,9 +74,18 @@ class WishlistProducts extends AbstractSlider
         array $data = []
     ) {
         $this->_wishlistCollectionFactory = $wishlistCollectionFactory;
-        $this->_customerSession = $_customerSession;
+        $this->_customerSession           = $_customerSession;
 
-        parent::__construct($context, $productCollectionFactory, $catalogProductVisibility, $dateTime, $helperData, $httpContext, $urlEncoder, $data);
+        parent::__construct(
+            $context,
+            $productCollectionFactory,
+            $catalogProductVisibility,
+            $dateTime,
+            $helperData,
+            $httpContext,
+            $urlEncoder,
+            $data
+        );
     }
 
     /**
@@ -87,7 +96,7 @@ class WishlistProducts extends AbstractSlider
         $collection = [];
 
         if ($this->_customerSession->isLoggedIn()) {
-            $wishlist = $this->_wishlistCollectionFactory->create()
+            $wishlist   = $this->_wishlistCollectionFactory->create()
                 ->addCustomerIdFilter($this->_customerSession->getCustomerId());
             $productIds = null;
 

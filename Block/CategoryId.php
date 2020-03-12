@@ -67,7 +67,16 @@ class CategoryId extends AbstractSlider
     ) {
         $this->_categoryFactory = $categoryFactory;
 
-        parent::__construct($context, $productCollectionFactory, $catalogProductVisibility, $dateTime, $helperData, $httpContext, $urlEncoder, $data);
+        parent::__construct(
+            $context,
+            $productCollectionFactory,
+            $catalogProductVisibility,
+            $dateTime,
+            $helperData,
+            $httpContext,
+            $urlEncoder,
+            $data
+        );
     }
 
     /**
@@ -97,7 +106,7 @@ class CategoryId extends AbstractSlider
     public function getProductIdsByCategory()
     {
         $productIds = [];
-        $catIds = $this->getSliderCategoryIds();
+        $catIds     = $this->getSliderCategoryIds();
         $collection = $this->_productCollectionFactory->create();
         if (is_array($catIds)) {
             foreach ($catIds as $catId) {

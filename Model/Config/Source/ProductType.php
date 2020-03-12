@@ -29,15 +29,15 @@ use Magento\Framework\Option\ArrayInterface;
  */
 class ProductType implements ArrayInterface
 {
-    const NEW_PRODUCTS = 'new';
+    const NEW_PRODUCTS         = 'new';
     const BEST_SELLER_PRODUCTS = 'best-seller';
-    const FEATURED_PRODUCTS = 'featured';
-    const MOSTVIEWED_PRODUCTS = 'mostviewed';
-    const ONSALE_PRODUCTS = 'onsale';
-    const RECENT_PRODUCT = 'recent';
-    const WISHLIST_PRODUCT = 'wishlist';
-    const CATEGORY = 'category';
-    const CUSTOM_PRODUCTS = 'custom';
+    const FEATURED_PRODUCTS    = 'featured';
+    const MOSTVIEWED_PRODUCTS  = 'mostviewed';
+    const ONSALE_PRODUCTS      = 'onsale';
+    const RECENT_PRODUCT       = 'recent';
+    const WISHLIST_PRODUCT     = 'wishlist';
+    const CATEGORY             = 'category';
+    const CUSTOM_PRODUCTS      = 'custom';
 
     /**
      * Options getter
@@ -78,6 +78,7 @@ class ProductType implements ArrayInterface
 
     /**
      * @param $type
+     *
      * @return mixed|string
      */
     public function getLabel($type)
@@ -92,6 +93,7 @@ class ProductType implements ArrayInterface
 
     /**
      * @param null $type
+     *
      * @return array|mixed
      */
     public function getBlockMap($type = null)

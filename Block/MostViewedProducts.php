@@ -43,6 +43,7 @@ class MostViewedProducts extends AbstractSlider
 
     /**
      * MostViewedProducts constructor.
+     *
      * @param Context $context
      * @param CollectionFactory $productCollectionFactory
      * @param Visibility $catalogProductVisibility
@@ -65,7 +66,16 @@ class MostViewedProducts extends AbstractSlider
     ) {
         $this->_mostViewedProductsFactory = $mostViewedProductsFactory;
 
-        parent::__construct($context, $productCollectionFactory, $catalogProductVisibility, $dateTime, $helperData, $httpContext, $urlEncoder, $data);
+        parent::__construct(
+            $context,
+            $productCollectionFactory,
+            $catalogProductVisibility,
+            $dateTime,
+            $helperData,
+            $httpContext,
+            $urlEncoder,
+            $data
+        );
     }
 
     /**

@@ -39,6 +39,7 @@ class Slider extends AbstractDb
 
     /**
      * Slider constructor.
+     *
      * @param Context $context
      * @param Data $helper
      * @param null $connectionName

@@ -95,10 +95,10 @@ abstract class AbstractSlider extends AbstractProduct
     ) {
         $this->_productCollectionFactory = $productCollectionFactory;
         $this->_catalogProductVisibility = $catalogProductVisibility;
-        $this->_date = $dateTime;
-        $this->_helperData = $helperData;
-        $this->httpContext = $httpContext;
-        $this->urlEncoder = $urlEncoder;
+        $this->_date                     = $dateTime;
+        $this->_helperData               = $helperData;
+        $this->httpContext               = $httpContext;
+        $this->urlEncoder                = $urlEncoder;
 
         parent::__construct($context, $data);
     }
@@ -161,15 +161,17 @@ abstract class AbstractSlider extends AbstractProduct
      * Get post parameters.
      *
      * @param Product $product
+     *
      * @return array
      */
     public function getAddToCartPostParams(Product $product)
     {
         $url = $this->getAddToCartUrl($product);
+
         return [
             'action' => $url,
-            'data' => [
-                'product' => $product->getEntityId(),
+            'data'   => [
+                'product'                               => $product->getEntityId(),
                 ActionInterface::PARAM_NAME_URL_ENCODED => $this->urlEncoder->encode($url),
             ]
         ];
@@ -254,7 +256,7 @@ abstract class AbstractSlider extends AbstractProduct
     public function getAllOptions()
     {
         $sliderOptions = '';
-        $allConfig = $this->_helperData->getModuleConfig('slider_design');
+        $allConfig     = $this->_helperData->getModuleConfig('slider_design');
 
         foreach ($allConfig as $key => $value) {
             if ($key === 'item_slider') {

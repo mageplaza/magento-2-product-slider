@@ -57,6 +57,7 @@ class Products extends Extended implements TabInterface
 
     /**
      * Products constructor.
+     *
      * @param HeplerData $helperData
      * @param Context $context
      * @param Data $backendHelper
@@ -72,8 +73,8 @@ class Products extends Extended implements TabInterface
         CollectionFactory $productCollectionFactory,
         array $data = []
     ) {
-        $this->_helperData = $helperData;
-        $this->_sliderFactory = $sliderFactory;
+        $this->_helperData               = $helperData;
+        $this->_sliderFactory            = $sliderFactory;
         $this->_productCollectionFactory = $productCollectionFactory;
 
         parent::__construct($context, $backendHelper, $data);
@@ -179,6 +180,7 @@ class Products extends Extended implements TabInterface
 
     /**
      * @param object $row
+     *
      * @return string
      */
     public function getRowUrl($row)
@@ -188,6 +190,7 @@ class Products extends Extended implements TabInterface
 
     /**
      * @param Column $column
+     *
      * @return $this
      * @throws LocalizedException
      * @throws Zend_Serializer_Exception
@@ -219,7 +222,7 @@ class Products extends Extended implements TabInterface
      */
     protected function _getSelectedProducts()
     {
-        $slider = $this->getSlider();
+        $slider     = $this->getSlider();
         $productIds = $slider->getProductIds() ? explode('&', $slider->getProductIds()) : [];
 
         return $productIds;
@@ -231,7 +234,7 @@ class Products extends Extended implements TabInterface
     protected function getSlider()
     {
         $sliderId = $this->getRequest()->getParam('id');
-        $slider = $this->_sliderFactory->create();
+        $slider   = $this->_sliderFactory->create();
         if ($sliderId) {
             $slider->load($sliderId);
         }
@@ -244,7 +247,7 @@ class Products extends Extended implements TabInterface
      */
     public function getSelectedProducts()
     {
-        $slider = $this->getSlider();
+        $slider   = $this->getSlider();
         $selected = $slider->getProductIds() ? explode('&', $slider->getProductIds()) : [];
 
         if (!is_array($selected)) {

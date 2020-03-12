@@ -55,6 +55,7 @@ class Design extends Generic implements TabInterface
 
     /**
      * Design constructor.
+     *
      * @param Data $helperData
      * @param Additional $additional
      * @param Context $context
@@ -131,11 +132,15 @@ class Design extends Generic implements TabInterface
             ]
         ]);
 
-        $responsiveItem = $fieldset->addField('responsive_items', 'Mageplaza\Productslider\Block\Adminhtml\Slider\Edit\Tab\Renderer\Responsive', [
-            'name'  => 'responsive_items',
-            'label' => __('Max Items slider'),
-            'title' => __('Max Items slider'),
-        ]);
+        $responsiveItem = $fieldset->addField(
+            'responsive_items',
+            'Mageplaza\Productslider\Block\Adminhtml\Slider\Edit\Tab\Renderer\Responsive',
+            [
+                'name'  => 'responsive_items',
+                'label' => __('Max Items slider'),
+                'title' => __('Max Items slider'),
+            ]
+        );
 
         $this->setChild(
             'form_after',

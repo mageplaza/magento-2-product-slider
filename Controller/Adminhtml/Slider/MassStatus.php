@@ -54,6 +54,7 @@ class MassStatus extends Action
 
     /**
      * MassStatus constructor.
+     *
      * @param Context $context
      * @param Filter $filter
      * @param CollectionFactory $collectionFactory
@@ -63,7 +64,7 @@ class MassStatus extends Action
         Filter $filter,
         CollectionFactory $collectionFactory
     ) {
-        $this->filter = $filter;
+        $this->filter            = $filter;
         $this->collectionFactory = $collectionFactory;
 
         parent::__construct($context);
@@ -75,8 +76,8 @@ class MassStatus extends Action
      */
     public function execute()
     {
-        $collection = $this->filter->getCollection($this->collectionFactory->create());
-        $status = (int)$this->getRequest()->getParam('status');
+        $collection    = $this->filter->getCollection($this->collectionFactory->create());
+        $status        = (int) $this->getRequest()->getParam('status');
         $sliderUpdated = 0;
         foreach ($collection as $slider) {
             try {
@@ -87,7 +88,10 @@ class MassStatus extends Action
             } catch (LocalizedException $e) {
                 $this->messageManager->addErrorMessage($e->getMessage());
             } catch (Exception $e) {
-                $this->messageManager->addErrorMessage(__('Something went wrong while updating status for %1.', $slider->getName()));
+                $this->messageManager->addErrorMessage(__(
+                    'Something went wrong while updating status for %1.',
+                    $slider->getName()
+                ));
             }
         }
 

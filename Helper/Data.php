@@ -23,6 +23,7 @@ namespace Mageplaza\Productslider\Helper;
 
 use Magento\Framework\App\Helper\Context;
 use Magento\Framework\App\Http\Context as HttpContext;
+use Magento\Framework\Exception\NoSuchEntityException;
 use Magento\Framework\ObjectManagerInterface;
 use Magento\Framework\Stdlib\DateTime\DateTime;
 use Magento\Store\Model\StoreManagerInterface;
@@ -56,6 +57,7 @@ class Data extends AbstractData
 
     /**
      * Data constructor.
+     *
      * @param Context $context
      * @param ObjectManagerInterface $objectManager
      * @param StoreManagerInterface $storeManager
@@ -71,8 +73,8 @@ class Data extends AbstractData
         HttpContext $httpContext,
         SliderFactory $sliderFactory
     ) {
-        $this->date = $date;
-        $this->httpContext = $httpContext;
+        $this->date          = $date;
+        $this->httpContext   = $httpContext;
         $this->sliderFactory = $sliderFactory;
 
         parent::__construct($context, $objectManager, $storeManager);
@@ -80,7 +82,7 @@ class Data extends AbstractData
 
     /**
      * @return Collection
-     * @throws \Magento\Framework\Exception\NoSuchEntityException
+     * @throws NoSuchEntityException
      */
     public function getActiveSliders()
     {
@@ -107,7 +109,7 @@ class Data extends AbstractData
     public function getAllOptions()
     {
         $sliderOptions = '';
-        $allConfig = $this->getModuleConfig('slider_design');
+        $allConfig     = $this->getModuleConfig('slider_design');
         foreach ($allConfig as $key => $value) {
             if ($key === 'item_slider') {
                 $sliderOptions .= $this->getResponseValue();
@@ -131,7 +133,7 @@ class Data extends AbstractData
     public function getResponseValue()
     {
         $responsiveOptions = '';
-        $responsiveConfig = $this->getModuleConfig('slider_design/responsive')
+        $responsiveConfig  = $this->getModuleConfig('slider_design/responsive')
             ? $this->unserialize($this->getModuleConfig('slider_design/item_slider'))
             : [];
 
