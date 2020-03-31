@@ -32,7 +32,7 @@ if ($items && $items->getSize()) : ?>
         <h2 class="mp-product-slider-title"><?= $block->escapeHtml($title) ?></h2>
         <p class="mp-ps-info"><?= $block->escapeHtml($block->getDescription()) ?></p>
     </div>
-    <div class="block-content">
+    <div class="block-content mp-product-slider-content">
         <div class="products-<?= /** @noEscape */  $mode ?> <?= /** @noEscape */  $mode ?>">
             <ol class="product-items widget-viewed-grid">
                 <?php $iterator = 1; ?>
@@ -119,4 +119,19 @@ if ($items && $items->getSize()) : ?>
             $('#mp-list-items-<?= /** @noEscape */ $blockId ?>').owlCarousel(<?= /** @noEscape */ $block->getAllOptions()?>);
         });
     </script>
+
+    <style type="text/css">
+        .mp-product-slider-content .owl-nav{
+            font-size: 80px;
+        }
+
+        .mp-product-slider-content .owl-nav button span{
+            color: #D6D6D6;
+        }
+
+        .mp-product-slider-content .owl-nav button span:hover{
+            color: #869791;
+        }
+    </style>
 <?php endif; ?>
+
