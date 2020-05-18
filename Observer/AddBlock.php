@@ -85,7 +85,7 @@ class AddBlock implements ObserverInterface
             $fullActionName = $this->request->getFullActionName();
             $output         = $observer->getTransport()->getOutput();
             foreach ($this->helperData->getActiveSliders() as $slider) {
-                list($pageType, $location) = explode('.', $slider->getLocation());
+                [$pageType, $location] = explode('.', $slider->getLocation());
                 if ($fullActionName == $pageType || $pageType == 'allpage') {
                     $content = $layout->createBlock($this->productType->getBlockMap($slider->getProductType()))
                         ->setSlider($slider)
