@@ -24,5 +24,6 @@
     <menu>
         <add id="Mageplaza_Productslider::productslider" title="Product Sliders" module="Mageplaza_Productslider" sortOrder="100" resource="Mageplaza_Productslider::productslider" parent="Magento_Backend::content"/>
         <add id="Mageplaza_Productslider::slider" title="Manage Sliders" module="Mageplaza_Productslider" sortOrder="20" parent="Mageplaza_Productslider::productslider" action="mpproductslider/slider/index" resource="Mageplaza_Productslider::slider"/>
+        <add id="Mageplaza_Productslider::configuration" title="Configuration" module="Mageplaza_Productslider" sortOrder="30" parent="Mageplaza_Productslider::productslider" action="adminhtml/system_config/edit/section/productslider" resource="Mageplaza_Productslider::slider"/>
     </menu>
 </config>
