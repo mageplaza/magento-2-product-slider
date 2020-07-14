@@ -39,15 +39,25 @@ When you enable **Magento 2 Product Slider** module and create the product slide
 
 ## How to install Magento 2 Product Slider
 
-### 1. via composer
+### 1. Install via composer (recommend)
 
+With Social Proof (Recommend):
+
+```
+composer require mageplaza/magento-2-product-slider avada/module-proofo
+php bin/magento setup:upgrade
+php bin/magento setup:static-content:deploy
+```
+
+Without Social Proof:
 ```
 composer require mageplaza/magento-2-product-slider
 php bin/magento setup:upgrade
 php bin/magento setup:static-content:deploy
 ```
 
-### 2. Copy and paste
+### 2. Install Package from copy-paste package
+
 
 Download latest version at [Mageplaza](https://www.mageplaza.com/magento-2-product-slider-extension/)
 
