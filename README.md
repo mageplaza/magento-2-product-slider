@@ -7,6 +7,7 @@ When you enable **Magento 2 Product Slider** module and create the product slide
 [![Latest Stable Version](https://poser.pugx.org/mageplaza/magento-2-product-slider/v/stable)](https://packagist.org/packages/mageplaza/magento-2-product-slider)
 [![Total Downloads](https://poser.pugx.org/mageplaza/magento-2-product-slider/downloads)](https://packagist.org/packages/mageplaza/magento-2-product-slider)
 
+**IMPORTANT NOTE:** This version of Mageplaza Product Slider extension on Github is free as a contribution to the Magento community from Mageplaza. This package does not include the technical support. Should you need technical support for this extension, you will have to buy a license from Mageplaza. [Click here to buy](https://www.mageplaza.com/magento-2-product-slider-extension/).
 
 ![magento 2 product slider](https://www.mageplaza.com/assets/img/extensions-images/magento-2-product-slider/product-slider-effect.gif)
 
