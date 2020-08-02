@@ -138,7 +138,7 @@ class Data extends AbstractData
             : [];
 
         foreach ($responsiveConfig as $config) {
-            if ($config['size'] && $config['items']) {
+	        if ($config['size'] != '' && $config['items']) {
                 $responsiveOptions .= $config['size'] . ':{items:' . $config['items'] . '},';
             }
         }

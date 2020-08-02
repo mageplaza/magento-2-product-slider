@@ -297,7 +297,7 @@ abstract class AbstractSlider extends AbstractProduct
 
             $responsiveOptions = '';
             foreach ($responsiveConfig as $config) {
-                if ($config['size'] && $config['items']) {
+	            if ($config['size'] != '' && $config['items']) {
                     $responsiveOptions .= $config['size'] . ':{items:' . $config['items'] . '},';
                 }
             }
