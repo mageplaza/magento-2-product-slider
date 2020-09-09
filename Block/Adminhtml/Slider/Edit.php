@@ -116,12 +116,12 @@ class Edit extends Container
                 showHideProductTab();
             });
             showHideProductTab();
-            
+
             function showHideProductTab(){
                 if($('#slider_product_type').val() == 'custom'){
-                    $('#slider_tabs_products').parent().show();
+                    $('#slider_tabs_products').show();
                 } else {
-                    $('#slider_tabs_products').parent().hide();
+                    $('#slider_tabs_products').hide();
                 }
             }
         });
