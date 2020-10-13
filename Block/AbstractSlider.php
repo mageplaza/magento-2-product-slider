@@ -150,6 +150,14 @@ abstract class AbstractSlider extends AbstractProduct implements BlockInterface,
     }
 
     /**
+     * @return Data
+     */
+    public function getHelperData()
+    {
+        return $this->_helperData;
+    }
+
+    /**
      * @return array|mixed
      */
     public function getDisplayAdditional()

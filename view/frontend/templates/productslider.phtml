@@ -28,7 +28,7 @@ $type = 'widget-product-grid';
 $title = $block->getTitle();
 $blockId = $block->getSliderId() . uniqid('-', false);
 $items = $block->getProductCollection();
-if ($items && $items->getSize()) : ?>
+if ($block->getHelperData()->isEnabled() && $items && $items->getSize()) : ?>
     <div class="mp-product-slider-block block widget block-products-list <?= /** @noEscape */ $mode ?>">
         <h2 class="mp-product-slider-title"><?= $block->escapeHtml($title) ?></h2>
         <p class="mp-ps-info"><?= $block->escapeHtml($block->getDescription()) ?></p>
