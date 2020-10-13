@@ -24,6 +24,7 @@ use Magento\Framework\App\Action\Action;
 
 /** @var AbstractSlider $block */
 $mode = 'grid';
+$type = 'widget-product-grid';
 $title = $block->getTitle();
 $blockId = $block->getSliderId() . uniqid('-', false);
 $items = $block->getProductCollection();
@@ -56,8 +57,10 @@ if ($items && $items->getSize()) : ?>
                                     <?= $block->getReviewsSummaryHtml($_item, 'short', true) ?>
                                 <?php endif; ?>
 
+                                <?= /** @noEscape */ $block->getProductDetailsHtml($_item) ?>
+
                                 <?php if ($block->canShowPrice()) : ?>
-                                    <?= /** @noEscape */ $block->getProductPrice($_item) ?>
+                                    <?= /** @noEscape */ $block->getProductPriceHtml($_item, $type) ?>
                                 <?php endif; ?>
 
                                 <div class="product actions slider-product-item-actions product-item-actions">
