@@ -126,6 +126,10 @@ class OnSaleProduct extends AbstractSlider
             }
         }
 
+        if (!empty($productIds)) {
+            return null;
+        }
+
         $collectionClone = $this->_productCollectionFactory->create()->addIdFilter($productIds);
         $collectionClone->addMinimalPrice()
             ->addFinalPrice()

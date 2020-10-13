@@ -37,6 +37,10 @@ class CustomProducts extends AbstractSlider
             $productIds = explode('&', $productIds);
         }
 
+        if (!empty($productIds)) {
+            return null;
+        }
+
         $collection = $this->_productCollectionFactory->create()
             ->addIdFilter($productIds)
             ->setPageSize($this->getProductsCount());
