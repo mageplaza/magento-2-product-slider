@@ -176,6 +176,7 @@ abstract class AbstractSlider extends AbstractProduct implements BlockInterface,
             $this->priceCurrency = ObjectManager::getInstance()
                 ->get(PriceCurrencyInterface::class);
         }
+
         return $this->priceCurrency;
     }
 
@@ -234,10 +235,10 @@ abstract class AbstractSlider extends AbstractProduct implements BlockInterface,
         if (!isset($arguments['zone'])) {
             $arguments['zone'] = $renderZone;
         }
-        $arguments['price_id'] = isset($arguments['price_id'])
+        $arguments['price_id']              = isset($arguments['price_id'])
             ? $arguments['price_id']
             : 'old-price-' . $product->getId() . '-' . $priceType;
-        $arguments['include_container'] = isset($arguments['include_container'])
+        $arguments['include_container']     = isset($arguments['include_container'])
             ? $arguments['include_container']
             : true;
         $arguments['display_minimal_price'] = isset($arguments['display_minimal_price'])
@@ -260,7 +261,6 @@ abstract class AbstractSlider extends AbstractProduct implements BlockInterface,
             $arguments
         );
     }
-
 
     /**
      * @return bool
