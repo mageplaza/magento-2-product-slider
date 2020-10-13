@@ -42,6 +42,7 @@ class OnSaleProduct extends AbstractSlider
 
     /**
      * OnSaleProduct constructor.
+     *
      * @param Context $context
      * @param CollectionFactory $productCollectionFactory
      * @param Visibility $catalogProductVisibility
@@ -60,8 +61,7 @@ class OnSaleProduct extends AbstractSlider
         HttpContext $httpContext,
         EncoderInterface $urlEncoder,
         array $data = []
-    )
-    {
+    ) {
         $this->_dateTimeStore = $dateTime;
         parent::__construct(
             $context,
@@ -80,15 +80,15 @@ class OnSaleProduct extends AbstractSlider
      */
     public function getProductCollection()
     {
-        $date = strtotime($this->_dateTimeStore->gmtDate());
-        $collection      = $this->_productCollectionFactory->create()->addAttributeToSelect('*');
+        $date       = strtotime($this->_dateTimeStore->gmtDate());
+        $collection = $this->_productCollectionFactory->create()->addAttributeToSelect('*');
         $productIds = [];
 
         foreach ($collection as $product) {
             if ($product->getTypeId() === 'configurable' && $product->getVisibility() != 1) {
                 $_children = $product->getTypeInstance()->getUsedProducts($product);
-                foreach ($_children as $child){
-                    $specialPrice = (float)$child->getSpecialPrice();
+                foreach ($_children as $child) {
+                    $specialPrice = (float) $child->getSpecialPrice();
                     if ($specialPrice) {
                         if ($specialPrice < ((float) $child->getPrice())) {
                             $fromDate = strtotime($child->getSpecialFromDate());
@@ -97,7 +97,7 @@ class OnSaleProduct extends AbstractSlider
                                 if ($toDate > $date) {
                                     $productIds[] = $product->getId();
                                 }
-                            }else {
+                            } else {
                                 if ($fromDate < $date) {
                                     $productIds[] = $product->getId();
                                 }
@@ -105,9 +105,8 @@ class OnSaleProduct extends AbstractSlider
                         }
                     }
                 }
-
             } elseif ($product->getTypeId() === 'simple' && $product->getVisibility() != 1) {
-                $specialPriceSp = (float)$product->getData('special_price');
+                $specialPriceSp = (float) $product->getData('special_price');
                 if ($specialPriceSp) {
                     if ($specialPriceSp < ((float) $product->getPrice())) {
                         $fromDateSp = strtotime($product->getSpecialFromDate());
@@ -116,7 +115,7 @@ class OnSaleProduct extends AbstractSlider
                             if ($toDateSp > $date) {
                                 $productIds[] = $product->getId();
                             }
-                        }else {
+                        } else {
                             if ($fromDateSp < $date) {
                                 $productIds[] = $product->getId();
                             }
@@ -132,7 +131,6 @@ class OnSaleProduct extends AbstractSlider
             ->addTaxPercents()
             ->addAttributeToSelect('*')
             ->addStoreFilter($this->getStoreId())->setPageSize($this->getProductsCount());
-
 
         return $collectionClone;
     }
