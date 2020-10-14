@@ -111,6 +111,7 @@ class Design extends Generic implements TabInterface
             'name'  => 'limit_number',
             'label' => __('Limit the number of products'),
             'title' => __('Limit the number of products'),
+            'class' => 'validate-digits'
         ]);
 
         $fieldset->addField('display_additional', 'multiselect', [
@@ -139,6 +140,7 @@ class Design extends Generic implements TabInterface
                 'name'  => 'responsive_items',
                 'label' => __('Max Items slider'),
                 'title' => __('Max Items slider'),
+                'note'   => __('Default: 3 items.')
             ]
         );
 
