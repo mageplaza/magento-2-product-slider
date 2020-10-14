@@ -37,7 +37,7 @@ class CustomProducts extends AbstractSlider
             $productIds = explode('&', $productIds);
         }
 
-        if (!empty($productIds)) {
+        if (empty($productIds)) {
             return null;
         }
 

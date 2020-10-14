@@ -95,7 +95,7 @@ class BestSellerProducts extends AbstractSlider
             $productIds[] = $product->getProductId();
         }
 
-        if (!empty($productIds)) {
+        if (empty($productIds)) {
             return null;
         }
 

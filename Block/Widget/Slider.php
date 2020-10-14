@@ -110,7 +110,9 @@ class Slider extends AbstractSlider
 
             $collection = $this->getLayout()->createBlock($this->productType->getBlockMap($productType))
                 ->getProductCollection();
-            $collection->setPageSize($this->getPageSize())->setCurPage($this->getCurrentPage());
+            if ($collection && $collection->getSize()) {
+                $collection->setPageSize($this->getPageSize())->setCurPage($this->getCurrentPage());
+            }
         }
 
         return $collection;

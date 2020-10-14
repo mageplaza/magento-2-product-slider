@@ -126,7 +126,7 @@ class OnSaleProduct extends AbstractSlider
             }
         }
 
-        if (!empty($productIds)) {
+        if (empty($productIds)) {
             return null;
         }
 
