@@ -85,17 +85,17 @@ class Slider extends AbstractModel
      */
     public function validateData(DataObject $dataObject)
     {
-        $result   = [];
+        $result = [];
         $fromDate = $toDate = null;
 
         if ($dataObject->hasFromDate() && $dataObject->hasToDate()) {
             $fromDate = $dataObject->getFromDate();
-            $toDate   = $dataObject->getToDate();
+            $toDate = $dataObject->getToDate();
         }
 
         if ($fromDate && $toDate) {
             $fromDate = new DateTime($fromDate);
-            $toDate   = new DateTime($toDate);
+            $toDate = new DateTime($toDate);
 
             if ($fromDate > $toDate) {
                 $result[] = __('End Date must follow Start Date.');

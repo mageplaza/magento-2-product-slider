@@ -50,7 +50,7 @@ class UpgradeSchema implements UpgradeSchemaInterface
                     'identity' => true,
                     'unsigned' => true,
                     'nullable' => false,
-                    'primary'  => true
+                    'primary' => true
                 ], 'Rule Id')
                 ->addColumn('name', Table::TYPE_TEXT, 255, [], 'Name')
                 ->addColumn('status', Table::TYPE_SMALLINT, null, ['nullable' => false, 'default' => '0'], 'Status')

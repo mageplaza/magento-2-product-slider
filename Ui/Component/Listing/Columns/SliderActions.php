@@ -74,7 +74,7 @@ class SliderActions extends Column
                 if (isset($item['slider_id'])) {
                     $item[$this->getData('name')] = [
                         'edit' => [
-                            'href'  => $this->_urlBuilder->getUrl(
+                            'href' => $this->_urlBuilder->getUrl(
                                 'mpproductslider/slider/edit',
                                 ['id' => $item['slider_id']]
                             ),

@@ -29,8 +29,8 @@ use Magento\Framework\Option\ArrayInterface;
  */
 class Additional implements ArrayInterface
 {
-    const SHOW_PRICE  = '1';
-    const SHOW_CART   = '2';
+    const SHOW_PRICE = '1';
+    const SHOW_CART = '2';
     const SHOW_REVIEW = '3';
 
     /**
@@ -58,8 +58,8 @@ class Additional implements ArrayInterface
     protected function toArray()
     {
         return [
-            self::SHOW_PRICE  => __('Price'),
-            self::SHOW_CART   => __('Add to cart button'),
+            self::SHOW_PRICE => __('Price'),
+            self::SHOW_CART => __('Add to cart button'),
             self::SHOW_REVIEW => __('Review information')
         ];
     }

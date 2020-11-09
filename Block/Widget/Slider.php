@@ -131,7 +131,7 @@ class Slider extends AbstractSlider
             parent::getCacheKeyInfo(),
             [
                 $this->getData('page_var_name'),
-                (int) $this->getRequest()->getParam($this->getData('page_var_name'), 1),
+                (int)$this->getRequest()->getParam($this->getData('page_var_name'), 1),
                 $params
             ]
         );
@@ -171,7 +171,7 @@ class Slider extends AbstractSlider
      */
     public function getCurrentPage()
     {
-        return abs((int) $this->getRequest()->getParam($this->getData('page_var_name')));
+        return abs((int)$this->getRequest()->getParam($this->getData('page_var_name')));
     }
 
     /**

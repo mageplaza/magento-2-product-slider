@@ -35,8 +35,8 @@ class NewProducts extends AbstractSlider
     public function getProductCollection()
     {
         $visibleProducts = $this->_catalogProductVisibility->getVisibleInCatalogIds();
-        $collection      = $this->_productCollectionFactory->create()->setVisibility($visibleProducts);
-        $collection      = $this->_addProductAttributesAndPrices($collection)
+        $collection = $this->_productCollectionFactory->create()->setVisibility($visibleProducts);
+        $collection = $this->_addProductAttributesAndPrices($collection)
             ->addAttributeToFilter(
                 'news_from_date',
                 ['date' => true, 'to' => $this->getEndOfDayDate()],

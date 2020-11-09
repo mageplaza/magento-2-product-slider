@@ -56,7 +56,7 @@ class Collection extends ReportCollection
         $eventTypes = $this->_eventTypeFactory->create()->getCollection();
         foreach ($eventTypes as $eventType) {
             if ($eventType->getEventName() == 'catalog_product_view') {
-                $this->getSelect()->where('report_table_views.event_type_id = ?', (int) $eventType->getId());
+                $this->getSelect()->where('report_table_views.event_type_id = ?', (int)$eventType->getId());
                 break;
             }
         }

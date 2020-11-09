@@ -64,7 +64,7 @@ abstract class Slider extends Action
         Registry $coreRegistry
     ) {
         $this->_sliderFactory = $sliderFactory;
-        $this->_coreRegistry  = $coreRegistry;
+        $this->_coreRegistry = $coreRegistry;
 
         parent::__construct($context);
     }
@@ -78,7 +78,7 @@ abstract class Slider extends Action
     {
         $slider = $this->_sliderFactory->create();
 
-        $sliderId = (int) $this->getRequest()->getParam('id');
+        $sliderId = (int)$this->getRequest()->getParam('id');
         if ($sliderId) {
             $slider->load($sliderId);
         }

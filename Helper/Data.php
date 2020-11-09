@@ -73,8 +73,8 @@ class Data extends AbstractData
         HttpContext $httpContext,
         SliderFactory $sliderFactory
     ) {
-        $this->date          = $date;
-        $this->httpContext   = $httpContext;
+        $this->date = $date;
+        $this->httpContext = $httpContext;
         $this->sliderFactory = $sliderFactory;
 
         parent::__construct($context, $objectManager, $storeManager);
@@ -109,7 +109,7 @@ class Data extends AbstractData
     public function getAllOptions()
     {
         $sliderOptions = '';
-        $allConfig     = $this->getModuleConfig('slider_design');
+        $allConfig = $this->getModuleConfig('slider_design');
         foreach ($allConfig as $key => $value) {
             if ($key === 'item_slider') {
                 $sliderOptions .= $this->getResponseValue();
@@ -133,7 +133,7 @@ class Data extends AbstractData
     public function getResponseValue()
     {
         $responsiveOptions = '';
-        $responsiveConfig  = $this->getModuleConfig('slider_design/responsive')
+        $responsiveConfig = $this->getModuleConfig('slider_design/responsive')
             ? $this->unserialize($this->getModuleConfig('slider_design/item_slider'))
             : [];
 

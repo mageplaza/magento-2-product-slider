@@ -28,7 +28,7 @@ $type = 'widget-product-grid';
 $title = $block->getTitle();
 $blockId = $block->getSliderId() . uniqid('-', false);
 $items = $block->getProductCollection();
-if ($block->getHelperData()->isEnabled() && $items && $items->getSize()) : ?>
+if ($block->getHelperData()->isEnabled() && $items && $items->getSize()): ?>
     <div class="mp-product-slider-block block widget block-products-list <?= /** @noEscape */ $mode ?>">
         <h2 class="mp-product-slider-title"><?= $block->escapeHtml($title) ?></h2>
         <p class="mp-ps-info"><?= $block->escapeHtml($block->getDescription()) ?></p>
@@ -38,7 +38,7 @@ if ($block->getHelperData()->isEnabled() && $items && $items->getSize()) : ?>
             <ol class="product-items widget-viewed-grid">
                 <?php $iterator = 1; ?>
                 <div id="mp-list-items-<?= /** @noEscape */ $blockId ?>" class="owl-carousel owl-theme">
-                    <?php foreach ($items as $_item) : ?>
+                    <?php foreach ($items as $_item): ?>
                         <?= ($iterator++ == 1) ? '<li class="product-item product-slider"">' : '</li><li class="product-item product-slider"">' ?>
                         <div class="slider-product-item-info">
                             <a href="<?= $block->escapeUrl($block->getProductUrl($_item)) ?>"
@@ -53,20 +53,20 @@ if ($block->getHelperData()->isEnabled() && $items && $items->getSize()) : ?>
                                     </a>
                                 </strong>
 
-                                <?php if ($block->canShowReview()) : ?>
+                                <?php if ($block->canShowReview()): ?>
                                     <?= $block->getReviewsSummaryHtml($_item, 'short', true) ?>
                                 <?php endif; ?>
 
                                 <?= /** @noEscape */ $block->getProductDetailsHtml($_item) ?>
 
-                                <?php if ($block->canShowPrice()) : ?>
+                                <?php if ($block->canShowPrice()): ?>
                                     <?= /** @noEscape */ $block->getProductPriceHtml($_item, $type) ?>
                                 <?php endif; ?>
 
                                 <div class="product actions slider-product-item-actions product-item-actions">
-                                    <?php if ($block->canShowAddToCart()) : ?>
+                                    <?php if ($block->canShowAddToCart()): ?>
                                         <div class="actions-primary">
-                                            <?php if ($_item->isSaleable()) : ?>
+                                            <?php if ($_item->isSaleable()): ?>
                                                 <?php $postParams = $block->getAddToCartPostParams($_item); ?>
                                                 <form data-role="tocart-form" data-product-sku="<?= $block->escapeHtml($_item->getSku()) ?>" action="<?= /* @NoEscape */ $postParams['action'] ?>" method="post">
                                                     <input type="hidden" name="product" value="<?= /* @escapeNotVerified */ $postParams['data']['product'] ?>">
@@ -78,17 +78,17 @@ if ($block->getHelperData()->isEnabled() && $items && $items->getSize()) : ?>
                                                         <span><?= /** @noEscape */ __('Add to Cart') ?></span>
                                                     </button>
                                                 </form>
-                                            <?php else : ?>
-                                                <?php if ($_item->getIsSalable()) : ?>
+                                            <?php else: ?>
+                                                <?php if ($_item->getIsSalable()): ?>
                                                     <div class="stock available"><span><?= $block->escapeHtml(__('In stock')) ?></span></div>
-                                                <?php else : ?>
+                                                <?php else: ?>
                                                     <div class="stock unavailable"><span><?= $block->escapeHtml(__('Out of stock')) ?></span></div>
                                                 <?php endif; ?>
                                             <?php endif; ?>
                                         </div>
                                         <div class="secondary-addto-links actions-secondary"
                                              data-role="add-to-links">
-                                            <?php if ($this->helper('Magento\Wishlist\Helper\Data')->isAllow()) : ?>
+                                            <?php if ($this->helper('Magento\Wishlist\Helper\Data')->isAllow()): ?>
                                                 <a href="#"
                                                    data-post='<?= /** @noEscape */ $block->getAddToWishlistParams($_item); ?>'
                                                    class="action towishlist" data-action="add-to-wishlist"
@@ -96,7 +96,7 @@ if ($block->getHelperData()->isEnabled() && $items && $items->getSize()) : ?>
                                                     <span><?= /** @noEscape */ __('Add to Wish List') ?></span>
                                                 </a>
                                             <?php endif; ?>
-                                            <?php if ($block->getAddToCompareUrl()) : ?>
+                                            <?php if ($block->getAddToCompareUrl()): ?>
                                                 <?php $compareHelper = $this->helper('Magento\Catalog\Helper\Product\Compare'); ?>
                                                 <a href="#" class="action tocompare"
                                                    data-post='<?= /** @noEscape */ $compareHelper->getPostDataParams($_item); ?>'

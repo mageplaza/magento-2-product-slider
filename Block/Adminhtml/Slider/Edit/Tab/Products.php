@@ -73,8 +73,8 @@ class Products extends Extended implements TabInterface
         CollectionFactory $productCollectionFactory,
         array $data = []
     ) {
-        $this->_helperData               = $helperData;
-        $this->_sliderFactory            = $sliderFactory;
+        $this->_helperData = $helperData;
+        $this->_sliderFactory = $sliderFactory;
         $this->_productCollectionFactory = $productCollectionFactory;
 
         parent::__construct($context, $backendHelper, $data);
@@ -122,19 +122,19 @@ class Products extends Extended implements TabInterface
             'in_product',
             [
                 'header_css_class' => 'a-center',
-                'type'             => 'checkbox',
-                'name'             => 'in_product',
-                'align'            => 'center',
-                'index'            => 'entity_id',
-                'values'           => $this->_getSelectedProducts(),
+                'type' => 'checkbox',
+                'name' => 'in_product',
+                'align' => 'center',
+                'index' => 'entity_id',
+                'values' => $this->_getSelectedProducts(),
             ]
         );
         $this->addColumn(
             'entity_id',
             [
-                'header'           => __('Product ID'),
-                'type'             => 'number',
-                'index'            => 'entity_id',
+                'header' => __('Product ID'),
+                'type' => 'number',
+                'index' => 'entity_id',
                 'header_css_class' => 'col-id',
                 'column_css_class' => 'col-id',
             ]
@@ -143,27 +143,27 @@ class Products extends Extended implements TabInterface
             'name',
             [
                 'header' => __('Name'),
-                'index'  => 'name',
-                'class'  => 'xxx',
-                'width'  => '50px',
+                'index' => 'name',
+                'class' => 'xxx',
+                'width' => '50px',
             ]
         );
         $this->addColumn(
             'sku',
             [
                 'header' => __('Sku'),
-                'index'  => 'sku',
-                'class'  => 'xxx',
-                'width'  => '50px',
+                'index' => 'sku',
+                'class' => 'xxx',
+                'width' => '50px',
             ]
         );
         $this->addColumn(
             'price',
             [
                 'header' => __('Price'),
-                'type'   => 'currency',
-                'index'  => 'price',
-                'width'  => '50px',
+                'type' => 'currency',
+                'index' => 'price',
+                'width' => '50px',
             ]
         );
 
@@ -222,7 +222,7 @@ class Products extends Extended implements TabInterface
      */
     protected function _getSelectedProducts()
     {
-        $slider     = $this->getSlider();
+        $slider = $this->getSlider();
         $productIds = $slider->getProductIds() ? explode('&', $slider->getProductIds()) : [];
 
         return $productIds;
@@ -234,7 +234,7 @@ class Products extends Extended implements TabInterface
     protected function getSlider()
     {
         $sliderId = $this->getRequest()->getParam('id');
-        $slider   = $this->_sliderFactory->create();
+        $slider = $this->_sliderFactory->create();
         if ($sliderId) {
             $slider->load($sliderId);
         }
@@ -247,7 +247,7 @@ class Products extends Extended implements TabInterface
      */
     public function getSelectedProducts()
     {
-        $slider   = $this->getSlider();
+        $slider = $this->getSlider();
         $selected = $slider->getProductIds() ? explode('&', $slider->getProductIds()) : [];
 
         if (!is_array($selected)) {

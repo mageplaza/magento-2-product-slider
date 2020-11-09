@@ -67,7 +67,7 @@ class Save extends Slider
         Date $dateFilter,
         DataPersistorInterface $dataPersistor
     ) {
-        $this->_dateFilter   = $dateFilter;
+        $this->_dateFilter = $dateFilter;
         $this->dataPersistor = $dataPersistor;
 
         parent::__construct($context, $sliderFactory, $coreRegistry);
@@ -80,7 +80,7 @@ class Save extends Slider
     {
         if ($data = $this->getRequest()->getPost('slider')) {
             try {
-                $data   = $this->_filterData($data);
+                $data = $this->_filterData($data);
                 $slider = $this->_initSlider();
 
                 $validateResult = $slider->validateData(new DataObject($data));
@@ -139,7 +139,7 @@ class Save extends Slider
     protected function _filterData($data)
     {
         $inputFilter = new Zend_Filter_Input(['from_date' => $this->_dateFilter], [], $data);
-        $data        = $inputFilter->getUnescaped();
+        $data = $inputFilter->getUnescaped();
 
         if (isset($data['responsive_items'])) {
             unset($data['responsive_items']['__empty']);

@@ -85,7 +85,7 @@ class BestSellerProducts extends AbstractSlider
      */
     public function getProductCollection()
     {
-        $productIds  = [];
+        $productIds = [];
         $bestSellers = $this->_bestSellersCollectionFactory->create()
             ->setModel('Magento\Catalog\Model\Product')
             ->addStoreFilter($this->getStoreId())
