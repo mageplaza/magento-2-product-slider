@@ -110,12 +110,12 @@ class General extends Generic implements TabInterface
         array $data = []
     ) {
         $this->_resourceModelSliderFactory = $resourceModelSliderFactory;
-        $this->_groupRepository            = $groupRepository;
-        $this->_searchCriteriaBuilder      = $searchCriteriaBuilder;
-        $this->_objectConverter            = $objectConverter;
-        $this->_systemStore                = $systemStore;
-        $this->_location                   = $location;
-        $this->_productType                = $productType;
+        $this->_groupRepository = $groupRepository;
+        $this->_searchCriteriaBuilder = $searchCriteriaBuilder;
+        $this->_objectConverter = $objectConverter;
+        $this->_systemStore = $systemStore;
+        $this->_location = $location;
+        $this->_productType = $productType;
 
         parent::__construct($context, $registry, $formFactory, $data);
     }
@@ -134,22 +134,22 @@ class General extends Generic implements TabInterface
         $form->setFieldNameSuffix('slider');
         $fieldset = $form->addFieldset('base_fieldset', [
             'legend' => __('General Information'),
-            'class'  => 'fieldset-wide'
+            'class' => 'fieldset-wide'
         ]);
 
         $fieldset->addField('name', 'text', [
-            'name'     => 'name',
-            'label'    => __('Name'),
-            'title'    => __('Name'),
+            'name' => 'name',
+            'label' => __('Name'),
+            'title' => __('Name'),
             'required' => true,
         ]);
 
         $fieldset->addField('status', 'select', [
-            'name'     => 'status',
-            'label'    => __('Status'),
-            'title'    => __('Status'),
+            'name' => 'status',
+            'label' => __('Status'),
+            'title' => __('Status'),
             'required' => true,
-            'options'  => [
+            'options' => [
                 '1' => __('Enable'),
                 '0' => __('Disable')
             ]
@@ -159,21 +159,21 @@ class General extends Generic implements TabInterface
         }
 
         $fieldset->addField('location', 'select', [
-            'name'   => 'location',
-            'label'  => __('Position'),
-            'title'  => __('Position'),
+            'name' => 'location',
+            'label' => __('Position'),
+            'title' => __('Position'),
             'values' => $this->_location->toOptionArray()
         ]);
 
         $productType = $fieldset->addField('product_type', 'select', [
-            'name'   => 'product_type',
-            'label'  => __('Type'),
-            'title'  => __('Type'),
+            'name' => 'product_type',
+            'label' => __('Type'),
+            'title' => __('Type'),
             'values' => $this->_productType->toOptionArray()
         ]);
 
         $categoryIds = $fieldset->addField('categories_ids', Category::class, [
-            'name'  => 'categories_ids',
+            'name' => 'categories_ids',
             'label' => __('Categories'),
             'title' => __('Categories')
         ]);
@@ -182,51 +182,51 @@ class General extends Generic implements TabInterface
             /** @var RendererInterface $rendererBlock */
             $rendererBlock = $this->getLayout()->createBlock(Element::class);
             $fieldset->addField('store_ids', 'multiselect', [
-                'name'     => 'store_ids',
-                'label'    => __('Store Views'),
-                'title'    => __('Store Views'),
+                'name' => 'store_ids',
+                'label' => __('Store Views'),
+                'title' => __('Store Views'),
                 'required' => true,
-                'values'   => $this->_systemStore->getStoreValuesForForm(false, true)
+                'values' => $this->_systemStore->getStoreValuesForForm(false, true)
             ])->setRenderer($rendererBlock);
         } else {
             $fieldset->addField('store_ids', 'hidden', [
-                'name'  => 'store_ids',
+                'name' => 'store_ids',
                 'value' => $this->_storeManager->getStore()->getId()
             ]);
         }
 
         $customerGroups = $this->_groupRepository->getList($this->_searchCriteriaBuilder->create())->getItems();
         $fieldset->addField('customer_group_ids', 'multiselect', [
-            'name'     => 'customer_group_ids[]',
-            'label'    => __('Customer Groups'),
-            'title'    => __('Customer Groups'),
+            'name' => 'customer_group_ids[]',
+            'label' => __('Customer Groups'),
+            'title' => __('Customer Groups'),
             'required' => true,
-            'values'   => $this->_objectConverter->toOptionArray($customerGroups, 'id', 'code'),
-            'note'     => __('Select customer group(s) to display the block to')
+            'values' => $this->_objectConverter->toOptionArray($customerGroups, 'id', 'code'),
+            'note' => __('Select customer group(s) to display the block to')
         ]);
 
         $fieldset->addField('time_cache', 'text', [
-            'name'  => 'time_cache',
+            'name' => 'time_cache',
             'label' => __('Cache Lifetime'),
             'title' => __('Cache Lifetime'),
             'class' => 'validate-digits',
-            'note'  => __('seconds. 86400 by default, if not set. To refresh instantly, clear the Blocks HTML Output cache.')
+            'note' => __('seconds. 86400 by default, if not set. To refresh instantly, clear the Blocks HTML Output cache.')
         ]);
 
         $fieldset->addField('from_date', 'date', [
-            'name'        => 'from_date',
-            'label'       => __('From Date'),
-            'title'       => __('From'),
+            'name' => 'from_date',
+            'label' => __('From Date'),
+            'title' => __('From'),
             'date_format' => 'M/d/yyyy',
-            'timezone'    => false
+            'timezone' => false
         ]);
 
         $fieldset->addField('to_date', 'date', [
-            'name'        => 'to_date',
-            'label'       => __('To Date'),
-            'title'       => __('To'),
+            'name' => 'to_date',
+            'label' => __('To Date'),
+            'title' => __('To'),
             'date_format' => 'M/d/yyyy',
-            'timezone'    => false
+            'timezone' => false
         ]);
 
         $this->setChild(

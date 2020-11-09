@@ -106,7 +106,7 @@ class CategoryId extends AbstractSlider
     public function getProductIdsByCategory()
     {
         $productIds = [];
-        $catIds     = $this->getSliderCategoryIds();
+        $catIds = $this->getSliderCategoryIds();
         $collection = $this->_productCollectionFactory->create();
         if (is_array($catIds)) {
             foreach ($catIds as $catId) {

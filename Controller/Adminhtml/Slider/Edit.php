@@ -86,7 +86,7 @@ class Edit extends Slider
             $resultRedirect->setPath(
                 '*/*/edit',
                 [
-                    'id'       => $slider->getId(),
+                    'id' => $slider->getId(),
                     '_current' => true
                 ]
             );
