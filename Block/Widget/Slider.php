@@ -28,7 +28,6 @@ use Magento\Framework\App\Http\Context as HttpContext;
 use Magento\Framework\Exception\LocalizedException;
 use Magento\Framework\Stdlib\DateTime\DateTime;
 use Magento\Framework\Url\EncoderInterface;
-use Magento\Widget\Block\BlockInterface;
 use Mageplaza\Productslider\Block\AbstractSlider;
 use Mageplaza\Productslider\Helper\Data;
 use Mageplaza\Productslider\Model\Config\Source\ProductType;
@@ -37,7 +36,7 @@ use Mageplaza\Productslider\Model\Config\Source\ProductType;
  * Class Slider
  * @package Mageplaza\Productslider\Block\Widget
  */
-class Slider extends AbstractSlider implements BlockInterface
+class Slider extends AbstractSlider
 {
     /**
      * Display products type - new products
@@ -111,7 +110,9 @@ class Slider extends AbstractSlider implements BlockInterface
 
             $collection = $this->getLayout()->createBlock($this->productType->getBlockMap($productType))
                 ->getProductCollection();
-            $collection->setPageSize($this->getPageSize())->setCurPage($this->getCurrentPage());
+            if ($collection && $collection->getSize()) {
+                $collection->setPageSize($this->getPageSize())->setCurPage($this->getCurrentPage());
+            }
         }
 
         return $collection;
@@ -147,14 +148,6 @@ class Slider extends AbstractSlider implements BlockInterface
         }
 
         return $display;
-    }
-
-    /**
-     * @return Data
-     */
-    public function getHelperData()
-    {
-        return $this->_helperData;
     }
 
     /**

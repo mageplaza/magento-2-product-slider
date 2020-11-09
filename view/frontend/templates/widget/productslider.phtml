@@ -25,9 +25,11 @@ use Mageplaza\Productslider\Block\AbstractSlider;
 /** @var AbstractSlider $block */
 
 $mode = 'grid';
+$type = 'widget-product-grid';
 $title = $block->getTitle();
 $id = $block->getData('page_var_name') . uniqid('', false);
-if ($items = $block->getProductCollection()) : ?>
+$items = $block->getProductCollection();
+if ($block->getHelperData()->isEnabled() && $items && $items->getSize()) : ?>
     <div class="mp-product-slider-block widget block-products-list">
         <h2 class="mp-product-slider-title"><?= $block->escapeHtml($block->getTitle()) ?></h2>
         <p class="mp-ps-info"><?= $block->escapeHtml($block->getDescription()) ?></p>
@@ -56,9 +58,9 @@ if ($items = $block->getProductCollection()) : ?>
                                     <?php if ($block->canShowReview()) : ?>
                                         <?= $block->getReviewsSummaryHtml($_item, 'short', true) ?>
                                     <?php endif; ?>
-
+                                    <?= /** @noEscape */ $block->getProductDetailsHtml($_item) ?>
                                     <?php if ($block->canShowPrice()) : ?>
-                                        <?= /** @noEscape */ $block->getProductPrice($_item) ?>
+                                        <?= /** @noEscape */ $block->getProductPriceHtml($_item, $type) ?>
                                     <?php endif; ?>
 
                                     <div class="product actions slider-product-item-actions product-item-actions">

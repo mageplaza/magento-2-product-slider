@@ -95,6 +95,10 @@ class BestSellerProducts extends AbstractSlider
             $productIds[] = $product->getProductId();
         }
 
+        if (empty($productIds)) {
+            return null;
+        }
+
         $collection = $this->_productCollectionFactory->create()->addIdFilter($productIds);
         $collection->addMinimalPrice()
             ->addFinalPrice()

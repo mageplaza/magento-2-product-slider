@@ -27,11 +27,18 @@ use Magento\Catalog\Block\Product\Context;
 use Magento\Catalog\Model\Product;
 use Magento\Catalog\Model\Product\Visibility;
 use Magento\Catalog\Model\ResourceModel\Product\CollectionFactory;
+use Magento\Catalog\Pricing\Price\FinalPrice;
 use Magento\Framework\App\ActionInterface;
 use Magento\Framework\App\Http\Context as HttpContext;
+use Magento\Framework\App\ObjectManager;
+use Magento\Framework\DataObject\IdentityInterface;
+use Magento\Framework\Exception\LocalizedException;
 use Magento\Framework\Exception\NoSuchEntityException;
+use Magento\Framework\Pricing\PriceCurrencyInterface;
+use Magento\Framework\Pricing\Render;
 use Magento\Framework\Stdlib\DateTime\DateTime;
 use Magento\Framework\Url\EncoderInterface;
+use Magento\Widget\Block\BlockInterface;
 use Mageplaza\Productslider\Helper\Data;
 use Mageplaza\Productslider\Model\Config\Source\Additional;
 
@@ -39,8 +46,10 @@ use Mageplaza\Productslider\Model\Config\Source\Additional;
  * Class AbstractSlider
  * @package Mageplaza\Productslider\Block
  */
-abstract class AbstractSlider extends AbstractProduct
+abstract class AbstractSlider extends AbstractProduct implements BlockInterface, IdentityInterface
 {
+    private $priceCurrency;
+
     /**
      * @var DateTime
      */
@@ -133,10 +142,19 @@ abstract class AbstractSlider extends AbstractProduct
     {
         return [
             'MAGEPLAZA_PRODUCT_SLIDER',
+            $this->getPriceCurrency()->getCurrency()->getCode(),
             $this->_storeManager->getStore()->getId(),
             $this->httpContext->getValue(\Magento\Customer\Model\Context::CONTEXT_GROUP),
             $this->getSliderId()
         ];
+    }
+
+    /**
+     * @return Data
+     */
+    public function getHelperData()
+    {
+        return $this->_helperData;
     }
 
     /**
@@ -155,6 +173,18 @@ abstract class AbstractSlider extends AbstractProduct
         }
 
         return $display;
+    }
+
+    /**
+     * @return mixed
+     */
+    private function getPriceCurrency()
+    {
+        if ($this->priceCurrency === null) {
+            $this->priceCurrency = ObjectManager::getInstance()
+                ->get(PriceCurrencyInterface::class);
+        }
+        return $this->priceCurrency;
     }
 
     /**
@@ -184,6 +214,61 @@ abstract class AbstractSlider extends AbstractProduct
     {
         return in_array(Additional::SHOW_PRICE, $this->getDisplayAdditional(), true);
     }
+
+    /**
+     * @return bool|\Magento\Framework\View\Element\BlockInterface
+     * @throws LocalizedException
+     */
+    protected function getPriceRender()
+    {
+        return $this->getLayout()->getBlock('product.price.render.default');
+    }
+
+    /**
+     * @param Product $product
+     * @param null $priceType
+     * @param string $renderZone
+     * @param array $arguments
+     *
+     * @return string
+     * @throws LocalizedException
+     */
+    public function getProductPriceHtml(
+        Product $product,
+        $priceType = null,
+        $renderZone = Render::ZONE_ITEM_LIST,
+        array $arguments = []
+    ) {
+        if (!isset($arguments['zone'])) {
+            $arguments['zone'] = $renderZone;
+        }
+        $arguments['price_id'] = isset($arguments['price_id'])
+            ? $arguments['price_id']
+            : 'old-price-' . $product->getId() . '-' . $priceType;
+        $arguments['include_container'] = isset($arguments['include_container'])
+            ? $arguments['include_container']
+            : true;
+        $arguments['display_minimal_price'] = isset($arguments['display_minimal_price'])
+            ? $arguments['display_minimal_price']
+            : true;
+
+        /** @var Render $priceRender */
+        $priceRender = $this->getLayout()->getBlock('product.price.render.default');
+        if (!$priceRender) {
+            $priceRender = $this->getLayout()->createBlock(
+                Render::class,
+                'product.price.render.default',
+                ['data' => ['price_render_handle' => 'catalog_product_prices']]
+            );
+        }
+
+        return $priceRender->render(
+            FinalPrice::PRICE_CODE,
+            $product,
+            $arguments
+        );
+    }
+
 
     /**
      * @return bool
@@ -295,9 +380,13 @@ abstract class AbstractSlider extends AbstractProduct
                 $responsiveConfig = [];
             }
 
+            if (empty($responsiveConfig)) {
+                return '';
+            }
+
             $responsiveOptions = '';
             foreach ($responsiveConfig as $config) {
-                if ($config['size'] && $config['items']) {
+                if (!empty($config['size']) && !empty($config['items'])) {
                     $responsiveOptions .= $config['size'] . ':{items:' . $config['items'] . '},';
                 }
             }
@@ -337,6 +426,23 @@ abstract class AbstractSlider extends AbstractProduct
     public function getStoreId()
     {
         return $this->_storeManager->getStore()->getId();
+    }
+
+    /**
+     * @return array|string[]
+     */
+    public function getIdentities()
+    {
+        $identities = [];
+        if ($this->getProductCollection()) {
+            foreach ($this->getProductCollection() as $product) {
+                if ($product instanceof IdentityInterface) {
+                    $identities += $product->getIdentities();
+                }
+            }
+        }
+
+        return $identities ?: [Product::CACHE_TAG];
     }
 
     /**

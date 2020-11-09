@@ -137,8 +137,12 @@ class Data extends AbstractData
             ? $this->unserialize($this->getModuleConfig('slider_design/item_slider'))
             : [];
 
+        if (empty($responsiveConfig)) {
+            return '';
+        }
+
         foreach ($responsiveConfig as $config) {
-            if ($config['size'] && $config['items']) {
+            if (!empty($config['size']) && !empty($config['items'])) {
                 $responsiveOptions .= $config['size'] . ':{items:' . $config['items'] . '},';
             }
         }
