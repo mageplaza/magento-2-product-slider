@@ -87,6 +87,7 @@ class MostViewedProducts extends AbstractSlider
         $collection = $this->_mostViewedProductsFactory->create()
             ->setStoreId($this->getStoreId())->addViewsCount()
             ->addStoreFilter($this->getStoreId())
+            ->setVisibility($this->_catalogProductVisibility->getVisibleInSiteIds())
             ->setPageSize($this->getProductsCount());
         $this->_addProductAttributesAndPrices($collection);
 
