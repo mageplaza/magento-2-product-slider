@@ -25,9 +25,11 @@ use Magento\Catalog\Block\Product\Context;
 use Magento\Catalog\Model\CategoryFactory;
 use Magento\Catalog\Model\Product\Visibility;
 use Magento\Catalog\Model\ResourceModel\Product\CollectionFactory;
+use Magento\ConfigurableProduct\Model\Product\Type\Configurable;
 use Magento\Framework\App\Http\Context as HttpContext;
 use Magento\Framework\Stdlib\DateTime\DateTime;
 use Magento\Framework\Url\EncoderInterface;
+use Magento\GroupedProduct\Model\Product\Type\Grouped;
 use Mageplaza\Productslider\Helper\Data;
 
 /**
@@ -43,7 +45,6 @@ class CategoryId extends AbstractSlider
 
     /**
      * CategoryId constructor.
-     *
      * @param Context $context
      * @param CollectionFactory $productCollectionFactory
      * @param Visibility $catalogProductVisibility
@@ -52,6 +53,8 @@ class CategoryId extends AbstractSlider
      * @param HttpContext $httpContext
      * @param EncoderInterface $urlEncoder
      * @param CategoryFactory $categoryFactory
+     * @param Grouped $grouped
+     * @param Configurable $configurable
      * @param array $data
      */
     public function __construct(
@@ -63,8 +66,11 @@ class CategoryId extends AbstractSlider
         HttpContext $httpContext,
         EncoderInterface $urlEncoder,
         CategoryFactory $categoryFactory,
+        Grouped $grouped,
+        Configurable $configurable,
         array $data = []
-    ) {
+    )
+    {
         $this->_categoryFactory = $categoryFactory;
 
         parent::__construct(
@@ -75,6 +81,8 @@ class CategoryId extends AbstractSlider
             $helperData,
             $httpContext,
             $urlEncoder,
+            $grouped,
+            $configurable,
             $data
         );
     }

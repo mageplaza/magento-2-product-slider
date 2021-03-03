@@ -24,9 +24,11 @@ namespace Mageplaza\Productslider\Block;
 use Magento\Catalog\Block\Product\Context;
 use Magento\Catalog\Model\Product\Visibility;
 use Magento\Catalog\Model\ResourceModel\Product\CollectionFactory;
+use Magento\ConfigurableProduct\Model\Product\Type\Configurable;
 use Magento\Framework\App\Http\Context as HttpContext;
 use Magento\Framework\Stdlib\DateTime\DateTime;
 use Magento\Framework\Url\EncoderInterface;
+use Magento\GroupedProduct\Model\Product\Type\Grouped;
 use Magento\Sales\Model\ResourceModel\Report\Bestsellers\CollectionFactory as BestSellersCollectionFactory;
 use Mageplaza\Productslider\Helper\Data;
 
@@ -43,7 +45,6 @@ class BestSellerProducts extends AbstractSlider
 
     /**
      * BestSellerProducts constructor.
-     *
      * @param Context $context
      * @param CollectionFactory $productCollectionFactory
      * @param Visibility $catalogProductVisibility
@@ -52,6 +53,8 @@ class BestSellerProducts extends AbstractSlider
      * @param HttpContext $httpContext
      * @param EncoderInterface $urlEncoder
      * @param BestSellersCollectionFactory $bestSellersCollectionFactory
+     * @param Grouped $grouped
+     * @param Configurable $configurable
      * @param array $data
      */
     public function __construct(
@@ -63,8 +66,11 @@ class BestSellerProducts extends AbstractSlider
         HttpContext $httpContext,
         EncoderInterface $urlEncoder,
         BestSellersCollectionFactory $bestSellersCollectionFactory,
+        Grouped $grouped,
+        Configurable $configurable,
         array $data = []
-    ) {
+    )
+    {
         $this->_bestSellersCollectionFactory = $bestSellersCollectionFactory;
 
         parent::__construct(
@@ -75,6 +81,8 @@ class BestSellerProducts extends AbstractSlider
             $helperData,
             $httpContext,
             $urlEncoder,
+            $grouped,
+            $configurable,
             $data
         );
     }
@@ -85,16 +93,12 @@ class BestSellerProducts extends AbstractSlider
      */
     public function getProductCollection()
     {
-        $productIds = [];
         $bestSellers = $this->_bestSellersCollectionFactory->create()
             ->setModel('Magento\Catalog\Model\Product')
             ->addStoreFilter($this->getStoreId())
             ->setPeriod('month');
 
-        foreach ($bestSellers as $product) {
-            $productIds[] = $product->getProductId();
-        }
-
+        $productIds = $this->getProductParentIds($bestSellers);
         if (empty($productIds)) {
             return null;
         }

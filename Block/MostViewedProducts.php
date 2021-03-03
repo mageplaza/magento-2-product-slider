@@ -24,9 +24,11 @@ namespace Mageplaza\Productslider\Block;
 use Magento\Catalog\Block\Product\Context;
 use Magento\Catalog\Model\Product\Visibility;
 use Magento\Catalog\Model\ResourceModel\Product\CollectionFactory;
+use Magento\ConfigurableProduct\Model\Product\Type\Configurable;
 use Magento\Framework\App\Http\Context as HttpContext;
 use Magento\Framework\Stdlib\DateTime\DateTime;
 use Magento\Framework\Url\EncoderInterface;
+use Magento\GroupedProduct\Model\Product\Type\Grouped;
 use Mageplaza\Productslider\Helper\Data;
 use Mageplaza\Productslider\Model\ResourceModel\Report\Product\CollectionFactory as MostViewedCollectionFactory;
 
@@ -43,14 +45,16 @@ class MostViewedProducts extends AbstractSlider
 
     /**
      * MostViewedProducts constructor.
-     *
      * @param Context $context
      * @param CollectionFactory $productCollectionFactory
      * @param Visibility $catalogProductVisibility
      * @param DateTime $dateTime
      * @param Data $helperData
      * @param HttpContext $httpContext
+     * @param EncoderInterface $urlEncoder
      * @param MostViewedCollectionFactory $mostViewedProductsFactory
+     * @param Grouped $grouped
+     * @param Configurable $configurable
      * @param array $data
      */
     public function __construct(
@@ -62,8 +66,11 @@ class MostViewedProducts extends AbstractSlider
         HttpContext $httpContext,
         EncoderInterface $urlEncoder,
         MostViewedCollectionFactory $mostViewedProductsFactory,
+        Grouped $grouped,
+        Configurable $configurable,
         array $data = []
-    ) {
+    )
+    {
         $this->_mostViewedProductsFactory = $mostViewedProductsFactory;
 
         parent::__construct(
@@ -74,6 +81,8 @@ class MostViewedProducts extends AbstractSlider
             $helperData,
             $httpContext,
             $urlEncoder,
+            $grouped,
+            $configurable,
             $data
         );
     }
@@ -87,9 +96,16 @@ class MostViewedProducts extends AbstractSlider
         $collection = $this->_mostViewedProductsFactory->create()
             ->setStoreId($this->getStoreId())->addViewsCount()
             ->addStoreFilter($this->getStoreId())
-            ->setVisibility($this->_catalogProductVisibility->getVisibleInSiteIds())
             ->setPageSize($this->getProductsCount());
-        $this->_addProductAttributesAndPrices($collection);
+
+        $productIds = $this->getProductParentIds($collection);
+
+        $collection = $this->_productCollectionFactory->create()->addIdFilter($productIds);
+        $collection->addMinimalPrice()
+            ->addFinalPrice()
+            ->addTaxPercents()
+            ->addAttributeToSelect('*')
+            ->addStoreFilter($this->getStoreId());
 
         return $collection;
     }

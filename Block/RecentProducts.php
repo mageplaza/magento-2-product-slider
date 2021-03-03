@@ -24,9 +24,11 @@ namespace Mageplaza\Productslider\Block;
 use Magento\Catalog\Block\Product\Context;
 use Magento\Catalog\Model\Product\Visibility;
 use Magento\Catalog\Model\ResourceModel\Product\CollectionFactory;
+use Magento\ConfigurableProduct\Model\Product\Type\Configurable;
 use Magento\Framework\App\Http\Context as HttpContext;
 use Magento\Framework\Stdlib\DateTime\DateTime;
 use Magento\Framework\Url\EncoderInterface;
+use Magento\GroupedProduct\Model\Product\Type\Grouped;
 use Magento\Reports\Block\Product\Viewed as ReportProductViewed;
 use Mageplaza\Productslider\Helper\Data;
 
@@ -43,7 +45,6 @@ class RecentProducts extends AbstractSlider
 
     /**
      * RecentProducts constructor.
-     *
      * @param Context $context
      * @param CollectionFactory $productCollectionFactory
      * @param Visibility $catalogProductVisibility
@@ -52,6 +53,8 @@ class RecentProducts extends AbstractSlider
      * @param HttpContext $httpContext
      * @param EncoderInterface $urlEncoder
      * @param ReportProductViewed $reportProductViewed
+     * @param Grouped $grouped
+     * @param Configurable $configurable
      * @param array $data
      */
     public function __construct(
@@ -63,8 +66,11 @@ class RecentProducts extends AbstractSlider
         HttpContext $httpContext,
         EncoderInterface $urlEncoder,
         ReportProductViewed $reportProductViewed,
+        Grouped $grouped,
+        Configurable $configurable,
         array $data = []
-    ) {
+    )
+    {
         $this->reportProductViewed = $reportProductViewed;
 
         parent::__construct(
@@ -75,6 +81,8 @@ class RecentProducts extends AbstractSlider
             $helperData,
             $httpContext,
             $urlEncoder,
+            $grouped,
+            $configurable,
             $data
         );
     }

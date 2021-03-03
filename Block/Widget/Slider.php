@@ -31,6 +31,8 @@ use Magento\Framework\Url\EncoderInterface;
 use Mageplaza\Productslider\Block\AbstractSlider;
 use Mageplaza\Productslider\Helper\Data;
 use Mageplaza\Productslider\Model\Config\Source\ProductType;
+use Magento\GroupedProduct\Model\Product\Type\Grouped;
+use Magento\ConfigurableProduct\Model\Product\Type\Configurable;
 
 /**
  * Class Slider
@@ -52,7 +54,6 @@ class Slider extends AbstractSlider
 
     /**
      * Slider constructor.
-     *
      * @param Context $context
      * @param CollectionFactory $productCollectionFactory
      * @param Visibility $catalogProductVisibility
@@ -61,6 +62,8 @@ class Slider extends AbstractSlider
      * @param HttpContext $httpContext
      * @param EncoderInterface $urlEncoder
      * @param ProductType $productType
+     * @param Grouped $grouped
+     * @param Configurable $configurable
      * @param array $data
      */
     public function __construct(
@@ -72,6 +75,8 @@ class Slider extends AbstractSlider
         HttpContext $httpContext,
         EncoderInterface $urlEncoder,
         ProductType $productType,
+        Grouped $grouped,
+        Configurable $configurable,
         array $data = []
     ) {
         parent::__construct(
@@ -82,6 +87,8 @@ class Slider extends AbstractSlider
             $helperData,
             $httpContext,
             $urlEncoder,
+            $grouped,
+            $configurable,
             $data
         );
         $this->productType = $productType;

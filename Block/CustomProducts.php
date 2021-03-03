@@ -21,14 +21,67 @@
 
 namespace Mageplaza\Productslider\Block;
 
+use Magento\Catalog\Block\Product\Context;
+use Magento\Catalog\Model\Product\Visibility;
+use Magento\Catalog\Model\ResourceModel\Product\CollectionFactory;
+use Magento\ConfigurableProduct\Model\Product\Type\Configurable;
+use Magento\Framework\App\Http\Context as HttpContext;
+use Magento\Framework\Stdlib\DateTime\DateTime;
+use Magento\Framework\Url\EncoderInterface;
+use Magento\GroupedProduct\Model\Product\Type\Grouped;
+use Mageplaza\Productslider\Helper\Data;
+
+
 /**
  * Class CustomProducts
  * @package Mageplaza\Productslider\Block
  */
 class CustomProducts extends AbstractSlider
 {
+
     /**
-     * @return $this|mixed
+     * CustomProducts constructor.
+     * @param Context $context
+     * @param CollectionFactory $productCollectionFactory
+     * @param Visibility $catalogProductVisibility
+     * @param DateTime $dateTime
+     * @param Data $helperData
+     * @param HttpContext $httpContext
+     * @param EncoderInterface $urlEncoder
+     * @param Grouped $grouped
+     * @param Configurable $configurable
+     * @param array $data
+     */
+    public function __construct(
+        Context $context,
+        CollectionFactory $productCollectionFactory,
+        Visibility $catalogProductVisibility,
+        DateTime $dateTime,
+        Data $helperData,
+        HttpContext $httpContext,
+        EncoderInterface $urlEncoder,
+        Grouped $grouped,
+        Configurable $configurable,
+        array $data = []
+    )
+    {
+
+        parent::__construct(
+            $context,
+            $productCollectionFactory,
+            $catalogProductVisibility,
+            $dateTime,
+            $helperData,
+            $httpContext,
+            $urlEncoder,
+            $grouped,
+            $configurable,
+            $data
+        );
+    }
+
+    /**
+     * @return \Magento\Catalog\Model\ResourceModel\Product\Collection|mixed|null
      */
     public function getProductCollection()
     {
@@ -44,7 +97,15 @@ class CustomProducts extends AbstractSlider
         $collection = $this->_productCollectionFactory->create()
             ->addIdFilter($productIds)
             ->setPageSize($this->getProductsCount());
-        $this->_addProductAttributesAndPrices($collection);
+
+        $mpProductIds = $this->getProductParentIds($collection);
+
+        $collection = $this->_productCollectionFactory->create()->addIdFilter($mpProductIds);
+        $collection->addMinimalPrice()
+            ->addFinalPrice()
+            ->addTaxPercents()
+            ->addAttributeToSelect('*')
+            ->addStoreFilter($this->getStoreId())->setPageSize($this->getProductsCount());
 
         return $collection;
     }

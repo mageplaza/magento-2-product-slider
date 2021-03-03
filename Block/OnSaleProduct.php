@@ -24,9 +24,11 @@ namespace Mageplaza\Productslider\Block;
 use Magento\Catalog\Block\Product\Context;
 use Magento\Catalog\Model\Product\Visibility;
 use Magento\Catalog\Model\ResourceModel\Product\CollectionFactory;
+use Magento\ConfigurableProduct\Model\Product\Type\Configurable;
 use Magento\Framework\App\Http\Context as HttpContext;
 use Magento\Framework\Stdlib\DateTime\DateTime;
 use Magento\Framework\Url\EncoderInterface;
+use Magento\GroupedProduct\Model\Product\Type\Grouped;
 use Mageplaza\Productslider\Helper\Data;
 
 /**
@@ -49,6 +51,8 @@ class OnSaleProduct extends AbstractSlider
      * @param Data $helperData
      * @param HttpContext $httpContext
      * @param EncoderInterface $urlEncoder
+     * @param Grouped $grouped
+     * @param Configurable $configurable
      * @param array $data
      */
     public function __construct(
@@ -59,8 +63,11 @@ class OnSaleProduct extends AbstractSlider
         Data $helperData,
         HttpContext $httpContext,
         EncoderInterface $urlEncoder,
+        Grouped $grouped,
+        Configurable $configurable,
         array $data = []
-    ) {
+    )
+    {
         $this->_dateTimeStore = $dateTime;
         parent::__construct(
             $context,
@@ -70,6 +77,8 @@ class OnSaleProduct extends AbstractSlider
             $helperData,
             $httpContext,
             $urlEncoder,
+            $grouped,
+            $configurable,
             $data
         );
     }
@@ -85,12 +94,6 @@ class OnSaleProduct extends AbstractSlider
             ->addFinalPrice()
             ->addTaxPercents()
             ->addStoreFilter($this->getStoreId())
-            ->addAttributeToFilter('visibility', ['neq' => 1])
-            ->addAttributeToFilter('status', 1)
-            ->addAttributeToSelect('name')
-            ->addAttributeToSelect('image')
-            ->addAttributeToSelect('small_image')
-            ->addAttributeToSelect('thumbnail')
             ->addAttributeToSelect('special_from_date')
             ->addAttributeToSelect('special_to_date')
             ->addAttributeToFilter('special_price', ['gt' => 0])
@@ -103,6 +106,15 @@ class OnSaleProduct extends AbstractSlider
         $productCollection->getSelect()->where(
             'price_index.final_price < price_index.price'
         );
+
+        $productIds = $this->getProductParentIds($productCollection);
+        $productCollection = $this->_productCollectionFactory->create()->addIdFilter($productIds);
+
+        $productCollection->addAttributeToFilter('visibility', ['neq' => 1])
+            ->addAttributeToFilter('status', 1)
+            ->addAttributeToSelect('*')
+            ->addStoreFilter($this->getStoreId())
+            ->setPageSize($this->getProductsCount());
 
         return $productCollection;
     }
