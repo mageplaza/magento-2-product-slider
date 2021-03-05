@@ -28,6 +28,7 @@ use Magento\ConfigurableProduct\Model\Product\Type\Configurable;
 use Magento\Framework\App\Http\Context as HttpContext;
 use Magento\Framework\Stdlib\DateTime\DateTime;
 use Magento\Framework\Url\EncoderInterface;
+use Magento\Framework\View\LayoutFactory;
 use Magento\GroupedProduct\Model\Product\Type\Grouped;
 use Magento\Reports\Block\Product\Viewed as ReportProductViewed;
 use Mageplaza\Productslider\Helper\Data;
@@ -55,6 +56,7 @@ class RecentProducts extends AbstractSlider
      * @param ReportProductViewed $reportProductViewed
      * @param Grouped $grouped
      * @param Configurable $configurable
+     * @param LayoutFactory $layoutFactory
      * @param array $data
      */
     public function __construct(
@@ -68,6 +70,7 @@ class RecentProducts extends AbstractSlider
         ReportProductViewed $reportProductViewed,
         Grouped $grouped,
         Configurable $configurable,
+        LayoutFactory $layoutFactory,
         array $data = []
     )
     {
@@ -83,6 +86,7 @@ class RecentProducts extends AbstractSlider
             $urlEncoder,
             $grouped,
             $configurable,
+            $layoutFactory,
             $data
         );
     }

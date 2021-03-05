@@ -39,6 +39,7 @@ use Magento\Framework\Pricing\PriceCurrencyInterface;
 use Magento\Framework\Pricing\Render;
 use Magento\Framework\Stdlib\DateTime\DateTime;
 use Magento\Framework\Url\EncoderInterface;
+use Magento\Framework\View\LayoutFactory;
 use Magento\GroupedProduct\Model\Product\Type\Grouped;
 use Magento\Widget\Block\BlockInterface;
 use Mageplaza\Productslider\Helper\Data;
@@ -85,7 +86,15 @@ abstract class AbstractSlider extends AbstractProduct implements BlockInterface,
     /**
      * @var
      */
+    protected $rendererListBlock;
+    /**
+     * @var
+     */
     private $priceCurrency;
+    /**
+     * @var LayoutFactory
+     */
+    private $layoutFactory;
 
     /**
      * AbstractSlider constructor.
@@ -98,6 +107,7 @@ abstract class AbstractSlider extends AbstractProduct implements BlockInterface,
      * @param EncoderInterface $urlEncoder
      * @param Grouped $grouped
      * @param Configurable $configurable
+     * @param LayoutFactory $layoutFactory
      * @param array $data
      */
     public function __construct(
@@ -110,6 +120,7 @@ abstract class AbstractSlider extends AbstractProduct implements BlockInterface,
         EncoderInterface $urlEncoder,
         Grouped $grouped,
         Configurable $configurable,
+        LayoutFactory $layoutFactory,
         array $data = []
     )
     {
@@ -121,6 +132,7 @@ abstract class AbstractSlider extends AbstractProduct implements BlockInterface,
         $this->urlEncoder = $urlEncoder;
         $this->grouped = $grouped;
         $this->configurable = $configurable;
+        $this->layoutFactory = $layoutFactory;
 
         parent::__construct($context, $data);
     }
@@ -480,6 +492,24 @@ abstract class AbstractSlider extends AbstractProduct implements BlockInterface,
         }
 
         return $productIds;
+    }
+
+    /**
+     * @return bool|\Magento\Framework\View\Element\BlockInterface|\Magento\Framework\View\Element\RendererList
+     * @throws LocalizedException
+     */
+    protected function getDetailsRendererList()
+    {
+        if (empty($this->rendererListBlock)) {
+            $layout = $this->layoutFactory->create(['cacheable' => false]);
+            $layout->getUpdate()->addHandle('catalog_widget_product_list')->load();
+            $layout->generateXml();
+            $layout->generateElements();
+
+            $this->rendererListBlock = $layout->getBlock('category.product.type.widget.details.renderers');
+        }
+
+        return $this->rendererListBlock;
     }
 
     /**

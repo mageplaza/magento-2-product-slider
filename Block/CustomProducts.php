@@ -28,6 +28,7 @@ use Magento\ConfigurableProduct\Model\Product\Type\Configurable;
 use Magento\Framework\App\Http\Context as HttpContext;
 use Magento\Framework\Stdlib\DateTime\DateTime;
 use Magento\Framework\Url\EncoderInterface;
+use Magento\Framework\View\LayoutFactory;
 use Magento\GroupedProduct\Model\Product\Type\Grouped;
 use Mageplaza\Productslider\Helper\Data;
 
@@ -50,6 +51,7 @@ class CustomProducts extends AbstractSlider
      * @param EncoderInterface $urlEncoder
      * @param Grouped $grouped
      * @param Configurable $configurable
+     * @param LayoutFactory $layoutFactory
      * @param array $data
      */
     public function __construct(
@@ -62,6 +64,7 @@ class CustomProducts extends AbstractSlider
         EncoderInterface $urlEncoder,
         Grouped $grouped,
         Configurable $configurable,
+        LayoutFactory $layoutFactory,
         array $data = []
     )
     {
@@ -76,6 +79,7 @@ class CustomProducts extends AbstractSlider
             $urlEncoder,
             $grouped,
             $configurable,
+            $layoutFactory,
             $data
         );
     }

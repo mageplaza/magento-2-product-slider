@@ -29,6 +29,7 @@ use Magento\Customer\Model\Session as CustomerSession;
 use Magento\Framework\App\Http\Context as HttpContext;
 use Magento\Framework\Stdlib\DateTime\DateTime;
 use Magento\Framework\Url\EncoderInterface;
+use Magento\Framework\View\LayoutFactory;
 use Magento\GroupedProduct\Model\Product\Type\Grouped;
 use Magento\Wishlist\Model\ResourceModel\Item\CollectionFactory as WishlistCollectionFactory;
 use Mageplaza\Productslider\Helper\Data;
@@ -62,6 +63,7 @@ class WishlistProducts extends AbstractSlider
      * @param CustomerSession $_customerSession
      * @param Grouped $grouped
      * @param Configurable $configurable
+     * @param LayoutFactory $layoutFactory
      * @param array $data
      */
     public function __construct(
@@ -76,6 +78,7 @@ class WishlistProducts extends AbstractSlider
         CustomerSession $_customerSession,
         Grouped $grouped,
         Configurable $configurable,
+        LayoutFactory $layoutFactory,
         array $data = []
     )
     {
@@ -92,6 +95,7 @@ class WishlistProducts extends AbstractSlider
             $urlEncoder,
             $grouped,
             $configurable,
+            $layoutFactory,
             $data
         );
     }
