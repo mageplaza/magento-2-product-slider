@@ -162,7 +162,7 @@ Along with the performance of the slider, you can make individual product elemen
 - magento 2 get best seller product collection
 - magento 2 get recently viewed products collection
 
-**Other free extension on Github**
+**Other Mageplaza extensions on Github & Marketplace**
 - [Magento 2 SEO extension on Github](https://github.com/mageplaza/magento-2-seo)
 - [Magento 2 GDPR extension on Github](https://github.com/mageplaza/magento-2-gdpr)
 - [Magento 2 Popup extension on Github](https://github.com/mageplaza/magento-2-better-popup)
