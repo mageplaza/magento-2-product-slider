@@ -163,12 +163,17 @@ Along with the performance of the slider, you can make individual product elemen
 - magento 2 get recently viewed products collection
 
 **Other free extension on Github**
-- [Magento 2 SEO extension](https://github.com/mageplaza/magento-2-seo)
-- [Magento 2 GDPR](https://github.com/mageplaza/magento-2-gdpr)
-- [Magento 2 popup extension](https://github.com/mageplaza/magento-2-better-popup)
-- [Magento 2 Reports extension](https://github.com/mageplaza/magento-2-reports)
-- [Magento 2 social login](https://github.com/mageplaza/magento-2-social-login)
-- [Magento 2 blog](https://github.com/mageplaza/magento-2-blog)
-- [Magento 2 Layered Navigation](https://github.com/mageplaza/magento-2-ajax-layered-navigation)
-- [Magento 2 security extension](https://github.com/mageplaza/magento-2-security)
+- [Magento 2 SEO extension on Github](https://github.com/mageplaza/magento-2-seo)
+- [Magento 2 GDPR extension on Github](https://github.com/mageplaza/magento-2-gdpr)
+- [Magento 2 Popup extension on Github](https://github.com/mageplaza/magento-2-better-popup)
+- [Magento 2 Reports extension on Github](https://github.com/mageplaza/magento-2-reports)
+- [Magento 2 Social Login on Github](https://github.com/mageplaza/magento-2-social-login)
+- [Magento 2 Blog on Github](https://github.com/mageplaza/magento-2-blog)
+- [Magento 2 Ajax Layered Navigation](https://github.com/mageplaza/magento-2-ajax-layered-navigation)
+- [Magento 2 Security extension on Github](https://github.com/mageplaza/magento-2-security)
+- [Magento 2 One Step Checkout extension](https://marketplace.magento.com/mageplaza-magento-2-one-step-checkout-extension.html)
+- [Magento 2 SEO extension](https://marketplace.magento.com/mageplaza-magento-2-seo-extension.html)
+- [Magento 2 Reward Points](https://marketplace.magento.com/mageplaza-module-reward-points.html)
+- [Magento 2 Blog extension](https://marketplace.magento.com/mageplaza-magento-2-blog-extension.html)
+- [Magento 2 Layered Navigation](https://marketplace.magento.com/mageplaza-layered-navigation-m2.html)
 
