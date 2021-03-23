@@ -46,6 +46,7 @@ class BestSellerProducts extends AbstractSlider
 
     /**
      * BestSellerProducts constructor.
+     *
      * @param Context $context
      * @param CollectionFactory $productCollectionFactory
      * @param Visibility $catalogProductVisibility
@@ -72,8 +73,7 @@ class BestSellerProducts extends AbstractSlider
         Configurable $configurable,
         LayoutFactory $layoutFactory,
         array $data = []
-    )
-    {
+    ) {
         $this->_bestSellersCollectionFactory = $bestSellersCollectionFactory;
 
         parent::__construct(

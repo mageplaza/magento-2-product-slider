@@ -46,6 +46,7 @@ class MostViewedProducts extends AbstractSlider
 
     /**
      * MostViewedProducts constructor.
+     *
      * @param Context $context
      * @param CollectionFactory $productCollectionFactory
      * @param Visibility $catalogProductVisibility
@@ -72,8 +73,7 @@ class MostViewedProducts extends AbstractSlider
         Configurable $configurable,
         LayoutFactory $layoutFactory,
         array $data = []
-    )
-    {
+    ) {
         $this->_mostViewedProductsFactory = $mostViewedProductsFactory;
 
         parent::__construct(

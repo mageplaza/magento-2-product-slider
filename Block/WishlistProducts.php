@@ -52,6 +52,7 @@ class WishlistProducts extends AbstractSlider
 
     /**
      * WishlistProducts constructor.
+     *
      * @param Context $context
      * @param CollectionFactory $productCollectionFactory
      * @param Visibility $catalogProductVisibility
@@ -80,10 +81,9 @@ class WishlistProducts extends AbstractSlider
         Configurable $configurable,
         LayoutFactory $layoutFactory,
         array $data = []
-    )
-    {
+    ) {
         $this->_wishlistCollectionFactory = $wishlistCollectionFactory;
-        $this->_customerSession = $_customerSession;
+        $this->_customerSession           = $_customerSession;
 
         parent::__construct(
             $context,

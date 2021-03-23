@@ -46,6 +46,7 @@ class CategoryId extends AbstractSlider
 
     /**
      * CategoryId constructor.
+     *
      * @param Context $context
      * @param CollectionFactory $productCollectionFactory
      * @param Visibility $catalogProductVisibility
@@ -72,8 +73,7 @@ class CategoryId extends AbstractSlider
         Configurable $configurable,
         LayoutFactory $layoutFactory,
         array $data = []
-    )
-    {
+    ) {
         $this->_categoryFactory = $categoryFactory;
 
         parent::__construct(
@@ -118,7 +118,7 @@ class CategoryId extends AbstractSlider
     public function getProductIdsByCategory()
     {
         $productIds = [];
-        $catIds = $this->getSliderCategoryIds();
+        $catIds     = $this->getSliderCategoryIds();
         $collection = $this->_productCollectionFactory->create();
         if (is_array($catIds)) {
             foreach ($catIds as $catId) {

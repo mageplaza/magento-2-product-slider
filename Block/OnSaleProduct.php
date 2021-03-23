@@ -45,6 +45,7 @@ class OnSaleProduct extends AbstractSlider
 
     /**
      * OnSaleProduct constructor.
+     *
      * @param Context $context
      * @param CollectionFactory $productCollectionFactory
      * @param Visibility $catalogProductVisibility
@@ -69,8 +70,7 @@ class OnSaleProduct extends AbstractSlider
         Configurable $configurable,
         LayoutFactory $layoutFactory,
         array $data = []
-    )
-    {
+    ) {
         $this->_dateTimeStore = $dateTime;
         parent::__construct(
             $context,
@@ -111,14 +111,14 @@ class OnSaleProduct extends AbstractSlider
             'price_index.final_price < price_index.price'
         );
 
-        $productIds = $this->getProductParentIds($productCollection);
+        $productIds        = $this->getProductParentIds($productCollection);
         $productCollection = $this->_productCollectionFactory->create()->addIdFilter($productIds);
 
         $productCollection->addAttributeToFilter('visibility', ['neq' => 1])
             ->addAttributeToFilter('status', 1)
-            ->addAttributeToSelect('*')
             ->addStoreFilter($this->getStoreId())
             ->setPageSize($this->getProductsCount());
+        $this->_addProductAttributesAndPrices($productCollection);
 
         return $productCollection;
     }

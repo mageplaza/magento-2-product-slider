@@ -46,6 +46,7 @@ class RecentProducts extends AbstractSlider
 
     /**
      * RecentProducts constructor.
+     *
      * @param Context $context
      * @param CollectionFactory $productCollectionFactory
      * @param Visibility $catalogProductVisibility
@@ -72,8 +73,7 @@ class RecentProducts extends AbstractSlider
         Configurable $configurable,
         LayoutFactory $layoutFactory,
         array $data = []
-    )
-    {
+    ) {
         $this->reportProductViewed = $reportProductViewed;
 
         parent::__construct(

@@ -42,6 +42,7 @@ class CustomProducts extends AbstractSlider
 
     /**
      * CustomProducts constructor.
+     *
      * @param Context $context
      * @param CollectionFactory $productCollectionFactory
      * @param Visibility $catalogProductVisibility
@@ -66,8 +67,7 @@ class CustomProducts extends AbstractSlider
         Configurable $configurable,
         LayoutFactory $layoutFactory,
         array $data = []
-    )
-    {
+    ) {
 
         parent::__construct(
             $context,

@@ -117,6 +117,8 @@ if ($block->getHelperData()->isEnabled() && $items && $items->getSize()): ?>
         </div>
         <?= $block->getPagerHtml() ?>
     </div>
+    <link rel="stylesheet" type="text/css" href="<?= /* @noEscape */ $block->getViewFileUrl('Mageplaza_Core::css/owl.carousel.css') ?>">
+    <link rel="stylesheet" type="text/css" href="<?= /* @noEscape */ $block->getViewFileUrl('Mageplaza_Core::css/owl.theme.css') ?>">
     <script>
         require(['jquery', 'mageplaza/core/owl.carousel'], function ($) {
             $('#mp-list-items-<?= /** @noEscape */ $blockId ?>').owlCarousel(<?= /** @noEscape */ $block->getAllOptions()?>);

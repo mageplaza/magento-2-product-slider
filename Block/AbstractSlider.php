@@ -98,6 +98,7 @@ abstract class AbstractSlider extends AbstractProduct implements BlockInterface,
 
     /**
      * AbstractSlider constructor.
+     *
      * @param Context $context
      * @param CollectionFactory $productCollectionFactory
      * @param Visibility $catalogProductVisibility
@@ -122,17 +123,16 @@ abstract class AbstractSlider extends AbstractProduct implements BlockInterface,
         Configurable $configurable,
         LayoutFactory $layoutFactory,
         array $data = []
-    )
-    {
+    ) {
         $this->_productCollectionFactory = $productCollectionFactory;
         $this->_catalogProductVisibility = $catalogProductVisibility;
-        $this->_date = $dateTime;
-        $this->_helperData = $helperData;
-        $this->httpContext = $httpContext;
-        $this->urlEncoder = $urlEncoder;
-        $this->grouped = $grouped;
-        $this->configurable = $configurable;
-        $this->layoutFactory = $layoutFactory;
+        $this->_date                     = $dateTime;
+        $this->_helperData               = $helperData;
+        $this->httpContext               = $httpContext;
+        $this->urlEncoder                = $urlEncoder;
+        $this->grouped                   = $grouped;
+        $this->configurable              = $configurable;
+        $this->layoutFactory             = $layoutFactory;
 
         parent::__construct($context, $data);
     }
@@ -155,15 +155,18 @@ abstract class AbstractSlider extends AbstractProduct implements BlockInterface,
     }
 
     /**
-     * @return mixed
+     * {@inheritdoc}
      */
-    private function getPriceCurrency()
+    protected function _construct()
     {
-        if ($this->priceCurrency === null) {
-            $this->priceCurrency = ObjectManager::getInstance()
-                ->get(PriceCurrencyInterface::class);
-        }
-        return $this->priceCurrency;
+        parent::_construct();
+
+        $this->addData([
+            'cache_lifetime' => $this->getSlider() ? $this->getSlider()->getTimeCache() : 86400,
+            'cache_tags'     => [Product::CACHE_TAG]
+        ]);
+
+        $this->setTemplate('Mageplaza_Productslider::productslider.phtml');
     }
 
     /**
@@ -200,8 +203,8 @@ abstract class AbstractSlider extends AbstractProduct implements BlockInterface,
 
         return [
             'action' => $url,
-            'data' => [
-                'product' => $product->getEntityId(),
+            'data'   => [
+                'product'                               => $product->getEntityId(),
                 ActionInterface::PARAM_NAME_URL_ENCODED => $this->urlEncoder->encode($url),
             ]
         ];
@@ -247,15 +250,14 @@ abstract class AbstractSlider extends AbstractProduct implements BlockInterface,
         $priceType = null,
         $renderZone = Render::ZONE_ITEM_LIST,
         array $arguments = []
-    )
-    {
+    ) {
         if (!isset($arguments['zone'])) {
             $arguments['zone'] = $renderZone;
         }
-        $arguments['price_id'] = isset($arguments['price_id'])
+        $arguments['price_id']              = isset($arguments['price_id'])
             ? $arguments['price_id']
             : 'old-price-' . $product->getId() . '-' . $priceType;
-        $arguments['include_container'] = isset($arguments['include_container'])
+        $arguments['include_container']     = isset($arguments['include_container'])
             ? $arguments['include_container']
             : true;
         $arguments['display_minimal_price'] = isset($arguments['display_minimal_price'])
@@ -263,7 +265,7 @@ abstract class AbstractSlider extends AbstractProduct implements BlockInterface,
             : true;
 
         /** @var Render $priceRender */
-        $priceRender = $this->getLayout()->getBlock('product.price.render.default');
+        $priceRender = $this->getPriceRender();
         if (!$priceRender) {
             $priceRender = $this->getLayout()->createBlock(
                 Render::class,
@@ -277,6 +279,28 @@ abstract class AbstractSlider extends AbstractProduct implements BlockInterface,
             $product,
             $arguments
         );
+    }
+
+    /**
+     * @return bool|\Magento\Framework\View\Element\BlockInterface
+     * @throws LocalizedException
+     */
+    protected function getPriceRender()
+    {
+        return $this->getLayout()->getBlock('product.price.render.default');
+    }
+
+    /**
+     * @return mixed
+     */
+    private function getPriceCurrency()
+    {
+        if ($this->priceCurrency === null) {
+            $this->priceCurrency = ObjectManager::getInstance()
+                ->get(PriceCurrencyInterface::class);
+        }
+
+        return $this->priceCurrency;
     }
 
     /**
@@ -337,7 +361,7 @@ abstract class AbstractSlider extends AbstractProduct implements BlockInterface,
     public function getAllOptions()
     {
         $sliderOptions = '';
-        $allConfig = $this->_helperData->getModuleConfig('slider_design');
+        $allConfig     = $this->_helperData->getModuleConfig('slider_design');
 
         foreach ($allConfig as $key => $value) {
             if ($key === 'item_slider') {
@@ -466,12 +490,13 @@ abstract class AbstractSlider extends AbstractProduct implements BlockInterface,
 
     /**
      * @param $collection
+     *
      * @return array
      */
     public function getProductParentIds($collection)
     {
+        $productIds = [];
 
-        $productIds = array();
         foreach ($collection as $product) {
             if (isset($product->getData()['entity_id'])) {
                 $productId = $product->getData()['entity_id'];
@@ -479,7 +504,7 @@ abstract class AbstractSlider extends AbstractProduct implements BlockInterface,
                 $productId = $product->getProductId();
             }
 
-            $parentIdsGroup = $this->grouped->getParentIdsByChild($productId);
+            $parentIdsGroup  = $this->grouped->getParentIdsByChild($productId);
             $parentIdsConfig = $this->configurable->getParentIdsByChild($productId);
 
             if (!empty($parentIdsGroup)) {
@@ -510,29 +535,5 @@ abstract class AbstractSlider extends AbstractProduct implements BlockInterface,
         }
 
         return $this->rendererListBlock;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    protected function _construct()
-    {
-        parent::_construct();
-
-        $this->addData([
-            'cache_lifetime' => $this->getSlider() ? $this->getSlider()->getTimeCache() : 86400,
-            'cache_tags' => [Product::CACHE_TAG]
-        ]);
-
-        $this->setTemplate('Mageplaza_Productslider::productslider.phtml');
-    }
-
-    /**
-     * @return bool|\Magento\Framework\View\Element\BlockInterface
-     * @throws LocalizedException
-     */
-    protected function getPriceRender()
-    {
-        return $this->getLayout()->getBlock('product.price.render.default');
     }
 }
