@@ -90,8 +90,7 @@ class CategoryId extends AbstractSlider
         $collection = [];
         if (!empty($productIds)) {
             $collection = $this->_productCollectionFactory->create()
-                ->addIdFilter($productIds)
-                ->setPageSize($this->getProductsCount());
+                ->addIdFilter(array('in' => $productIds));
             $this->_addProductAttributesAndPrices($collection);
         }
 
@@ -109,10 +108,7 @@ class CategoryId extends AbstractSlider
         $catIds     = $this->getSliderCategoryIds();
         $collection = $this->_productCollectionFactory->create();
         if (is_array($catIds)) {
-            foreach ($catIds as $catId) {
-                $category = $this->_categoryFactory->create()->load($catId);
-                $collection->addAttributeToSelect('*')->addCategoryFilter($category);
-            }
+            $collection->addAttributeToSelect('*')->addCategoriesFilter(array('in' => $catIds));
         } else {
             $category = $this->_categoryFactory->create()->load($catIds);
             $collection->addAttributeToSelect('*')->addCategoryFilter($category);
@@ -122,7 +118,18 @@ class CategoryId extends AbstractSlider
             $productIds[] = $item->getData('entity_id');
         }
 
-        return $productIds;
+        $keys = array_keys($productIds);
+        shuffle($keys);
+        $productIdsRandom = [];
+
+        foreach ($keys as $key => $value) {
+            $productIdsRandom[$value] = $productIds[$value];
+            if ($key >= ($this->getProductsCount() - 1)) {
+                break;
+            }
+        }
+
+        return $productIdsRandom;
     }
 
     /**
