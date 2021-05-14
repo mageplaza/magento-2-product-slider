@@ -23,7 +23,7 @@ use Magento\Framework\App\Action\Action;
 use Mageplaza\Productslider\Block\AbstractSlider;
 
 /** @var AbstractSlider $block */
-
+$helper = $this->helper(\Mageplaza\Productslider\Helper\Data::class);
 $mode = 'grid';
 $type = 'widget-product-grid';
 $title = $block->getTitle();
@@ -115,6 +115,20 @@ if ($block->getHelperData()->isEnabled() && $items && $items->getSize()): ?>
                     </div>
                 </ol>
             </div>
+            <script type="text/javascript">
+                require([
+                    'jquery'
+                ], function ($) {
+                    var lazyLoad = <?= /** @noEscape */ $helper->getModuleConfig('slider_design')['lazyLoad']?>;
+                    if (lazyLoad === 1) {
+                        $('.slider-product-item-info .photo .product-image-photo').each(function (){
+                            var el = $(this);
+                            el.addClass('owl-lazy');
+                            el.attr('data-src',el.attr('src'));
+                        })
+                    }
+                });
+            </script>
             <?= $block->getPagerHtml() ?>
         </div>
     <script>
