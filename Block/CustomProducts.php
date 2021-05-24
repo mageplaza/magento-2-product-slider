@@ -90,6 +90,7 @@ class CustomProducts extends AbstractSlider
     public function getProductCollection()
     {
         $productIds = $this->getSlider()->getProductIds();
+        $visibleProducts = $this->_catalogProductVisibility->getVisibleInCatalogIds();
         if (!is_array($productIds)) {
             $productIds = explode('&', $productIds);
         }
@@ -104,7 +105,7 @@ class CustomProducts extends AbstractSlider
 
         $mpProductIds = $this->getProductParentIds($collection);
 
-        $collection = $this->_productCollectionFactory->create()->addIdFilter($mpProductIds);
+        $collection = $this->_productCollectionFactory->create()->addIdFilter($mpProductIds)->setVisibility($visibleProducts);
         $collection->addMinimalPrice()
             ->addFinalPrice()
             ->addTaxPercents()
