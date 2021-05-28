@@ -135,9 +135,15 @@ class CategoryId extends AbstractSlider
         $productIdsRandom = [];
 
         foreach ($keys as $key => $value) {
-            $productIdsRandom[$value] = $productIds[$value];
-            if ($key >= ($this->getProductsCount() - 1)) {
-                break;
+            $productCollection = $this->_productCollectionFactory->create()->addIdFilter($value);
+            $mpProductIds = $this->getProductParentIds($productCollection);
+
+            if (!in_array($mpProductIds, $productIdsRandom)) {
+                $productIdsRandom[$value] = $mpProductIds;
+
+                if ($key >= ($this->getProductsCount() - 1)) {
+                    break;
+                }
             }
         }
 
