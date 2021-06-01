@@ -118,17 +118,30 @@ class CategoryId extends AbstractSlider
     {
         $productIds = [];
         $catIds     = $this->getSliderCategoryIds();
-        $collection = $this->_productCollectionFactory->create();
 
         if (is_array($catIds)) {
-            $collection->addAttributeToSelect('*')->addCategoriesFilter(array('in' => $catIds));
-        } else {
+            $productId = [];
+
+            foreach($catIds as $cat)
+            {
+                $collection = $this->_productCollectionFactory->create();
+                $category = $this->_categoryFactory->create()->load($cat);
+                $collection->addAttributeToSelect('*')->addCategoryFilter($category);
+
+                foreach ($collection as $item) {
+                    $productId[] = $item->getData('entity_id');
+                }
+
+                $productIds = array_merge($productIds, $productId);
+            }
+        }else {
+            $collection = $this->_productCollectionFactory->create();
             $category = $this->_categoryFactory->create()->load($catIds);
             $collection->addAttributeToSelect('*')->addCategoryFilter($category);
-        }
 
-        foreach ($collection as $item) {
-            $productIds[] = $item->getData('entity_id');
+            foreach ($collection as $item) {
+                $productIds[] = $item->getData('entity_id');
+            }
         }
 
         $keys = array_keys($productIds);
@@ -136,15 +149,10 @@ class CategoryId extends AbstractSlider
         $productIdsRandom = [];
 
         foreach ($keys as $key => $value) {
-            $productCollection = $collection->addIdFilter($productIds[$value]);
-            $mpProductIds = $this->getProductParentIds($productCollection);
+            $productIdsRandom[] = $productIds[$value];
 
-            if (!in_array($mpProductIds, $productIdsRandom) && !empty($mpProductIds)) {
-                $productIdsRandom[] = $mpProductIds[$value];
-
-                if ($key >= ($this->getProductsCount() - 1)) {
-                    break;
-                }
+            if ($key >= ($this->getProductsCount() - 1)) {
+                break;
             }
         }
 
