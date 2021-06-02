@@ -23,6 +23,7 @@ namespace Mageplaza\Productslider\Setup;
 
 use Magento\Catalog\Model\Product;
 use Magento\Eav\Model\Entity\Attribute\ScopedAttributeInterface;
+use Magento\Eav\Model\Entity\Attribute\Source\Boolean;
 use Magento\Eav\Setup\EavSetupFactory;
 use Magento\Framework\Setup\InstallDataInterface;
 use Magento\Framework\Setup\ModuleContextInterface;
@@ -61,14 +62,13 @@ class InstallData implements InstallDataInterface
 
         $eavSetup = $this->eavSetupFactory->create(['setup' => $setup]);
         $eavSetup->addAttribute(Product::ENTITY, 'is_featured', [
+            'group' => 'General',
             'type' => 'int',
             'backend' => '',
             'frontend' => '',
             'label' => 'Featured Product',
-            'note' => '',
             'input' => 'boolean',
-            'class' => '',
-            'source' => '',
+            'source' => Boolean::class,
             'global' => ScopedAttributeInterface::SCOPE_GLOBAL,
             'visible' => true,
             'required' => false,

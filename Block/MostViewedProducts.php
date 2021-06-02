@@ -24,9 +24,12 @@ namespace Mageplaza\Productslider\Block;
 use Magento\Catalog\Block\Product\Context;
 use Magento\Catalog\Model\Product\Visibility;
 use Magento\Catalog\Model\ResourceModel\Product\CollectionFactory;
+use Magento\ConfigurableProduct\Model\Product\Type\Configurable;
 use Magento\Framework\App\Http\Context as HttpContext;
 use Magento\Framework\Stdlib\DateTime\DateTime;
 use Magento\Framework\Url\EncoderInterface;
+use Magento\Framework\View\LayoutFactory;
+use Magento\GroupedProduct\Model\Product\Type\Grouped;
 use Mageplaza\Productslider\Helper\Data;
 use Mageplaza\Productslider\Model\ResourceModel\Report\Product\CollectionFactory as MostViewedCollectionFactory;
 
@@ -50,7 +53,11 @@ class MostViewedProducts extends AbstractSlider
      * @param DateTime $dateTime
      * @param Data $helperData
      * @param HttpContext $httpContext
+     * @param EncoderInterface $urlEncoder
      * @param MostViewedCollectionFactory $mostViewedProductsFactory
+     * @param Grouped $grouped
+     * @param Configurable $configurable
+     * @param LayoutFactory $layoutFactory
      * @param array $data
      */
     public function __construct(
@@ -62,6 +69,9 @@ class MostViewedProducts extends AbstractSlider
         HttpContext $httpContext,
         EncoderInterface $urlEncoder,
         MostViewedCollectionFactory $mostViewedProductsFactory,
+        Grouped $grouped,
+        Configurable $configurable,
+        LayoutFactory $layoutFactory,
         array $data = []
     ) {
         $this->_mostViewedProductsFactory = $mostViewedProductsFactory;
@@ -74,6 +84,9 @@ class MostViewedProducts extends AbstractSlider
             $helperData,
             $httpContext,
             $urlEncoder,
+            $grouped,
+            $configurable,
+            $layoutFactory,
             $data
         );
     }
@@ -88,7 +101,15 @@ class MostViewedProducts extends AbstractSlider
             ->setStoreId($this->getStoreId())->addViewsCount()
             ->addStoreFilter($this->getStoreId())
             ->setPageSize($this->getProductsCount());
-        $this->_addProductAttributesAndPrices($collection);
+
+        $productIds = $this->getProductParentIds($collection);
+
+        $collection = $this->_productCollectionFactory->create()->addIdFilter($productIds);
+        $collection->addMinimalPrice()
+            ->addFinalPrice()
+            ->addTaxPercents()
+            ->addAttributeToSelect('*')
+            ->addStoreFilter($this->getStoreId());
 
         return $collection;
     }

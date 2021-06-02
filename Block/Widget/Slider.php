@@ -24,10 +24,13 @@ namespace Mageplaza\Productslider\Block\Widget;
 use Magento\Catalog\Block\Product\Context;
 use Magento\Catalog\Model\Product\Visibility;
 use Magento\Catalog\Model\ResourceModel\Product\CollectionFactory;
+use Magento\ConfigurableProduct\Model\Product\Type\Configurable;
 use Magento\Framework\App\Http\Context as HttpContext;
 use Magento\Framework\Exception\LocalizedException;
 use Magento\Framework\Stdlib\DateTime\DateTime;
 use Magento\Framework\Url\EncoderInterface;
+use Magento\Framework\View\LayoutFactory;
+use Magento\GroupedProduct\Model\Product\Type\Grouped;
 use Mageplaza\Productslider\Block\AbstractSlider;
 use Mageplaza\Productslider\Helper\Data;
 use Mageplaza\Productslider\Model\Config\Source\ProductType;
@@ -52,7 +55,6 @@ class Slider extends AbstractSlider
 
     /**
      * Slider constructor.
-     *
      * @param Context $context
      * @param CollectionFactory $productCollectionFactory
      * @param Visibility $catalogProductVisibility
@@ -61,6 +63,9 @@ class Slider extends AbstractSlider
      * @param HttpContext $httpContext
      * @param EncoderInterface $urlEncoder
      * @param ProductType $productType
+     * @param Grouped $grouped
+     * @param Configurable $configurable
+     * @param LayoutFactory $layoutFactory
      * @param array $data
      */
     public function __construct(
@@ -72,8 +77,12 @@ class Slider extends AbstractSlider
         HttpContext $httpContext,
         EncoderInterface $urlEncoder,
         ProductType $productType,
+        Grouped $grouped,
+        Configurable $configurable,
+        LayoutFactory $layoutFactory,
         array $data = []
-    ) {
+    )
+    {
         parent::__construct(
             $context,
             $productCollectionFactory,
@@ -82,6 +91,9 @@ class Slider extends AbstractSlider
             $helperData,
             $httpContext,
             $urlEncoder,
+            $grouped,
+            $configurable,
+            $layoutFactory,
             $data
         );
         $this->productType = $productType;
@@ -116,6 +128,35 @@ class Slider extends AbstractSlider
         }
 
         return $collection;
+    }
+
+    /**
+     * Retrieve how many products should be displayed on page
+     *
+     * @return int
+     */
+    protected function getPageSize()
+    {
+        return $this->getProductsCount();
+    }
+
+    /**
+     * Get limited number
+     * @return int|mixed
+     */
+    public function getProductsCount()
+    {
+        return $this->getData('products_count') ?: 10;
+    }
+
+    /**
+     * Get number of current page based on query value
+     *
+     * @return int
+     */
+    public function getCurrentPage()
+    {
+        return abs((int)$this->getRequest()->getParam($this->getData('page_var_name')));
     }
 
     /**
@@ -162,35 +203,6 @@ class Slider extends AbstractSlider
         }
 
         return $this->getData('product_type');
-    }
-
-    /**
-     * Get number of current page based on query value
-     *
-     * @return int
-     */
-    public function getCurrentPage()
-    {
-        return abs((int)$this->getRequest()->getParam($this->getData('page_var_name')));
-    }
-
-    /**
-     * Retrieve how many products should be displayed on page
-     *
-     * @return int
-     */
-    protected function getPageSize()
-    {
-        return $this->getProductsCount();
-    }
-
-    /**
-     * Get limited number
-     * @return int|mixed
-     */
-    public function getProductsCount()
-    {
-        return $this->getData('products_count') ?: 10;
     }
 
     /**
