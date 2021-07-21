@@ -28,6 +28,7 @@ use Magento\Catalog\Model\Product;
 use Magento\Catalog\Model\Product\Visibility;
 use Magento\Catalog\Model\ResourceModel\Product\CollectionFactory;
 use Magento\Catalog\Pricing\Price\FinalPrice;
+use Magento\ConfigurableProduct\Model\Product\Type\Configurable;
 use Magento\Framework\App\ActionInterface;
 use Magento\Framework\App\Http\Context as HttpContext;
 use Magento\Framework\App\ObjectManager;
@@ -38,6 +39,8 @@ use Magento\Framework\Pricing\PriceCurrencyInterface;
 use Magento\Framework\Pricing\Render;
 use Magento\Framework\Stdlib\DateTime\DateTime;
 use Magento\Framework\Url\EncoderInterface;
+use Magento\Framework\View\LayoutFactory;
+use Magento\GroupedProduct\Model\Product\Type\Grouped;
 use Magento\Widget\Block\BlockInterface;
 use Mageplaza\Productslider\Helper\Data;
 use Mageplaza\Productslider\Model\Config\Source\Additional;
@@ -48,37 +51,50 @@ use Mageplaza\Productslider\Model\Config\Source\Additional;
  */
 abstract class AbstractSlider extends AbstractProduct implements BlockInterface, IdentityInterface
 {
-    private $priceCurrency;
-
     /**
      * @var DateTime
      */
     protected $_date;
-
     /**
      * @var Data
      */
     protected $_helperData;
-
     /**
      * @var CollectionFactory
      */
     protected $_productCollectionFactory;
-
     /**
      * @var Visibility
      */
     protected $_catalogProductVisibility;
-
     /**
      * @var HttpContext
      */
     protected $httpContext;
-
     /**
      * @var EncoderInterface|null
      */
     protected $urlEncoder;
+    /**
+     * @var Grouped
+     */
+    protected $grouped;
+    /**
+     * @var Configurable
+     */
+    protected $configurable;
+    /**
+     * @var
+     */
+    protected $rendererListBlock;
+    /**
+     * @var
+     */
+    private $priceCurrency;
+    /**
+     * @var LayoutFactory
+     */
+    private $layoutFactory;
 
     /**
      * AbstractSlider constructor.
@@ -90,6 +106,9 @@ abstract class AbstractSlider extends AbstractProduct implements BlockInterface,
      * @param Data $helperData
      * @param HttpContext $httpContext
      * @param EncoderInterface $urlEncoder
+     * @param Grouped $grouped
+     * @param Configurable $configurable
+     * @param LayoutFactory $layoutFactory
      * @param array $data
      */
     public function __construct(
@@ -100,6 +119,9 @@ abstract class AbstractSlider extends AbstractProduct implements BlockInterface,
         Data $helperData,
         HttpContext $httpContext,
         EncoderInterface $urlEncoder,
+        Grouped $grouped,
+        Configurable $configurable,
+        LayoutFactory $layoutFactory,
         array $data = []
     ) {
         $this->_productCollectionFactory = $productCollectionFactory;
@@ -108,29 +130,12 @@ abstract class AbstractSlider extends AbstractProduct implements BlockInterface,
         $this->_helperData               = $helperData;
         $this->httpContext               = $httpContext;
         $this->urlEncoder                = $urlEncoder;
+        $this->grouped                   = $grouped;
+        $this->configurable              = $configurable;
+        $this->layoutFactory             = $layoutFactory;
 
         parent::__construct($context, $data);
     }
-
-    /**
-     * {@inheritdoc}
-     */
-    protected function _construct()
-    {
-        parent::_construct();
-
-        $this->addData([
-            'cache_lifetime' => $this->getSlider() ? $this->getSlider()->getTimeCache() : 86400,
-            'cache_tags'     => [Product::CACHE_TAG]
-        ]);
-
-        $this->setTemplate('Mageplaza_Productslider::productslider.phtml');
-    }
-
-    /**
-     * @return mixed
-     */
-    abstract public function getProductCollection();
 
     /**
      * Get Key pieces for caching block content
@@ -150,34 +155,31 @@ abstract class AbstractSlider extends AbstractProduct implements BlockInterface,
     }
 
     /**
-     * @return array|mixed
+     * {@inheritdoc}
      */
-    public function getDisplayAdditional()
+    protected function _construct()
     {
-        if ($this->getSlider()) {
-            $display = $this->getSlider()->getDisplayAdditional();
-        } else {
-            $display = $this->_helperData->getModuleConfig('general/display_information');
-        }
+        parent::_construct();
 
-        if (!is_array($display)) {
-            $display = explode(',', $display);
-        }
+        $this->addData([
+            'cache_lifetime' => $this->getSlider() ? $this->getSlider()->getTimeCache() : 86400,
+            'cache_tags'     => [Product::CACHE_TAG]
+        ]);
 
-        return $display;
+        $this->setTemplate('Mageplaza_Productslider::productslider.phtml');
     }
 
     /**
-     * @return mixed
+     * Get Slider Id
+     * @return string
      */
-    private function getPriceCurrency()
+    public function getSliderId()
     {
-        if ($this->priceCurrency === null) {
-            $this->priceCurrency = ObjectManager::getInstance()
-                ->get(PriceCurrencyInterface::class);
+        if ($this->getSlider()) {
+            return $this->getSlider()->getSliderId();
         }
 
-        return $this->priceCurrency;
+        return uniqid('-', false);
     }
 
     /**
@@ -209,12 +211,21 @@ abstract class AbstractSlider extends AbstractProduct implements BlockInterface,
     }
 
     /**
-     * @return bool|\Magento\Framework\View\Element\BlockInterface
-     * @throws LocalizedException
+     * @return array|mixed
      */
-    protected function getPriceRender()
+    public function getDisplayAdditional()
     {
-        return $this->getLayout()->getBlock('product.price.render.default');
+        if ($this->getSlider()) {
+            $display = $this->getSlider()->getDisplayAdditional();
+        } else {
+            $display = $this->_helperData->getModuleConfig('general/display_information');
+        }
+
+        if (!is_array($display)) {
+            $display = explode(',', $display);
+        }
+
+        return $display;
     }
 
     /**
@@ -246,7 +257,7 @@ abstract class AbstractSlider extends AbstractProduct implements BlockInterface,
             : true;
 
         /** @var Render $priceRender */
-        $priceRender = $this->getLayout()->getBlock('product.price.render.default');
+        $priceRender = $this->getPriceRender();
         if (!$priceRender) {
             $priceRender = $this->getLayout()->createBlock(
                 Render::class,
@@ -263,6 +274,28 @@ abstract class AbstractSlider extends AbstractProduct implements BlockInterface,
     }
 
     /**
+     * @return bool|\Magento\Framework\View\Element\BlockInterface
+     * @throws LocalizedException
+     */
+    protected function getPriceRender()
+    {
+        return $this->getLayout()->getBlock('product.price.render.default');
+    }
+
+    /**
+     * @return mixed
+     */
+    private function getPriceCurrency()
+    {
+        if ($this->priceCurrency === null) {
+            $this->priceCurrency = ObjectManager::getInstance()
+                ->get(PriceCurrencyInterface::class);
+        }
+
+        return $this->priceCurrency;
+    }
+
+    /**
      * @return bool
      */
     public function canShowReview()
@@ -276,19 +309,6 @@ abstract class AbstractSlider extends AbstractProduct implements BlockInterface,
     public function canShowAddToCart()
     {
         return in_array(Additional::SHOW_CART, $this->getDisplayAdditional(), true);
-    }
-
-    /**
-     * Get Slider Id
-     * @return string
-     */
-    public function getSliderId()
-    {
-        if ($this->getSlider()) {
-            return $this->getSlider()->getSliderId();
-        }
-
-        return uniqid('-', false);
     }
 
     /**
@@ -438,6 +458,11 @@ abstract class AbstractSlider extends AbstractProduct implements BlockInterface,
     }
 
     /**
+     * @return mixed
+     */
+    abstract public function getProductCollection();
+
+    /**
      * Get Product Count is displayed
      *
      * @return mixed
@@ -453,5 +478,54 @@ abstract class AbstractSlider extends AbstractProduct implements BlockInterface,
         }
 
         return 5;
+    }
+
+    /**
+     * @param $collection
+     *
+     * @return array
+     */
+    public function getProductParentIds($collection)
+    {
+        $productIds = [];
+
+        foreach ($collection as $product) {
+            if (isset($product->getData()['entity_id'])) {
+                $productId = $product->getData()['entity_id'];
+            } else {
+                $productId = $product->getProductId();
+            }
+
+            $parentIdsGroup  = $this->grouped->getParentIdsByChild($productId);
+            $parentIdsConfig = $this->configurable->getParentIdsByChild($productId);
+
+            if (!empty($parentIdsGroup)) {
+                $productIds[] = $parentIdsGroup;
+            } elseif (!empty($parentIdsConfig)) {
+                $productIds[] = $parentIdsConfig[0];
+            } else {
+                $productIds[] = $productId;
+            }
+        }
+
+        return $productIds;
+    }
+
+    /**
+     * @return bool|\Magento\Framework\View\Element\BlockInterface|\Magento\Framework\View\Element\RendererList
+     * @throws LocalizedException
+     */
+    protected function getDetailsRendererList()
+    {
+        if (empty($this->rendererListBlock)) {
+            $layout = $this->layoutFactory->create(['cacheable' => false]);
+            $layout->getUpdate()->addHandle('catalog_widget_product_list')->load();
+            $layout->generateXml();
+            $layout->generateElements();
+
+            $this->rendererListBlock = $layout->getBlock('category.product.type.widget.details.renderers');
+        }
+
+        return $this->rendererListBlock;
     }
 }
