@@ -34,8 +34,8 @@ class Responsive extends AbstractFieldArray
      */
     protected function _prepareToRender()
     {
-        $this->addColumn('size', ['label' => __('Screen size max'), 'renderer' => false, 'class' => 'validate-number validate-greater-than-zero']);
-        $this->addColumn('items', ['label' => __('Number of items'), 'renderer' => false, 'class' => 'validate-number validate-greater-than-zero']);
+        $this->addColumn('size', ['label' => __('Screen size max'), 'renderer' => false, 'class' => 'required-entry validate-number validate-greater-than-zero']);
+        $this->addColumn('items', ['label' => __('Number of items'), 'renderer' => false, 'class' => 'required-entry validate-number validate-greater-than-zero']);
 
         $this->_addAfter       = false;
         $this->_addButtonLabel = __('Add');
