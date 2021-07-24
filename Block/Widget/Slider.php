@@ -24,11 +24,13 @@ namespace Mageplaza\Productslider\Block\Widget;
 use Magento\Catalog\Block\Product\Context;
 use Magento\Catalog\Model\Product\Visibility;
 use Magento\Catalog\Model\ResourceModel\Product\CollectionFactory;
+use Magento\ConfigurableProduct\Model\Product\Type\Configurable;
 use Magento\Framework\App\Http\Context as HttpContext;
 use Magento\Framework\Exception\LocalizedException;
 use Magento\Framework\Stdlib\DateTime\DateTime;
 use Magento\Framework\Url\EncoderInterface;
-use Magento\Widget\Block\BlockInterface;
+use Magento\Framework\View\LayoutFactory;
+use Magento\GroupedProduct\Model\Product\Type\Grouped;
 use Mageplaza\Productslider\Block\AbstractSlider;
 use Mageplaza\Productslider\Helper\Data;
 use Mageplaza\Productslider\Model\Config\Source\ProductType;
@@ -37,7 +39,7 @@ use Mageplaza\Productslider\Model\Config\Source\ProductType;
  * Class Slider
  * @package Mageplaza\Productslider\Block\Widget
  */
-class Slider extends AbstractSlider implements BlockInterface
+class Slider extends AbstractSlider
 {
     /**
      * Display products type - new products
@@ -53,7 +55,6 @@ class Slider extends AbstractSlider implements BlockInterface
 
     /**
      * Slider constructor.
-     *
      * @param Context $context
      * @param CollectionFactory $productCollectionFactory
      * @param Visibility $catalogProductVisibility
@@ -62,6 +63,9 @@ class Slider extends AbstractSlider implements BlockInterface
      * @param HttpContext $httpContext
      * @param EncoderInterface $urlEncoder
      * @param ProductType $productType
+     * @param Grouped $grouped
+     * @param Configurable $configurable
+     * @param LayoutFactory $layoutFactory
      * @param array $data
      */
     public function __construct(
@@ -73,8 +77,12 @@ class Slider extends AbstractSlider implements BlockInterface
         HttpContext $httpContext,
         EncoderInterface $urlEncoder,
         ProductType $productType,
+        Grouped $grouped,
+        Configurable $configurable,
+        LayoutFactory $layoutFactory,
         array $data = []
-    ) {
+    )
+    {
         parent::__construct(
             $context,
             $productCollectionFactory,
@@ -83,6 +91,9 @@ class Slider extends AbstractSlider implements BlockInterface
             $helperData,
             $httpContext,
             $urlEncoder,
+            $grouped,
+            $configurable,
+            $layoutFactory,
             $data
         );
         $this->productType = $productType;
@@ -111,74 +122,12 @@ class Slider extends AbstractSlider implements BlockInterface
 
             $collection = $this->getLayout()->createBlock($this->productType->getBlockMap($productType))
                 ->getProductCollection();
-            $collection->setPageSize($this->getPageSize())->setCurPage($this->getCurrentPage());
+            if ($collection && $collection->getSize()) {
+                $collection->setPageSize($this->getPageSize())->setCurPage($this->getCurrentPage());
+            }
         }
 
         return $collection;
-    }
-
-    /**
-     * Get key pieces for caching block content
-     *
-     * @return array
-     */
-    public function getCacheKeyInfo()
-    {
-        $params = $this->_helperData->serialize($this->getRequest()->getParams());
-
-        return array_merge(
-            parent::getCacheKeyInfo(),
-            [
-                $this->getData('page_var_name'),
-                (int) $this->getRequest()->getParam($this->getData('page_var_name'), 1),
-                $params
-            ]
-        );
-    }
-
-    /**
-     * @return bool|mixed
-     */
-    public function getDisplayAdditional()
-    {
-        $display = $this->_helperData->getModuleConfig('general/display_information');
-        if (!is_array($display)) {
-            $display = explode(',', $display);
-        }
-
-        return $display;
-    }
-
-    /**
-     * @return Data
-     */
-    public function getHelperData()
-    {
-        return $this->_helperData;
-    }
-
-    /**
-     * Retrieve display type for products
-     *
-     * @return string
-     */
-    public function getDisplayType()
-    {
-        if (!$this->hasData('product_type')) {
-            $this->setData('product_type', self::DISPLAY_TYPE_NEW_PRODUCTS);
-        }
-
-        return $this->getData('product_type');
-    }
-
-    /**
-     * Get number of current page based on query value
-     *
-     * @return int
-     */
-    public function getCurrentPage()
-    {
-        return abs((int) $this->getRequest()->getParam($this->getData('page_var_name')));
     }
 
     /**
@@ -198,6 +147,62 @@ class Slider extends AbstractSlider implements BlockInterface
     public function getProductsCount()
     {
         return $this->getData('products_count') ?: 10;
+    }
+
+    /**
+     * Get number of current page based on query value
+     *
+     * @return int
+     */
+    public function getCurrentPage()
+    {
+        return abs((int)$this->getRequest()->getParam($this->getData('page_var_name')));
+    }
+
+    /**
+     * Get key pieces for caching block content
+     *
+     * @return array
+     */
+    public function getCacheKeyInfo()
+    {
+        $params = $this->_helperData->serialize($this->getRequest()->getParams());
+
+        return array_merge(
+            parent::getCacheKeyInfo(),
+            [
+                $this->getData('page_var_name'),
+                (int)$this->getRequest()->getParam($this->getData('page_var_name'), 1),
+                $params
+            ]
+        );
+    }
+
+    /**
+     * @return bool|mixed
+     */
+    public function getDisplayAdditional()
+    {
+        $display = $this->_helperData->getModuleConfig('general/display_information');
+        if (!is_array($display)) {
+            $display = explode(',', $display);
+        }
+
+        return $display;
+    }
+
+    /**
+     * Retrieve display type for products
+     *
+     * @return string
+     */
+    public function getDisplayType()
+    {
+        if (!$this->hasData('product_type')) {
+            $this->setData('product_type', self::DISPLAY_TYPE_NEW_PRODUCTS);
+        }
+
+        return $this->getData('product_type');
     }
 
     /**

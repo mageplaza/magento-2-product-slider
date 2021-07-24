@@ -24,9 +24,12 @@ namespace Mageplaza\Productslider\Block;
 use Magento\Catalog\Block\Product\Context;
 use Magento\Catalog\Model\Product\Visibility;
 use Magento\Catalog\Model\ResourceModel\Product\CollectionFactory;
+use Magento\ConfigurableProduct\Model\Product\Type\Configurable;
 use Magento\Framework\App\Http\Context as HttpContext;
 use Magento\Framework\Stdlib\DateTime\DateTime;
 use Magento\Framework\Url\EncoderInterface;
+use Magento\Framework\View\LayoutFactory;
+use Magento\GroupedProduct\Model\Product\Type\Grouped;
 use Mageplaza\Productslider\Helper\Data;
 
 /**
@@ -50,6 +53,9 @@ class OnSaleProduct extends AbstractSlider
      * @param Data $helperData
      * @param HttpContext $httpContext
      * @param EncoderInterface $urlEncoder
+     * @param Grouped $grouped
+     * @param Configurable $configurable
+     * @param LayoutFactory $layoutFactory
      * @param array $data
      */
     public function __construct(
@@ -60,6 +66,9 @@ class OnSaleProduct extends AbstractSlider
         Data $helperData,
         HttpContext $httpContext,
         EncoderInterface $urlEncoder,
+        Grouped $grouped,
+        Configurable $configurable,
+        LayoutFactory $layoutFactory,
         array $data = []
     ) {
         $this->_dateTimeStore = $dateTime;
@@ -71,6 +80,9 @@ class OnSaleProduct extends AbstractSlider
             $helperData,
             $httpContext,
             $urlEncoder,
+            $grouped,
+            $configurable,
+            $layoutFactory,
             $data
         );
     }
@@ -80,58 +92,34 @@ class OnSaleProduct extends AbstractSlider
      */
     public function getProductCollection()
     {
-        $date       = strtotime($this->_dateTimeStore->gmtDate());
-        $collection = $this->_productCollectionFactory->create()->addAttributeToSelect('*');
-        $productIds = [];
-
-        foreach ($collection as $product) {
-            if ($product->getTypeId() === 'configurable' && $product->getVisibility() != 1) {
-                $_children = $product->getTypeInstance()->getUsedProducts($product);
-                foreach ($_children as $child) {
-                    $specialPrice = (float) $child->getSpecialPrice();
-                    if ($specialPrice) {
-                        if ($specialPrice < ((float) $child->getPrice())) {
-                            $fromDate = strtotime($child->getSpecialFromDate());
-                            if (!is_null($child->getSpecialToDate())) {
-                                $toDate = strtotime($child->getSpecialToDate());
-                                if ($toDate > $date) {
-                                    $productIds[] = $product->getId();
-                                }
-                            } else {
-                                if ($fromDate < $date) {
-                                    $productIds[] = $product->getId();
-                                }
-                            }
-                        }
-                    }
-                }
-            } elseif ($product->getTypeId() === 'simple' && $product->getVisibility() != 1) {
-                $specialPriceSp = (float) $product->getData('special_price');
-                if ($specialPriceSp) {
-                    if ($specialPriceSp < ((float) $product->getPrice())) {
-                        $fromDateSp = strtotime($product->getSpecialFromDate());
-                        if (!is_null($product->getSpecialToDate())) {
-                            $toDateSp = strtotime($product->getSpecialToDate());
-                            if ($toDateSp > $date) {
-                                $productIds[] = $product->getId();
-                            }
-                        } else {
-                            if ($fromDateSp < $date) {
-                                $productIds[] = $product->getId();
-                            }
-                        }
-                    }
-                }
-            }
-        }
-
-        $collectionClone = $this->_productCollectionFactory->create()->addIdFilter($productIds);
-        $collectionClone->addMinimalPrice()
+        $productCollection = $this->_productCollectionFactory->create();
+        $productCollection
+            ->addMinimalPrice()
             ->addFinalPrice()
             ->addTaxPercents()
-            ->addAttributeToSelect('*')
-            ->addStoreFilter($this->getStoreId())->setPageSize($this->getProductsCount());
+            ->addStoreFilter($this->getStoreId())
+            ->addAttributeToSelect('special_from_date')
+            ->addAttributeToSelect('special_to_date')
+            ->addAttributeToFilter('special_price', ['gt' => 0])
+            ->addAttributeToSort(
+                'minimal_price',
+                'asc'
+            )
+            ->setPageSize($this->getProductsCount());
 
-        return $collectionClone;
+        $productCollection->getSelect()->where(
+            'price_index.final_price < price_index.price'
+        );
+
+        $productIds        = $this->getProductParentIds($productCollection);
+        $productCollection = $this->_productCollectionFactory->create()->addIdFilter($productIds);
+
+        $productCollection->addAttributeToFilter('visibility', ['neq' => 1])
+            ->addAttributeToFilter('status', 1)
+            ->addStoreFilter($this->getStoreId())
+            ->setPageSize($this->getProductsCount());
+        $this->_addProductAttributesAndPrices($productCollection);
+
+        return $productCollection;
     }
 }

@@ -25,9 +25,12 @@ use Magento\Catalog\Block\Product\Context;
 use Magento\Catalog\Model\CategoryFactory;
 use Magento\Catalog\Model\Product\Visibility;
 use Magento\Catalog\Model\ResourceModel\Product\CollectionFactory;
+use Magento\ConfigurableProduct\Model\Product\Type\Configurable;
 use Magento\Framework\App\Http\Context as HttpContext;
 use Magento\Framework\Stdlib\DateTime\DateTime;
 use Magento\Framework\Url\EncoderInterface;
+use Magento\Framework\View\LayoutFactory;
+use Magento\GroupedProduct\Model\Product\Type\Grouped;
 use Mageplaza\Productslider\Helper\Data;
 
 /**
@@ -52,6 +55,9 @@ class CategoryId extends AbstractSlider
      * @param HttpContext $httpContext
      * @param EncoderInterface $urlEncoder
      * @param CategoryFactory $categoryFactory
+     * @param Grouped $grouped
+     * @param Configurable $configurable
+     * @param LayoutFactory $layoutFactory
      * @param array $data
      */
     public function __construct(
@@ -63,6 +69,9 @@ class CategoryId extends AbstractSlider
         HttpContext $httpContext,
         EncoderInterface $urlEncoder,
         CategoryFactory $categoryFactory,
+        Grouped $grouped,
+        Configurable $configurable,
+        LayoutFactory $layoutFactory,
         array $data = []
     ) {
         $this->_categoryFactory = $categoryFactory;
@@ -75,6 +84,9 @@ class CategoryId extends AbstractSlider
             $helperData,
             $httpContext,
             $urlEncoder,
+            $grouped,
+            $configurable,
+            $layoutFactory,
             $data
         );
     }
@@ -106,16 +118,30 @@ class CategoryId extends AbstractSlider
     {
         $productIds = [];
         $catIds     = $this->getSliderCategoryIds();
-        $collection = $this->_productCollectionFactory->create();
+
         if (is_array($catIds)) {
-            $collection->addAttributeToSelect('*')->addCategoriesFilter(array('in' => $catIds));
-        } else {
+            $productId = [];
+
+            foreach($catIds as $cat)
+            {
+                $collection = $this->_productCollectionFactory->create();
+                $category = $this->_categoryFactory->create()->load($cat);
+                $collection->addAttributeToSelect('*')->addCategoryFilter($category);
+
+                foreach ($collection as $item) {
+                    $productId[] = $item->getData('entity_id');
+                }
+
+                $productIds = array_merge($productIds, $productId);
+            }
+        }else {
+            $collection = $this->_productCollectionFactory->create();
             $category = $this->_categoryFactory->create()->load($catIds);
             $collection->addAttributeToSelect('*')->addCategoryFilter($category);
-        }
 
-        foreach ($collection as $item) {
-            $productIds[] = $item->getData('entity_id');
+            foreach ($collection as $item) {
+                $productIds[] = $item->getData('entity_id');
+            }
         }
 
         $keys = array_keys($productIds);
@@ -123,7 +149,8 @@ class CategoryId extends AbstractSlider
         $productIdsRandom = [];
 
         foreach ($keys as $key => $value) {
-            $productIdsRandom[$value] = $productIds[$value];
+            $productIdsRandom[] = $productIds[$value];
+
             if ($key >= ($this->getProductsCount() - 1)) {
                 break;
             }

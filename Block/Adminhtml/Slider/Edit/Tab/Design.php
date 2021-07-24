@@ -111,6 +111,7 @@ class Design extends Generic implements TabInterface
             'name'  => 'limit_number',
             'label' => __('Limit the number of products'),
             'title' => __('Limit the number of products'),
+            'class'    => 'validate-number validate-zero-or-greater'
         ]);
 
         $fieldset->addField('display_additional', 'multiselect', [
