@@ -42,15 +42,16 @@ When you enable **[Magento 2 Product Slider](https://www.mageplaza.com/magento-2
 
 ### 1. Install via composer (recommend)
 
-With Social Proof (Recommend):
+With Marketing Automation (recommend):
 
 ```
-composer require mageplaza/magento-2-product-slider avada/module-proofo
+composer require mageplaza/magento-2-product-slider mageplaza/module-smtp
 php bin/magento setup:upgrade
 php bin/magento setup:static-content:deploy
 ```
 
-Without Social Proof:
+Without Marketing Automation:
+
 ```
 composer require mageplaza/magento-2-product-slider
 php bin/magento setup:upgrade
