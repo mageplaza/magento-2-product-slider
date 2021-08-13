@@ -2,7 +2,7 @@
 
 ## How does it work?
 
-When you enable **Magento 2 Product Slider** module and create the product sliders in the configuration, lists of your products will slide out in the lively and attractive way on the storefront with the animation effects you have chosen before. Along with product image, your clients can also see the price information, rating for the product and even Add to Cart button to proceed to the checkout whenever they need.
+When you enable **[Magento 2 Product Slider](https://www.mageplaza.com/magento-2-product-slider-extension/)** module and create the product sliders in the configuration, lists of your products will slide out in the lively and attractive way on the storefront with the animation effects you have chosen before. Along with product image, your clients can also see the price information, rating for the product and even Add to Cart button to proceed to the checkout whenever they need.
 
 [![Latest Stable Version](https://poser.pugx.org/mageplaza/magento-2-product-slider/v/stable)](https://packagist.org/packages/mageplaza/magento-2-product-slider)
 [![Total Downloads](https://poser.pugx.org/mageplaza/magento-2-product-slider/downloads)](https://packagist.org/packages/mageplaza/magento-2-product-slider)
@@ -42,15 +42,16 @@ When you enable **Magento 2 Product Slider** module and create the product slide
 
 ### 1. Install via composer (recommend)
 
-With Social Proof (Recommend):
+With Marketing Automation (recommend):
 
 ```
-composer require mageplaza/magento-2-product-slider avada/module-proofo
+composer require mageplaza/magento-2-product-slider mageplaza/module-smtp
 php bin/magento setup:upgrade
 php bin/magento setup:static-content:deploy
 ```
 
-Without Social Proof:
+Without Marketing Automation:
+
 ```
 composer require mageplaza/magento-2-product-slider
 php bin/magento setup:upgrade
@@ -162,13 +163,18 @@ Along with the performance of the slider, you can make individual product elemen
 - magento 2 get best seller product collection
 - magento 2 get recently viewed products collection
 
-**Other free extension on Github**
-- [Magento 2 SEO extension](https://github.com/mageplaza/magento-2-seo)
-- [Magento 2 GDPR](https://github.com/mageplaza/magento-2-gdpr)
-- [Magento 2 popup extension](https://github.com/mageplaza/magento-2-better-popup)
-- [Magento 2 Reports extension](https://github.com/mageplaza/magento-2-reports)
-- [Magento 2 social login](https://github.com/mageplaza/magento-2-social-login)
-- [Magento 2 blog](https://github.com/mageplaza/magento-2-blog)
-- [Magento 2 Layered Navigation](https://github.com/mageplaza/magento-2-ajax-layered-navigation)
-- [Magento 2 security extension](https://github.com/mageplaza/magento-2-security)
+**Other Mageplaza extensions on Github & Marketplace**
+- [Magento 2 SEO extension on Github](https://github.com/mageplaza/magento-2-seo)
+- [Magento 2 GDPR extension on Github](https://github.com/mageplaza/magento-2-gdpr)
+- [Magento 2 Popup extension on Github](https://github.com/mageplaza/magento-2-better-popup)
+- [Magento 2 Reports extension on Github](https://github.com/mageplaza/magento-2-reports)
+- [Magento 2 Social Login on Github](https://github.com/mageplaza/magento-2-social-login)
+- [Magento 2 Blog on Github](https://github.com/mageplaza/magento-2-blog)
+- [Magento 2 Ajax Layered Navigation](https://github.com/mageplaza/magento-2-ajax-layered-navigation)
+- [Magento 2 Security extension on Github](https://github.com/mageplaza/magento-2-security)
+- [Magento 2 One Step Checkout extension](https://marketplace.magento.com/mageplaza-magento-2-one-step-checkout-extension.html)
+- [Magento 2 SEO extension](https://marketplace.magento.com/mageplaza-magento-2-seo-extension.html)
+- [Magento 2 Reward Points](https://marketplace.magento.com/mageplaza-module-reward-points.html)
+- [Magento 2 Blog extension](https://marketplace.magento.com/mageplaza-magento-2-blog-extension.html)
+- [Magento 2 Layered Navigation](https://marketplace.magento.com/mageplaza-layered-navigation-m2.html)
 
