@@ -17,6 +17,7 @@ Yes,Yes
 No,No
 "Use Config","Use Config"
 "Max Items slider","Max Items slider"
+"Default: 3 items.","Default: 3 items."
 "General Information","General Information"
 Name,Name
 Status,Status
@@ -74,7 +75,11 @@ Edit,Edit
 "Add to Compare","Add to Compare"
 "Product Slider","Product Slider"
 "General Configuration","General Configuration"
-"Select Yes to enable this module","Select Yes to enable this module"
+"Select <b>Yes</b> to enable this module.<br />
+                        1. It helps to reduce abandonment cart with <a href=""https://www.mageplaza.com/magento-2-one-step-checkout-extension/"" target=""_blank"">One Step Checkout</a>. <br />
+                        2. Magento stores see upwards of 30% revenue 💰 with AVADA. <a href=""https://go.avada.io/mageplaza"">Learn more</a>","Select <b>Yes</b> to enable this module.<br />
+                        1. It helps to reduce abandonment cart with <a href=""https://www.mageplaza.com/magento-2-one-step-checkout-extension/"" target=""_blank"">One Step Checkout</a>. <br />
+                        2. Magento stores see upwards of 30% revenue 💰 with AVADA. <a href=""https://go.avada.io/mageplaza"">Learn more</a>"
 "Default displayed additional info","Default displayed additional info"
 "This default settings will be used when using code to insert the slider","This default settings will be used when using code to insert the slider"
 "Slider Design Configuration","Slider Design Configuration"
