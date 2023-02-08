@@ -122,8 +122,7 @@ class CategoryId extends AbstractSlider
         if (is_array($catIds)) {
             $productId = [];
 
-            foreach($catIds as $cat)
-            {
+            foreach ($catIds as $cat) {
                 $collection = $this->_productCollectionFactory->create();
                 $category = $this->_categoryFactory->create()->load($cat);
                 $collection->addAttributeToSelect('*')->addCategoryFilter($category);
@@ -134,7 +133,7 @@ class CategoryId extends AbstractSlider
 
                 $productIds = array_merge($productIds, $productId);
             }
-        }else {
+        } else {
             $collection = $this->_productCollectionFactory->create();
             $category = $this->_categoryFactory->create()->load($catIds);
             $collection->addAttributeToSelect('*')->addCategoryFilter($category);

@@ -165,9 +165,9 @@ class Category extends Multiselect
      *
      * @return array
      */
-    public function getValues()
+    public function getValues(): array
     {
-        $values = $this->getValue();
+        $values = (string)$this->getValue();
         if (!is_array($values)) {
             $values = explode(',', $values);
         }

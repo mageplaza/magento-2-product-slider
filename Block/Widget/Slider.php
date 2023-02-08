@@ -81,8 +81,7 @@ class Slider extends AbstractSlider
         Configurable $configurable,
         LayoutFactory $layoutFactory,
         array $data = []
-    )
-    {
+    ) {
         parent::__construct(
             $context,
             $productCollectionFactory,
