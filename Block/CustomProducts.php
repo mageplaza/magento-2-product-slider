@@ -32,7 +32,6 @@ use Magento\Framework\View\LayoutFactory;
 use Magento\GroupedProduct\Model\Product\Type\Grouped;
 use Mageplaza\Productslider\Helper\Data;
 
-
 /**
  * Class CustomProducts
  * @package Mageplaza\Productslider\Block
