@@ -31,7 +31,6 @@ use Magento\Framework\Registry;
 use Magento\Framework\Stdlib\DateTime\Filter\Date;
 use Mageplaza\Productslider\Controller\Adminhtml\Slider;
 use Mageplaza\Productslider\Model\SliderFactory;
-use Zend_Filter_Input;
 
 /**
  * Class Save
@@ -138,7 +137,11 @@ class Save extends Slider
      */
     protected function _filterData($data)
     {
-        $inputFilter = new Zend_Filter_Input(['from_date' => $this->_dateFilter], [], $data);
+        if (class_exists('Magento\Framework\Filter\FilterInput')) {
+            $inputFilter = new \Magento\Framework\Filter\FilterInput(['from_date' => $this->_dateFilter,], [], $data);
+        } else {
+            $inputFilter = new \Zend_Filter_Input(['from_date' => $this->_dateFilter,], [], $data);
+        }
         $data = $inputFilter->getUnescaped();
 
         if (isset($data['responsive_items'])) {
