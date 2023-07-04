@@ -138,9 +138,9 @@ class Save extends Slider
     protected function _filterData($data)
     {
         if (class_exists('Magento\Framework\Filter\FilterInput')) {
-            $inputFilter = new \Magento\Framework\Filter\FilterInput(['from_date' => $this->_dateFilter,], [], $data);
+            $inputFilter = new \Magento\Framework\Filter\FilterInput(['from_date' => $this->_dateFilter], [], $data);
         } else {
-            $inputFilter = new \Zend_Filter_Input(['from_date' => $this->_dateFilter,], [], $data);
+            $inputFilter = new \Zend_Filter_Input(['from_date' => $this->_dateFilter], [], $data);
         }
         $data = $inputFilter->getUnescaped();
 
