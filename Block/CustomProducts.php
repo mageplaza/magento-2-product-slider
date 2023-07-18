@@ -91,7 +91,7 @@ class CustomProducts extends AbstractSlider
         $productIds = $this->getSlider()->getProductIds();
         $visibleProducts = $this->_catalogProductVisibility->getVisibleInCatalogIds();
         if (!is_array($productIds)) {
-            $productIds = explode('&', $productIds);
+            $productIds = explode('&', (string)$productIds);
         }
 
         if (empty($productIds)) {
