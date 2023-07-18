@@ -1,0 +1,29 @@
+{
+    "mageplaza_productslider_slider": {
+        "column": {
+            "slider_id": true,
+            "name": true,
+            "status": true,
+            "title": true,
+            "description": true,
+            "store_ids": true,
+            "customer_group_ids": true,
+            "limit_number": true,
+            "location": true,
+            "time_cache": true,
+            "from_date": true,
+            "to_date": true,
+            "product_type": true,
+            "categories_ids": true,
+            "product_ids": true,
+            "display_additional": true,
+            "is_responsive": true,
+            "responsive_items": true,
+            "created_at": true,
+            "updated_at": true
+        },
+        "constraint": {
+            "PRIMARY": true
+        }
+    }
+}
