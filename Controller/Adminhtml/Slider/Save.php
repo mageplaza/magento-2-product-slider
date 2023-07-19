@@ -31,6 +31,7 @@ use Magento\Framework\Registry;
 use Magento\Framework\Stdlib\DateTime\Filter\Date;
 use Mageplaza\Productslider\Controller\Adminhtml\Slider;
 use Mageplaza\Productslider\Model\SliderFactory;
+use Magento\Framework\Filter\FilterInput;
 
 /**
  * Class Save
@@ -66,7 +67,7 @@ class Save extends Slider
         Date $dateFilter,
         DataPersistorInterface $dataPersistor
     ) {
-        $this->_dateFilter = $dateFilter;
+        $this->_dateFilter   = $dateFilter;
         $this->dataPersistor = $dataPersistor;
 
         parent::__construct($context, $sliderFactory, $coreRegistry);
@@ -79,7 +80,7 @@ class Save extends Slider
     {
         if ($data = $this->getRequest()->getPost('slider')) {
             try {
-                $data = $this->_filterData($data);
+                $data   = $this->_filterData($data);
                 $slider = $this->_initSlider();
 
                 $validateResult = $slider->validateData(new DataObject($data));
@@ -137,12 +138,8 @@ class Save extends Slider
      */
     protected function _filterData($data)
     {
-        if (class_exists('Magento\Framework\Filter\FilterInput')) {
-            $inputFilter = new \Magento\Framework\Filter\FilterInput(['from_date' => $this->_dateFilter], [], $data);
-        } else {
-            $inputFilter = new \Zend_Filter_Input(['from_date' => $this->_dateFilter], [], $data);
-        }
-        $data = $inputFilter->getUnescaped();
+        $inputFilter = new FilterInput(['from_date' => $this->_dateFilter], [], $data);
+        $data        = $inputFilter->getUnescaped();
 
         if (isset($data['responsive_items'])) {
             unset($data['responsive_items']['__empty']);
