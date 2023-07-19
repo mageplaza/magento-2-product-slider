@@ -30,6 +30,7 @@ $title = $block->getTitle();
 $id = $block->getData('page_var_name') . uniqid('', false);
 $items = $block->getProductCollection();
 if ($block->getHelperData()->isEnabled() && $items && $items->getSize()): ?>
+<div class="mp-product-slider-widget widget">
     <div class="mp-product-slider-block widget block-products-list">
         <h2 class="mp-product-slider-title"><?= $block->escapeHtml($block->getTitle()) ?></h2>
         <p class="mp-ps-info"><?= $block->escapeHtml($block->getDescription()) ?></p>
@@ -131,6 +132,7 @@ if ($block->getHelperData()->isEnabled() && $items && $items->getSize()): ?>
             </script>
             <?= $block->getPagerHtml() ?>
         </div>
+</div>
     <script>
         require(['jquery', 'mageplaza/core/owl.carousel'], function ($) {
             $('#mp-list-items-<?= /** @noEscape */ $id ?>').owlCarousel(<?= /** @noEscape */ $block->getAllOptions() ?>);
