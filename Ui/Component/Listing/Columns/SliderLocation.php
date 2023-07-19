@@ -42,8 +42,8 @@ class SliderLocation extends Column
         if (isset($dataSource['data']['items'])) {
             foreach ($dataSource['data']['items'] as & $item) {
                 if (isset($item[$this->getData('name')])) {
-                    $data = $this->getLocation($item[$this->getData('name')]);
-                    $type = $data['type'];
+                    $data     = $this->getLocation($item[$this->getData('name')]);
+                    $type     = $data['type'];
                     $location = $data['location'];
 
                     $item[$this->getData('name')] = '<b>' . $type . '</b></br>' . '<span>' . $location . '</span>';
@@ -64,63 +64,155 @@ class SliderLocation extends Column
         $location = [];
         switch ($data) {
             case Location::ALLPAGE_CONTENT_TOP:
-                $location['type'] = 'All Page';
+                $location['type']     = 'All Page';
                 $location['location'] = 'Top of Content';
                 break;
             case Location::ALLPAGE_CONTENT_BOTTOM:
-                $location['type'] = 'All Page';
+                $location['type']     = 'All Page';
                 $location['location'] = 'Bottom of Content';
                 break;
             case Location::ALLPAGE_SIDEBAR_TOP:
-                $location['type'] = 'All Page';
+                $location['type']     = 'All Page';
                 $location['location'] = 'Sidebar Top';
                 break;
             case Location::ALLPAGE_SIDEBAR_BOTTOM:
-                $location['type'] = 'All Page';
+                $location['type']     = 'All Page';
                 $location['location'] = 'Sidebar Bottom';
                 break;
             case Location::HOMEPAGE_CONTENT_TOP:
-                $location['type'] = 'Home Page';
+                $location['type']     = 'Home Page';
                 $location['location'] = 'Top of Content';
                 break;
             case Location::HOMEPAGE_CONTENT_BOTTOM:
-                $location['type'] = 'Home Page';
+                $location['type']     = 'Home Page';
                 $location['location'] = 'Bottom of Content';
                 break;
             case Location::CATEGORY_CONTENT_TOP:
-                $location['type'] = 'Category Page';
+                $location['type']     = 'Category Page';
                 $location['location'] = 'Top of Content';
                 break;
             case Location::CATEGORY_CONTENT_BOTTOM:
-                $location['type'] = 'Category Page';
+                $location['type']     = 'Category Page';
                 $location['location'] = 'Bottom of Content';
                 break;
             case Location::CATEGORY_SIDEBAR_TOP:
-                $location['type'] = 'Category Page';
+                $location['type']     = 'Category Page';
                 $location['location'] = 'Sidebar Top';
                 break;
             case Location::CATEGORY_SIDEBAR_BOTTOM:
-                $location['type'] = 'Category Page';
+                $location['type']     = 'Category Page';
                 $location['location'] = 'Sidebar Bottom';
                 break;
             case Location::PRODUCT_CONTENT_TOP:
-                $location['type'] = 'Product Page';
+                $location['type']     = 'Product Page';
                 $location['location'] = 'Top of Content';
                 break;
             case Location::PRODUCT_CONTENT_BOTTOM:
-                $location['type'] = 'Product Page';
+                $location['type']     = 'Product Page';
                 $location['location'] = 'Bottom of Content';
                 break;
             case Location::CHECKOUT_CONTENT_TOP:
-                $location['type'] = 'Checkout Page';
+                $location['type']     = 'Checkout Page';
                 $location['location'] = 'Top of Content';
                 break;
             case Location::CHECKOUT_CONTENT_BOTTOM:
-                $location['type'] = 'Checkout Page';
+                $location['type']     = 'Checkout Page';
                 $location['location'] = 'Bottom of Content';
                 break;
         }
 
         return $location;
+    }
+
+    /**
+     * Return array of options as value-label pairs
+     *
+     * @return array Format: array(array('value' => '<value>', 'label' => '<label>'), ...)
+     */
+    public function toOptionArray()
+    {
+        return [
+            [
+                'label' => __('All Page'),
+                'value' => [
+                    [
+                        'label' => __('Top of content'),
+                        'value' => Location::ALLPAGE_CONTENT_TOP
+                    ],
+                    [
+                        'label' => __('Bottom of content'),
+                        'value' => Location::ALLPAGE_CONTENT_BOTTOM
+                    ],
+                    [
+                        'label' => __('Top of sidebar'),
+                        'value' => Location::ALLPAGE_SIDEBAR_TOP
+                    ],
+                    [
+                        'label' => __('Bottom of sidebar'),
+                        'value' => Location::ALLPAGE_SIDEBAR_BOTTOM
+                    ]
+                ]
+            ],
+            [
+                'label' => __('Home Page'),
+                'value' => [
+                    [
+                        'label' => __('Top of content'),
+                        'value' => Location::HOMEPAGE_CONTENT_TOP
+                    ],
+                    [
+                        'label' => __('Bottom of content'),
+                        'value' => Location::HOMEPAGE_CONTENT_BOTTOM
+                    ]
+                ]
+            ],
+            [
+                'label' => __('Category page'),
+                'value' => [
+                    [
+                        'label' => __('Top of content'),
+                        'value' => Location::CATEGORY_CONTENT_TOP
+                    ],
+                    [
+                        'label' => __('Bottom of content'),
+                        'value' => Location::CATEGORY_CONTENT_BOTTOM
+                    ],
+                    [
+                        'label' => __('Top of sidebar'),
+                        'value' => Location::CATEGORY_SIDEBAR_TOP
+                    ],
+                    [
+                        'label' => __('Bottom of sidebar'),
+                        'value' => Location::CATEGORY_SIDEBAR_BOTTOM
+                    ],
+                ]
+            ],
+            [
+                'label' => __('Product page'),
+                'value' => [
+                    [
+                        'label' => __('Top of content'),
+                        'value' => Location::PRODUCT_CONTENT_TOP
+                    ],
+                    [
+                        'label' => __('Bottom of content'),
+                        'value' => Location::PRODUCT_CONTENT_BOTTOM
+                    ]
+                ]
+            ],
+            [
+                'label' => __('Shopping Cart Page'),
+                'value' => [
+                    [
+                        'label' => __('Top of content'),
+                        'value' => Location::CHECKOUT_CONTENT_TOP
+                    ],
+                    [
+                        'label' => __('Bottom of content'),
+                        'value' => Location::CHECKOUT_CONTENT_BOTTOM
+                    ]
+                ]
+            ]
+        ];
     }
 }

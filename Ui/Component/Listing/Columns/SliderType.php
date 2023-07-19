@@ -79,4 +79,21 @@ class SliderType extends Column
 
         return $dataSource;
     }
+
+    /**
+     * @return array
+     */
+    public function toOptionArray()
+    {
+        return [
+            ProductType::NEW_PRODUCTS         => __('New Products'),
+            ProductType::BEST_SELLER_PRODUCTS => __('Best Seller Products'),
+            ProductType::FEATURED_PRODUCTS    => __('Featured Products'),
+            ProductType::MOSTVIEWED_PRODUCTS  => __('Most Viewed Products'),
+            ProductType::ONSALE_PRODUCTS      => __('On Sale Products'),
+            ProductType::RECENT_PRODUCT       => __('Recent Products'),
+            ProductType::CATEGORY             => __('Select By Category'),
+            ProductType::CUSTOM_PRODUCTS      => __('Custom Specific Products'),
+        ];
+    }
 }
