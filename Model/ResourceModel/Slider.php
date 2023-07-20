@@ -21,10 +21,13 @@
 
 namespace Mageplaza\Productslider\Model\ResourceModel;
 
+use DateTimeZone;
 use Magento\Framework\Model\AbstractModel;
 use Magento\Framework\Model\ResourceModel\Db\AbstractDb;
 use Magento\Framework\Model\ResourceModel\Db\Context;
 use Mageplaza\Productslider\Helper\Data;
+use Magento\Framework\Stdlib\DateTime\DateTime;
+
 
 /**
  * Class Slider
@@ -38,18 +41,26 @@ class Slider extends AbstractDb
     protected $helper;
 
     /**
-     * Slider constructor.
+     * Date model
      *
+     * @var DateTime
+     */
+    protected $date;
+
+    /**
      * @param Context $context
      * @param Data $helper
-     * @param null $connectionName
+     * @param DateTime $date
+     * @param $connectionName
      */
     public function __construct(
         Context $context,
         Data $helper,
+        DateTime $date,
         $connectionName = null
     ) {
         $this->helper = $helper;
+        $this->date   = $date;
 
         parent::__construct($context, $connectionName);
     }
@@ -90,6 +101,17 @@ class Slider extends AbstractDb
         } else {
             $object->setResponsiveItems($this->helper->serialize([]));
         }
+
+        $object->setFromDate($this->date->date());
+        if ($object->isObjectNew()) {
+            $object->setCreatedAt($this->date->date());
+        }
+
+        $toDate          = $object->getToDate();
+        $initialDateTime = new \DateTime($toDate);
+        $initialDateTime->setTime(23, 59, 59);
+        $toDate          = $initialDateTime->format('M d, Y h:i:s A');
+        $object->setToDate($toDate);
 
         return parent::_beforeSave($object);
     }
