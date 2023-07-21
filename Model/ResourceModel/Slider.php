@@ -21,13 +21,11 @@
 
 namespace Mageplaza\Productslider\Model\ResourceModel;
 
-use DateTimeZone;
 use Magento\Framework\Model\AbstractModel;
 use Magento\Framework\Model\ResourceModel\Db\AbstractDb;
 use Magento\Framework\Model\ResourceModel\Db\Context;
 use Mageplaza\Productslider\Helper\Data;
 use Magento\Framework\Stdlib\DateTime\DateTime;
-
 
 /**
  * Class Slider
