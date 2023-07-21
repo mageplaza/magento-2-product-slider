@@ -105,7 +105,7 @@ class AddBlock implements ObserverInterface
                             $output = "<div id=\"mageplaza-productslider-block-before-{$type}-{$slider->getId()}\">$content</div>" . $output . $cmsHtml;
                         } else if (strpos($location, 'top') !== false) {
                             $output = "<div id=\"mageplaza-productslider-block-before-{$type}-{$slider->getId()}\">$content</div>" . $output;
-                        }else{
+                        } else {
                             $output .= "<div id=\"mageplaza-productslider-block-after-{$type}-{$slider->getId()}\">$content</div>";
 
                         }
