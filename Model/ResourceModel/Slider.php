@@ -52,10 +52,12 @@ class Slider extends AbstractDb
     protected $timezone;
 
     /**
+     *
      * @param Context $context
      * @param Data $helper
      * @param DateTime $date
-     * @param $connectionName
+     * @param TimezoneInterface $timezone
+     * @param null $connectionName
      */
     public function __construct(
         Context $context,
@@ -82,6 +84,7 @@ class Slider extends AbstractDb
     }
 
     /**
+     *
      * @inheritdoc
      */
     protected function _beforeSave(AbstractModel $object)
