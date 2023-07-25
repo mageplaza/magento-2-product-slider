@@ -61,8 +61,8 @@ class AddBlock implements ObserverInterface
         Data $helperData,
         ProductType $productType
     ) {
-        $this->request = $request;
-        $this->helperData = $helperData;
+        $this->request     = $request;
+        $this->helperData  = $helperData;
         $this->productType = $productType;
     }
 
@@ -81,9 +81,18 @@ class AddBlock implements ObserverInterface
         ]);
         if ($type !== false) {
             /** @var Layout $layout */
-            $layout = $observer->getEvent()->getLayout();
+            $layout         = $observer->getEvent()->getLayout();
             $fullActionName = $this->request->getFullActionName();
-            $output = $observer->getTransport()->getOutput();
+            $output         = $observer->getTransport()->getOutput();
+            $allBlocks      = $layout->getAllBlocks();
+            $cmsHtml        = '';
+            if ($fullActionName === 'catalog_category_view') {
+                foreach ($allBlocks as $item) {
+                    if ($item->getModuleName() === 'Magento_Cms' && $item->getText()) {
+                        $cmsHtml = $item->getText();
+                    }
+                }
+            }
             foreach ($this->helperData->getActiveSliders() as $slider) {
                 [$pageType, $location] = explode('.', $slider->getLocation());
                 if ($fullActionName == $pageType || $pageType == 'allpage') {
@@ -92,10 +101,13 @@ class AddBlock implements ObserverInterface
                         ->toHtml();
 
                     if (strpos($location, $type) !== false) {
-                        if (strpos($location, 'top') !== false) {
+                        if (strpos($location, 'top') !== false && $fullActionName === 'catalog_category_view') {
+                            $output = "<div id=\"mageplaza-productslider-block-before-{$type}-{$slider->getId()}\">$content</div>" . $output . $cmsHtml;
+                        } else if (strpos($location, 'top') !== false) {
                             $output = "<div id=\"mageplaza-productslider-block-before-{$type}-{$slider->getId()}\">$content</div>" . $output;
                         } else {
                             $output .= "<div id=\"mageplaza-productslider-block-after-{$type}-{$slider->getId()}\">$content</div>";
+
                         }
                     }
                 }

@@ -230,7 +230,7 @@ abstract class AbstractSlider extends AbstractProduct implements BlockInterface,
         }
 
         if (!is_array($display)) {
-            $display = explode(',', $display);
+            $display = explode(',', $display ?: '');
         }
 
         return $display;

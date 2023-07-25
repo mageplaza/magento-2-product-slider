@@ -1,0 +1,49 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Mageplaza
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the Mageplaza.com license that is
+ * available through the world-wide-web at this URL:
+ * https://www.mageplaza.com/LICENSE.txt
+ *
+ * DISCLAIMER
+ *
+ * Do not edit or add to this file if you wish to upgrade this extension to newer
+ * version in the future.
+ *
+ * @category    Mageplaza
+ * @package     Mageplaza_Productslider
+ * @copyright   Copyright (c) Mageplaza (https://www.mageplaza.com/)
+ * @license     https://www.mageplaza.com/LICENSE.txt
+ */
+-->
+<schema xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:Setup/Declaration/Schema/etc/schema.xsd">
+  <table name="mageplaza_productslider_slider" resource="default" engine="innodb" comment="Product Slider Block">
+    <column xsi:type="int" name="slider_id" padding="10" unsigned="true" nullable="false" identity="true" comment="Rule Id"/>
+    <column xsi:type="varchar" name="name" nullable="true" length="255" comment="Name"/>
+    <column xsi:type="smallint" name="status" padding="6" unsigned="false" nullable="false" identity="false" default="0" comment="Status"/>
+    <column xsi:type="varchar" name="title" nullable="true" length="255" comment="Title"/>
+    <column xsi:type="text" name="description" nullable="true" comment="Description"/>
+    <column xsi:type="varchar" name="store_ids" nullable="true" length="255" comment="Store_ids"/>
+    <column xsi:type="varchar" name="customer_group_ids" nullable="true" length="255" comment="Customer_group_ids"/>
+    <column xsi:type="smallint" name="limit_number" padding="5" unsigned="true" nullable="false" identity="false" comment="Limit the number of products"/>
+    <column xsi:type="varchar" name="location" nullable="true" length="255" comment="Location"/>
+    <column xsi:type="varchar" name="time_cache" nullable="true" length="255" comment="Cache Lifetime"/>
+    <column xsi:type="datetime" name="from_date" on_update="false" nullable="true" comment="From Date"/>
+    <column xsi:type="datetime" name="to_date" on_update="false" nullable="true" comment="To Date"/>
+    <column xsi:type="varchar" name="product_type" nullable="true" length="255" comment="Type"/>
+    <column xsi:type="varchar" name="categories_ids" nullable="true" length="255" comment="Categories_ids"/>
+    <column xsi:type="varchar" name="product_ids" nullable="true" length="255" comment="Product_ids"/>
+    <column xsi:type="varchar" name="display_additional" nullable="true" length="255" comment="Display additional Information"/>
+    <column xsi:type="varchar" name="is_responsive" nullable="true" length="255" comment="Responsive"/>
+    <column xsi:type="varchar" name="responsive_items" nullable="true" length="255" comment="Max Items slider"/>
+    <column xsi:type="timestamp" name="created_at" on_update="false" nullable="false" default="CURRENT_TIMESTAMP" comment="Creation Time"/>
+    <column xsi:type="timestamp" name="updated_at" on_update="true" nullable="false" default="CURRENT_TIMESTAMP" comment="Update Time"/>
+    <constraint xsi:type="primary" referenceId="PRIMARY">
+      <column name="slider_id"/>
+    </constraint>
+  </table>
+</schema>

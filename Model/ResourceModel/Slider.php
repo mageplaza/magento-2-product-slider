@@ -25,6 +25,8 @@ use Magento\Framework\Model\AbstractModel;
 use Magento\Framework\Model\ResourceModel\Db\AbstractDb;
 use Magento\Framework\Model\ResourceModel\Db\Context;
 use Mageplaza\Productslider\Helper\Data;
+use Magento\Framework\Stdlib\DateTime\DateTime;
+use Magento\Framework\Stdlib\DateTime\TimezoneInterface;
 
 /**
  * Class Slider
@@ -38,18 +40,35 @@ class Slider extends AbstractDb
     protected $helper;
 
     /**
-     * Slider constructor.
+     * Date model
+     *
+     * @var DateTime
+     */
+    protected $date;
+
+    /**
+     * @var TimezoneInterface
+     */
+    protected $timezone;
+
+    /**
      *
      * @param Context $context
      * @param Data $helper
+     * @param DateTime $date
+     * @param TimezoneInterface $timezone
      * @param null $connectionName
      */
     public function __construct(
         Context $context,
         Data $helper,
+        DateTime $date,
+        TimezoneInterface $timezone,
         $connectionName = null
     ) {
-        $this->helper = $helper;
+        $this->helper   = $helper;
+        $this->date     = $date;
+        $this->timezone = $timezone;
 
         parent::__construct($context, $connectionName);
     }
@@ -65,6 +84,7 @@ class Slider extends AbstractDb
     }
 
     /**
+     *
      * @inheritdoc
      */
     protected function _beforeSave(AbstractModel $object)
@@ -91,6 +111,15 @@ class Slider extends AbstractDb
             $object->setResponsiveItems($this->helper->serialize([]));
         }
 
+        if ($object->isObjectNew()) {
+            $object->setFromDate($object->getFromDate() . $this->timezone->date()->format('H:i:s'));
+        }
+
+        $toDate          = $object->getToDate();
+        $initialDateTime = new \DateTime($toDate);
+        $initialDateTime->setTime(23, 59, 59);
+        $toDate          = $initialDateTime->format('M d, Y h:i:s A');
+        $object->setToDate($toDate);
         return parent::_beforeSave($object);
     }
 

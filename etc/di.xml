@@ -34,4 +34,7 @@
             <argument name="resourceModel" xsi:type="string">Mageplaza\Productslider\Model\ResourceModel\Slider</argument>
         </arguments>
     </virtualType>
+    <type name="Magento\Cms\Block\Widget\Block">
+        <plugin name="mp_product_slider_cms_widget_block" type="Mageplaza\Productslider\Plugin\Block\Widget\Block"/>
+    </type>
 </config>

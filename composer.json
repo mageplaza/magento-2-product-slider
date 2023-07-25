@@ -2,10 +2,10 @@
   "name": "mageplaza/magento-2-product-slider",
   "description": "Magento 2 Product Slider",
   "require": {
-    "mageplaza/module-core": "^1.5.1"
+    "mageplaza/module-core": "^1.5.4"
   },
   "type": "magento2-module",
-  "version": "4.0.3",
+  "version": "4.0.4",
   "license": "proprietary",
   "authors": [
     {
