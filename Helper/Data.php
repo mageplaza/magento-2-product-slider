@@ -143,12 +143,20 @@ class Data extends AbstractData
 
         foreach ($responsiveConfig as $config) {
             if (!empty($config['size']) && !empty($config['items'])) {
-                $responsiveOptions .= $config['size'] . ':{items:' . $config['items'] . '},';
+                $responsiveOptions .= $config['size'] . ':{'. ($this->isHyvaTheme() ? 'perView' : 'items') . ':' . $config['items'] . '},';
             }
         }
 
         $responsiveOptions = rtrim($responsiveOptions, ',');
 
-        return 'responsive:{' . $responsiveOptions . '}';
+        return ($this->isHyvaTheme() ? 'breakpoints' : 'responsive') . ':{' . $responsiveOptions . '}';
+    }
+
+    /**
+     * @return bool
+     */
+    public function checkTheme()
+    {
+        return $this->checkHyvaTheme();
     }
 }

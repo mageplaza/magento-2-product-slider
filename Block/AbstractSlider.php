@@ -166,7 +166,11 @@ abstract class AbstractSlider extends AbstractProduct implements BlockInterface,
             'cache_tags'     => [Product::CACHE_TAG]
         ]);
 
-        $this->setTemplate('Mageplaza_Productslider::productslider.phtml');
+        if ($this->_helperData->isHyvaTheme()) {
+            $this->setTemplate('Mageplaza_Productslider::hyva/productslider.phtml');
+        } else {
+            $this->setTemplate('Mageplaza_Productslider::/productslider.phtml');
+        }
     }
 
     /**
@@ -407,12 +411,12 @@ abstract class AbstractSlider extends AbstractProduct implements BlockInterface,
             $responsiveOptions = '';
             foreach ($responsiveConfig as $config) {
                 if (!empty($config['size']) && !empty($config['items'])) {
-                    $responsiveOptions .= $config['size'] . ':{items:' . $config['items'] . '},';
+                    $responsiveOptions .= $config['size'] . ':{'. ($this->_helperData->isHyvaTheme() ? 'perView' : 'items') . ':' . $config['items'] . '},';
                 }
             }
             $responsiveOptions = rtrim($responsiveOptions, ',');
 
-            return 'responsive:{' . $responsiveOptions . '}';
+            return ($this->_helperData->isHyvaTheme() ? 'breakpoints' : 'responsive') . ':{' . $responsiveOptions . '}';
         }
 
         return '';
