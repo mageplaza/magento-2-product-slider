@@ -71,12 +71,14 @@ $title        = $block->getTitle();
 $blockId      = $block->getSliderId() . uniqid('-', false);
 $items        = $block->getProductCollection();
 $totalItems   = count($items->getItems());
+
+if ($block->getHelperData()->isEnabled() && $items && $items->getSize()): ?>
+<?php
 $sliderDesign = $helper->getModuleConfig('slider_design');
 $autoplay     = $sliderDesign['autoplay'] === '1' ? (int)$sliderDesign['autoplayTimeout'] : 'false';
 $pauseOnHover = $sliderDesign['autoplayHoverPause'] === '1' ? 'true' : 'false';
 $hoverpause   = $sliderDesign['autoplay'] === '1' ? $pauseOnHover : 'false';
-
-if ($block->getHelperData()->isEnabled() && $items && $items->getSize()): ?>
+?>
 <div class="mp-product-slider-block block widget block-products-list <?= /** @noEscape */ $mode ?>">
     <h2 class="mp-product-slider-title"><?= $block->escapeHtml($title) ?></h2>
     <p class="mp-ps-info"><?= $block->escapeHtml($block->getDescription()) ?></p>
