@@ -70,7 +70,6 @@ $mode         = 'grid';
 $title        = $block->getTitle();
 $id           = $block->getData('page_var_name') . uniqid('', false);
 $items        = $block->getProductCollection();
-$totalItems   = count($items->getItems());
 
 if ($block->getHelperData()->isEnabled() && $items && $items->getSize()): ?>
 <?php
@@ -244,7 +243,7 @@ $hoverpause   = $sliderDesign['autoplay'] === '1' ? $pauseOnHover : 'false';
 <script>
     document.addEventListener('DOMContentLoaded', function () {
         var sliders = document.querySelectorAll('.widget-slider'),
-            totalItems = <?= /** @noEscape */ $totalItems ?>;
+            totalItems = <?= /** @noEscape */ count($items->getItems()) ?>;
         sliders.forEach(function (slider) {
             var glide = new Glide(slider, {
                 type: <?= /* @noEscape */ $sliderDesign['loop'] === '1' ? "'carousel'" : "'slider'" ?>,
