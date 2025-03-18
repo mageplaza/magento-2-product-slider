@@ -31,6 +31,7 @@ use Magento\Store\Model\System\Store;
 use Mageplaza\Productslider\Helper\Data;
 use Mageplaza\Productslider\Model\Config\Source\Additional;
 use Mageplaza\Productslider\Model\Slider;
+use function Ramsey\Uuid\v1;
 
 /**
  * Class Design
@@ -133,6 +134,16 @@ class Design extends Generic implements TabInterface
             ]
         ]);
 
+        $isHyvaThemeAdmin = $this->_helperData->isHyvaThemeAdmin();
+        if ($isHyvaThemeAdmin) {
+            $note = 'When the screen size is smaller than <strong>Screen size max</strong>, the number of products on the slider will change according to <strong>Number of items</strong>. 
+                      Default: 3 items.';
+                    
+        } else {
+            $note = 'When the screen size is larger than <strong>Screen size max</strong>, the number of products on the slider will change according to <strong>Number of items</strong>
+                     Default: 3 items.';
+        }
+
         $responsiveItem = $fieldset->addField(
             'responsive_items',
             'Mageplaza\Productslider\Block\Adminhtml\Slider\Edit\Tab\Renderer\Responsive',
@@ -140,7 +151,7 @@ class Design extends Generic implements TabInterface
                 'name' => 'responsive_items',
                 'label' => __('Max Items slider'),
                 'title' => __('Max Items slider'),
-                'note' => __('Default: 3 items.')
+                'note' => __($note)
             ]
         );
 

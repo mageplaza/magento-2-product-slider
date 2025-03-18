@@ -26,6 +26,8 @@ use Magento\Framework\App\Http\Context as HttpContext;
 use Magento\Framework\Exception\NoSuchEntityException;
 use Magento\Framework\ObjectManagerInterface;
 use Magento\Framework\Stdlib\DateTime\DateTime;
+use Magento\Framework\View\DesignInterface;
+use Magento\Framework\View\Design\Theme\ThemeProviderInterface;
 use Magento\Store\Model\StoreManagerInterface;
 use Mageplaza\Core\Helper\AbstractData;
 use Mageplaza\Productslider\Model\ResourceModel\Slider\Collection;
@@ -56,6 +58,11 @@ class Data extends AbstractData
     protected $sliderFactory;
 
     /**
+     * @var ThemeProviderInterface
+     */
+    protected $themeProvider;
+
+    /**
      * Data constructor.
      *
      * @param Context $context
@@ -64,6 +71,7 @@ class Data extends AbstractData
      * @param DateTime $date
      * @param HttpContext $httpContext
      * @param SliderFactory $sliderFactory
+     * @param ThemeProviderInterface $themeProvider
      */
     public function __construct(
         Context $context,
@@ -71,11 +79,13 @@ class Data extends AbstractData
         StoreManagerInterface $storeManager,
         DateTime $date,
         HttpContext $httpContext,
-        SliderFactory $sliderFactory
+        SliderFactory $sliderFactory,
+        ThemeProviderInterface $themeProvider,
     ) {
         $this->date = $date;
         $this->httpContext = $httpContext;
         $this->sliderFactory = $sliderFactory;
+        $this->themeProvider = $themeProvider;
 
         parent::__construct($context, $objectManager, $storeManager);
     }
@@ -154,9 +164,16 @@ class Data extends AbstractData
 
     /**
      * @return bool
+     * @throws NoSuchEntityException
      */
-    public function checkTheme()
+    public function isHyvaThemeAdmin()
     {
-        return $this->checkHyvaTheme();
+        $store   = $this->storeManager->getStore();
+        $themeId = $store->getConfig(DesignInterface::XML_PATH_THEME_ID);
+        $theme   = $this->themeProvider->getThemeById($themeId);
+        $currentThemeCode = $theme->getCode();
+        $isHyvaThemeAdmin = (strpos($currentThemeCode, 'Hyva') !== false);
+
+        return $isHyvaThemeAdmin;
     }
 }
