@@ -81,6 +81,10 @@
     opacity: 0.65;
 }
 
+.glide__arrow.disabled:hover {
+    opacity: 0.3 !important;
+}
+
 .glide__arrow--prev {
     left: 10px;
 }

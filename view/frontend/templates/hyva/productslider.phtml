@@ -77,13 +77,14 @@ $sliderDesign = $helper->getModuleConfig('slider_design');
 $autoplay     = $sliderDesign['autoplay'] === '1' ? (int)$sliderDesign['autoplayTimeout'] : 'false';
 $pauseOnHover = $sliderDesign['autoplayHoverPause'] === '1' ? 'true' : 'false';
 $hoverpause   = $sliderDesign['autoplay'] === '1' ? $pauseOnHover : 'false';
+$a = $block->getResponsiveConfig();
 ?>
 <div class="mp-product-slider-block block widget block-products-list <?= /** @noEscape */ $mode ?>">
     <h2 class="mp-product-slider-title"><?= $block->escapeHtml($title) ?></h2>
     <p class="mp-ps-info"><?= $block->escapeHtml($block->getDescription()) ?></p>
 </div>
 <div class="block-content mp-product-slider-content">
-    <div class="products-<?= /** @noEscape */ $mode ?> <?= /** @noEscape */ $mode ?> glide block-slider">
+    <div class="products-<?= /** @noEscape */ $mode ?> <?= /** @noEscape */ $mode ?> glide block-slider-<?= /** @noEscape */ $blockId ?>">
         <?php $iterator = 1; ?>
         <div id="mp-list-items-<?= /** @noEscape */ $blockId ?>" class="glide__track" data-glide-el="track">
             <ul class="glide__slides">
@@ -233,16 +234,17 @@ $hoverpause   = $sliderDesign['autoplay'] === '1' ? $pauseOnHover : 'false';
             </div>
         <?php endif; ?>
 
-        <div class="glide__bullets" id="glideBullets"></div>
+        <div class="glide__bullets"></div>
     </div>
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/@glidejs/glide/dist/glide.min.js"></script>
 <script>
     document.addEventListener('DOMContentLoaded', function () {
-        var sliders = document.querySelectorAll('.block-slider'),
+        var slider = document.querySelector('.block-slider-<?= /** @noEscape */ $blockId ?>'),
             totalItems = <?= /** @noEscape */ count($items->getItems()) ?>;
-        sliders.forEach(function (slider) {
+
+        if (slider) {
             var glide = new Glide(slider, {
                 type: <?= /* @noEscape */ $sliderDesign['loop'] === '1' ? "'carousel'" : "'slider'" ?>,
                 rewind: <?= /* @noEscape */ $sliderDesign['loop'] === '1' ? 'true' : 'false' ?>,
@@ -256,7 +258,7 @@ $hoverpause   = $sliderDesign['autoplay'] === '1' ? $pauseOnHover : 'false';
             glide.on('mount.after', function () {
                 var perView = glide.settings.perView,
                     totalDots = Math.ceil(totalItems / perView),
-                    bulletsContainer = document.getElementById("glideBullets");
+                    bulletsContainer = document.querySelector('.block-slider-<?= /** @noEscape */ $blockId ?> .glide__bullets');
 
                 bulletsContainer.innerHTML = "";
                 for (var i = 0; i < totalDots; i++) {
@@ -286,20 +288,48 @@ $hoverpause   = $sliderDesign['autoplay'] === '1' ? $pauseOnHover : 'false';
                     return;
                 }
 
-                if (activeIndex % perView === 0 || activeIndex === slides.length - 1) {
-                    let bulletIndex = Math.floor(activeIndex / perView);
-                    var bullets = document.getElementById("glideBullets").querySelectorAll(".glide__bullet");
+                var nextButton = slider.querySelector('.glide__arrow--next');
+                var prevButton = slider.querySelector('.glide__arrow--prev');
+
+                if (activeIndex === slides.length - perView && !glide.settings.rewind) {
+                    glide.pause();
+                    nextButton.setAttribute('disabled', true);
+                    nextButton.classList.add('disabled');
+                } else {
+                    nextButton.removeAttribute('disabled');
+                    nextButton.classList.remove('disabled');
+                }
+
+                if (activeIndex === 0 && !glide.settings.rewind) {
+                    prevButton.setAttribute('disabled', true);
+                    prevButton.classList.add('disabled');
+                } else {
+                    prevButton.removeAttribute('disabled');
+                    prevButton.classList.remove('disabled');
+                }
+
+                var bulletIndex = Math.floor(activeIndex / perView),
+                    bullets     = document.querySelector('.block-slider-<?= /** @noEscape */ $blockId ?> .glide__bullets').querySelectorAll(".glide__bullet"),
+                    remainder   = slides.length % perView;
+
+                if (!glide.settings.rewind && remainder > 0) {
                     bullets.forEach((bullet, index) => {
-                        bullet.classList.toggle('glide__bullet--active', index === bulletIndex);
+                        bullet.classList.toggle('glide__bullet--active', index === Math.floor((activeIndex - bulletIndex) / remainder));
                     });
+                } else {
+                    if (activeIndex % perView === 0 || activeIndex === slides.length - 1) {
+                        bullets.forEach((bullet, index) => {
+                            bullet.classList.toggle('glide__bullet--active', index === bulletIndex);
+                        });
+                    }
                 }
             });
 
             glide.mount();
-        });
+        }
 
         var lazyLoad = <?= /** @noEscape */ $sliderDesign['lazyLoad']?>,
-            images   = document.querySelectorAll('.glide__slide .product-item-photo .product-image-photo');
+            images   = document.querySelectorAll('.glide__slides .product-item-photo .product-image-photo');
         if (lazyLoad !== 1) {
             images.forEach(function(img) {
                 img.removeAttribute("loading");
