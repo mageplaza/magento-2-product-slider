@@ -106,9 +106,7 @@ class Slider extends AbstractSlider
         parent::_construct();
 
         if ($this->_helperData->isHyvaTheme()) {
-            $this->setTemplate('Mageplaza_Productslider::hyva/widget/productslider.phtml');
-        } else {
-            $this->setTemplate('Mageplaza_Productslider::widget/productslider.phtml');
+            $this->_template = 'Mageplaza_Productslider::hyva/widget/productslider.phtml';
         }
     }
 

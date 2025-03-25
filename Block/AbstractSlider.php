@@ -51,6 +51,8 @@ use Mageplaza\Productslider\Model\Config\Source\Additional;
  */
 abstract class AbstractSlider extends AbstractProduct implements BlockInterface, IdentityInterface
 {
+    protected $_template = "Mageplaza_Productslider::productslider.phtml";
+
     /**
      * @var DateTime
      */
@@ -167,9 +169,7 @@ abstract class AbstractSlider extends AbstractProduct implements BlockInterface,
         ]);
 
         if ($this->_helperData->isHyvaTheme()) {
-            $this->setTemplate('Mageplaza_Productslider::hyva/productslider.phtml');
-        } else {
-            $this->setTemplate('Mageplaza_Productslider::/productslider.phtml');
+            $this->_template = 'Mageplaza_Productslider::hyva/productslider.phtml';
         }
     }
 
