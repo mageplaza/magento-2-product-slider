@@ -163,13 +163,13 @@ abstract class AbstractSlider extends AbstractProduct implements BlockInterface,
     {
         parent::_construct();
 
-        $this->addData([
-            'cache_lifetime' => $this->getSlider() ? $this->getSlider()->getTimeCache() : 86400,
-            'cache_tags'     => [Product::CACHE_TAG]
-        ]);
-
         if ($this->_helperData->isHyvaTheme()) {
             $this->_template = 'Mageplaza_Productslider::hyva/productslider.phtml';
+        } else {
+            $this->addData([
+                'cache_lifetime' => $this->getSlider() ? $this->getSlider()->getTimeCache() : 86400,
+                'cache_tags'     => [Product::CACHE_TAG]
+            ]);
         }
     }
 
