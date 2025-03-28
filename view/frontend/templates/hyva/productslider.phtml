@@ -77,7 +77,6 @@ $sliderDesign = $helper->getModuleConfig('slider_design');
 $autoplay     = $sliderDesign['autoplay'] === '1' ? (int)$sliderDesign['autoplayTimeout'] : 'false';
 $pauseOnHover = $sliderDesign['autoplayHoverPause'] === '1' ? 'true' : 'false';
 $hoverpause   = $sliderDesign['autoplay'] === '1' ? $pauseOnHover : 'false';
-$a = $block->getResponsiveConfig();
 ?>
 <div class="mp-product-slider-block block widget block-products-list <?= /** @noEscape */ $mode ?>">
     <h2 class="mp-product-slider-title"><?= $block->escapeHtml($title) ?></h2>

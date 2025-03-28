@@ -99,34 +99,34 @@ class Design extends Generic implements TabInterface
         );
 
         $fieldset->addField('title', 'text', [
-            'name' => 'title',
+            'name'  => 'title',
             'label' => __('Title'),
             'title' => __('Title'),
         ]);
         $fieldset->addField('description', 'textarea', [
-            'name' => 'description',
+            'name'  => 'description',
             'label' => __('Description'),
             'title' => __('Description'),
         ]);
         $fieldset->addField('limit_number', 'text', [
-            'name' => 'limit_number',
+            'name'  => 'limit_number',
             'label' => __('Limit the number of products'),
             'title' => __('Limit the number of products'),
             'class' => 'validate-digits'
         ]);
 
         $fieldset->addField('display_additional', 'multiselect', [
-            'name' => 'display_additional',
-            'label' => __('Display additional information'),
-            'title' => __('Display additional information'),
+            'name'   => 'display_additional',
+            'label'  => __('Display additional information'),
+            'title'  => __('Display additional information'),
             'values' => $this->_additional->toOptionArray(),
-            'note' => __('Select information or button(s) to display with products.')
+            'note'   => __('Select information or button(s) to display with products.')
         ]);
 
         $isResponsive = $fieldset->addField('is_responsive', 'select', [
-            'name' => 'is_responsive',
-            'label' => __('Is Responsive'),
-            'title' => __('Is Responsive'),
+            'name'    => 'is_responsive',
+            'label'   => __('Is Responsive'),
+            'title'   => __('Is Responsive'),
             'options' => [
                 '1' => __('Yes'),
                 '0' => __('No'),
@@ -137,11 +137,11 @@ class Design extends Generic implements TabInterface
         $isHyvaThemeAdmin = $this->_helperData->isHyvaThemeAdmin();
         if ($isHyvaThemeAdmin) {
             $note = 'When the screen size is smaller than <strong>Screen size max</strong>, the number of products on the slider will change according to <strong>Number of items</strong>. 
-                      Default: 3 items.';
+                  Default: 3 items.';
                     
         } else {
             $note = 'When the screen size is larger than <strong>Screen size max</strong>, the number of products on the slider will change according to <strong>Number of items</strong>
-                     Default: 3 items.';
+                 Default: 3 items.';
         }
 
         $responsiveItem = $fieldset->addField(

@@ -80,10 +80,10 @@ class Data extends AbstractData
         DateTime $date,
         HttpContext $httpContext,
         SliderFactory $sliderFactory,
-        ThemeProviderInterface $themeProvider,
+        ThemeProviderInterface $themeProvider
     ) {
-        $this->date = $date;
-        $this->httpContext = $httpContext;
+        $this->date          = $date;
+        $this->httpContext   = $httpContext;
         $this->sliderFactory = $sliderFactory;
         $this->themeProvider = $themeProvider;
 
