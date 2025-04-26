@@ -52,6 +52,9 @@
                     <label>Max Items slider</label>
                     <frontend_model>Mageplaza\Productslider\Block\Adminhtml\Config\Field\Responsive</frontend_model>
                     <backend_model>Magento\Config\Model\Config\Backend\Serialized\ArraySerialized</backend_model>
+                    <comment>With Hyva theme: When the screen size is smaller than Screen size max, the number of products on the slider will change according to Number of items.
+                        With Luma theme: it will be larger than the Maximum Screen Size.
+                    </comment>
                     <depends>
                         <field id="responsive">1</field>
                     </depends>

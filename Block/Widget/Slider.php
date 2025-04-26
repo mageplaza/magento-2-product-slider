@@ -105,7 +105,9 @@ class Slider extends AbstractSlider
     {
         parent::_construct();
 
-        $this->setTemplate('Mageplaza_Productslider::widget/productslider.phtml');
+        if ($this->_helperData->isHyvaTheme()) {
+            $this->_template = 'Mageplaza_Productslider::hyva/widget/productslider.phtml';
+        }
     }
 
     /**
@@ -220,5 +222,13 @@ class Slider extends AbstractSlider
     public function getAllOptions()
     {
         return $this->_helperData->getAllOptions();
+    }
+
+    /**
+     * @return string
+     */
+    public function getResponseValue()
+    {
+        return $this->_helperData->getResponseValue();
     }
 }

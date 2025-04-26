@@ -1,0 +1,357 @@
+<?php
+/**
+ * Mageplaza
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the Mageplaza.com license that is
+ * available through the world-wide-web at this URL:
+ * https://www.mageplaza.com/LICENSE.txt
+ *
+ * DISCLAIMER
+ *
+ * Do not edit or add to this file if you wish to upgrade this extension to newer
+ * version in the future.
+ *
+ * @category    Mageplaza
+ * @package     Mageplaza_Productslider
+ * @copyright   Copyright (c) Mageplaza (https://www.mageplaza.com/)
+ * @license     https://www.mageplaza.com/LICENSE.txt
+ */
+
+use Hyva\Theme\Model\ViewModelRegistry;
+use Hyva\Theme\ViewModel\ProductPage;
+use Hyva\Theme\ViewModel\ProductListItem;
+use Hyva\Theme\ViewModel\HeroiconsSolid;
+use Hyva\Theme\ViewModel\HeroiconsOutline;
+use Hyva\Theme\ViewModel\BlockJsDependencies;
+use Magento\Catalog\Helper\Output as CatalogOutputHelper;
+use Magento\Catalog\ViewModel\Product\OptionsData as ProductOptionsData;
+use Magento\Catalog\Block\Product\AbstractProduct;
+use Magento\Framework\Escaper;
+use Mageplaza\Productslider\Block\AbstractSlider;
+use Mageplaza\Productslider\Helper\Data;
+
+/** @var AbstractSlider $block */
+/** @var Escaper $escaper */
+/** @var ViewModelRegistry $viewModels */
+
+/** @var AbstractProduct $blockAbstract */
+$blockAbstract = $block->getLayout()->getBlock('product_list_item');
+
+/** @var AbstractSlider $block */
+$helper = $this->helper(\Mageplaza\Productslider\Helper\Data::class);
+
+/** @var ProductPage $productViewModel */
+$productViewModel = $viewModels->require(ProductPage::class);
+
+/** @var ProductListItem $productListItemViewModel */
+$productListItemViewModel = $viewModels->require(ProductListItem::class);
+
+/** @var CatalogOutputHelper $catalogOutputHelper */
+$catalogOutputHelper = $this->helper(CatalogOutputHelper::class);
+
+/** @var HeroiconsOutline $heroicons */
+$heroicons = $viewModels->require(HeroiconsOutline::class);
+
+/** @var HeroiconsSolid $heroiconsSolid */
+$heroiconsSolid = $viewModels->require(HeroiconsSolid::class);
+
+$productOptionsViewmodel = $viewModels->require(ProductOptionsData::class);
+
+/** @var Data $helperData */
+$helperData = $this->helper(Data::class);
+$imageDisplayArea = 'category_page_grid';
+
+// Ensure the required JS is rendered on the page
+$viewModels->require(BlockJsDependencies::class)->setBlockTemplateDependency($blockAbstract, 'Magento_Catalog::product/list/js/price-box.phtml');
+
+$mode         = 'grid';
+$title        = $block->getTitle();
+$id           = $block->getData('page_var_name') . uniqid('', false);
+$items        = $block->getProductCollection();
+
+if ($block->getHelperData()->isEnabled() && $items && $items->getSize()): ?>
+<?php
+$sliderDesign = $helper->getModuleConfig('slider_design');
+$autoplay     = $sliderDesign['autoplay'] === '1' ? (int)$sliderDesign['autoplayTimeout'] : 'false';
+$pauseOnHover = $sliderDesign['autoplayHoverPause'] === '1' ? 'true' : 'false';
+$hoverpause   = $sliderDesign['autoplay'] === '1' ? $pauseOnHover : 'false';
+?>
+<div class="mp-product-slider-widget widget">
+    <div class="mp-product-slider-block widget block-products-list <?= /** @noEscape */ $mode ?>">
+        <h2 class="mp-product-slider-title"><?= $block->escapeHtml($title) ?></h2>
+        <p class="mp-ps-info"><?= $block->escapeHtml($block->getDescription()) ?></p>
+    </div>
+    <div class="block-content mp-product-slider-content">
+        <div class="products-<?= /** @noEscape */ $mode ?> <?= /** @noEscape */ $mode ?> glide widget-slider-<?= /** @noEscape */ $id ?>">
+            <?php $iterator = 1; ?>
+            <div id="mp-list-items-<?= /** @noEscape */ $id ?>" class="glide__track" data-glide-el="track">
+                <ul class="glide__slides">
+                    <?php foreach ($items as $product): ?>
+                    <li class="glide__slide">
+                        <?php
+                        $productType = $product->getTypeId();
+                        $isProductGroupedOrBundle = $productType === 'bundle' || $productType === "grouped";
+                        $productId = $product->getId();
+                        $options = $productOptionsViewmodel->getOptionsData($product);
+                        $imageCustomAttributes = $product->getData('image_custom_attributes')
+                            ?? $blockAbstract->getData('image_custom_attributes')
+                            ?? [];
+                        $productName = $catalogOutputHelper->productAttribute($product, $product->getName(), 'name');
+                        ?>
+                        <?php if ($product->isSaleable()): ?>
+                        <form method="post"
+                              action="<?= $escaper->escapeUrl($productViewModel->getAddToCartUrl($product, ['useUencPlaceholder' => true])) ?>"
+                              class="item product product-item product_addtocart_form card card-interactive flex flex-col w-full"
+                            <?php if ($product->getOptions()): ?>
+                                enctype="multipart/form-data"
+                            <?php endif; ?>>
+                            <?= /** @noEscape */
+                            $block->getBlockHtml('formkey') ?>
+                            <input type="hidden" name="product" value="<?= (int)$productId ?>"/>
+                            <?php foreach ($options as $optionItem): ?>
+                                <input type="hidden"
+                                       name="<?= $escaper->escapeHtml($optionItem['name']) ?>"
+                                       value="<?= $escaper->escapeHtml($optionItem['value']) ?>">
+                            <?php endforeach; ?>
+                        <?php else: ?>
+                        <div class="item product product-item card card-interactive flex flex-col w-full">
+                        <?php endif; ?>
+                            <?php /* Product Image */ ?>
+                            <a href="<?= $escaper->escapeUrl($product->getProductUrl()) ?>"
+                               title="<?= $escaper->escapeHtmlAttr($product->getName()) ?>"
+                               class="product photo product-item-photo block mx-auto mb-3"
+                               tabindex="-1">
+                                <?= $block->getImage($product, $imageDisplayArea)
+                                    ->setTemplate('Magento_Catalog::product/list/image.phtml')
+                                    ->setData('custom_attributes', $imageCustomAttributes)
+                                    ->setProductId($productId)
+                                    ->toHtml(); ?>
+                            </a>
+                            <div class="product-info flex flex-col grow">
+                                    <div class="mt-2 mb-1 items-center justify-center text-primary font-semibold text-lg text-center">
+                                        <a class="product-item-link" href="<?= $escaper->escapeUrl($product->getProductUrl()) ?>"
+                                           :id="`slide-desc-<?= $escaper->escapeHtmlAttr($product->getId()) ?>-${$id('slider-id')}`">
+                                            <?= /* @noEscape */ $productName ?>
+                                        </a>
+                                    </div>
+
+                                    <?php if ($block->canShowReview()): ?>
+                                        <div class="py-1 mx-auto">
+                                            <?= /** @noEscape */ $blockAbstract->getReviewsSummaryHtml($product, 'short') ?>
+                                        </div>
+                                    <?php endif; ?>
+
+                                    <?php if ($product->isAvailable()): ?>
+                                        <?= /** @noEscape */ $blockAbstract->getProductDetailsHtml($product) ?>
+                                    <?php endif; ?>
+
+
+                                    <?php if ($isProductGroupedOrBundle): ?>
+                                        <span class="sr-only">
+                                            <?= $escaper->escapeHtml(__('The price depends on the options chosen on the product page')) ?>
+                                        </span>
+                                    <?php endif; ?>
+
+                                    <?php if ($block->canShowPrice()): ?>
+                                        <div class="pt-1 text-gray-900"
+                                             x-data="initPriceBox()"
+                                             x-defer="intersect"
+                                             @update-prices-<?= /** @noEscape */
+                                             (int)$productId ?>.window="updatePrice($event.detail);">
+                                            <?= /* @noEscape */ $productListItemViewModel->getProductPriceHtml($product) ?>
+                                        </div>
+                                    <?php endif; ?>
+
+                                    <div class="mt-auto pt-3 flex flex-wrap items-center gap-y-4 gap-x-2"
+                                         style="justify-content: space-between">
+                                        <?php if ($product->isSaleable() && $block->canShowAddToCart()): ?>
+                                            <?php if ($isProductGroupedOrBundle): ?>
+                                                <a href="<?= $escaper->escapeUrl($product->getProductUrl()) ?>"
+                                                   class="w-auto btn btn-primary justify-center text-sm"
+                                                   title="<?= $escaper->escapeHtmlAttr(__('Configure %1 on the product page')) ?>"
+                                                   aria-label="<?= $escaper->escapeHtmlAttr(__('Configure %1 on the product page', $productName)) ?>">
+                                                    <?= $heroicons->pencilAltHtml('', 24, 24, ['aria-hidden' => 'true']) ?>
+                                                    <span class="ml-2 inline">
+                                            <?= $escaper->escapeHtml(__('Configure')) ?>
+                                        </span>
+                                                </a>
+                                            <?php else: ?>
+                                                <button class="w-auto btn btn-primary justify-center text-sm"
+                                                        title="<?= $escaper->escapeHtmlAttr(__('Add to Cart') . ' ' . $productName) ?>"
+                                                        aria-label="<?= $escaper->escapeHtmlAttr(__('Add to Cart') . ' ' . $productName) ?>"
+                                                        data-addto="cart">
+                                                    <?= $heroicons->shoppingCartHtml('', 24, 24, ['aria-hidden' => 'true']) ?>
+                                                    <span class="ml-2 inline">
+                                            <?= $escaper->escapeHtml(__('Add to Cart')) ?>
+                                        </span>
+                                                </button>
+                                            <?php endif; ?>
+                                        <?php endif; ?>
+                                        <div class="flex flex-wrap gap-2">
+                                            <?php if ($block->canShowAddToCart()): ?>
+                                                <button x-data="initWishlist()"
+                                                        x-defer="intersect"
+                                                        @click.prevent="addToWishlist(<?= /** @noEscape */
+                                                        (int)$productId ?>)"
+                                                        aria-label="<?= $escaper->escapeHtmlAttr(__('Add to Wish List') . ' ' . $productName) ?>"
+                                                        type="button"
+                                                        class="rounded-full w-9 h-9 bg-gray-200 p-0 border-0 inline-flex shrink-0 items-center justify-center text-gray-500 hover:text-red-600"
+                                                        data-addto="wishlist">
+                                                    <?= $heroiconsSolid->heartHtml("w-5 h-5", 25, 25, ['aria-hidden' => 'true']) ?>
+                                                </button>
+                                                <button x-data="initCompareOnProductList()"
+                                                        x-defer="intersect"
+                                                        @click.prevent="addToCompare(<?= (int)$productId ?>)"
+                                                        aria-label="<?= $escaper->escapeHtmlAttr(__('Add to Compare') . ' ' . $productName) ?>"
+                                                        type="button"
+                                                        class="rounded-full w-9 h-9 bg-gray-200 p-0 border-0 inline-flex shrink-0 items-center justify-center text-gray-500 hover:text-yellow-500"
+                                                        data-addto="compare">
+                                                    <?= $heroicons->scaleHtml("w-5 h-5", 25, 25, ['aria-hidden' => 'true']) ?>
+                                                </button>
+                                            <?php endif; ?>
+                                            <?php if ($addToBlock = $blockAbstract->getChildBlock('addto')): ?>
+                                                <?= /** @noEscape */ $addToBlock->setProduct($product)->getChildHtml() ?>
+                                            <?php endif; ?>
+                                        </div>
+                                    </div>
+                                </div>
+                        <?php if ($product->isSaleable()): ?>
+                        </form>
+                        <?php else: ?>
+                        </div>
+                        <?php endif; ?>
+                    </li>
+                    <?php endforeach ?>
+                </ul>
+            </div>
+            <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.2.0/css/all.css">
+            <?php if ($sliderDesign['nav'] === '1') : ?>
+                <div class="glide__arrows" data-glide-el="controls">
+                    <button class="glide__arrow glide__arrow--prev" data-glide-dir="<"><i class="fas fa-chevron-left"></i></button>
+                    <button class="glide__arrow glide__arrow--next" data-glide-dir=">"><i class="fas fa-chevron-right"></i></button>
+                </div>
+            <?php endif; ?>
+
+            <div class="glide__bullets"></div>
+        </div>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@glidejs/glide/dist/glide.min.js"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        var slider = document.querySelector('.widget-slider-<?= /** @noEscape */ $id ?>'),
+            totalItems = <?= /** @noEscape */ count($items->getItems()) ?>;
+        if (slider) {
+            var glide = new Glide(slider, {
+                type: <?= /* @noEscape */ $sliderDesign['loop'] === '1' ? "'carousel'" : "'slider'" ?>,
+                rewind: <?= /* @noEscape */ $sliderDesign['loop'] === '1' ? 'true' : 'false' ?>,
+                autoplay: <?= /* @noEscape */ $autoplay  ?>,
+                hoverpause: <?= /* @noEscape */ $hoverpause  ?>,
+                perView: 3,
+                gap: 20,
+                <?= /** @noEscape */ $block->getResponseValue() ?>
+            });
+
+            glide.on('mount.after', function () {
+                var perView = glide.settings.perView,
+                    totalDots = Math.ceil(totalItems / perView),
+                    bulletsContainer = document.querySelector('.widget-slider-<?= /** @noEscape */ $id ?> .glide__bullets');
+
+                bulletsContainer.innerHTML = "";
+                for (var i = 0; i < totalDots; i++) {
+                    var bullet = document.createElement("button");
+                    bullet.classList.add("glide__bullet");
+                    bullet.setAttribute("data-glide-dir", "=" + i);
+                    bulletsContainer.appendChild(bullet);
+                }
+
+                var bullets = bulletsContainer.querySelectorAll(".glide__bullet");
+                bullets[0].classList.add("glide__bullet--active");
+
+                bullets.forEach((bullet, index) => {
+                    bullet.addEventListener('click', function () {
+                        let targetIndex = index * perView;
+                        glide.go(`=${targetIndex}`);
+                    });
+                });
+            });
+
+            glide.on('run', function () {
+                var activeIndex  = glide.index,
+                    slides = slider.querySelectorAll('.glide__slide'),
+                    perView = glide.settings.perView;
+
+                if (activeIndex < 0 || activeIndex >= slides.length) {
+                    return;
+                }
+
+                var nextButton = slider.querySelector('.glide__arrow--next');
+                var prevButton = slider.querySelector('.glide__arrow--prev');
+
+                if (activeIndex === slides.length - perView && !glide.settings.rewind) {
+                    glide.pause();
+                    nextButton.setAttribute('disabled', true);
+                    nextButton.classList.add('disabled');
+                } else {
+                    nextButton.removeAttribute('disabled');
+                    nextButton.classList.remove('disabled');
+                }
+
+                if (activeIndex === 0 && !glide.settings.rewind) {
+                    prevButton.setAttribute('disabled', true);
+                    prevButton.classList.add('disabled');
+                } else {
+                    prevButton.removeAttribute('disabled');
+                    prevButton.classList.remove('disabled');
+                }
+
+                var bulletIndex = Math.floor(activeIndex / perView),
+                    bullets     = document.querySelector('.widget-slider-<?= /** @noEscape */ $id ?> .glide__bullets').querySelectorAll(".glide__bullet"),
+                    remainder   = slides.length % perView;
+
+                if (!glide.settings.rewind && remainder > 0) {
+                    bullets.forEach((bullet, index) => {
+                        bullet.classList.toggle('glide__bullet--active', index === Math.floor((activeIndex - bulletIndex) / remainder));
+                    });
+                } else {
+                    if (activeIndex % perView === 0 || activeIndex === slides.length - 1) {
+                        bullets.forEach((bullet, index) => {
+                            bullet.classList.toggle('glide__bullet--active', index === bulletIndex);
+                        });
+                    }
+                }
+            });
+
+            glide.mount();
+        }
+
+        var lazyLoad = <?= /** @noEscape */ $sliderDesign['lazyLoad']?>,
+            images   = document.querySelectorAll('.glide__slides .product-item-photo .product-image-photo');
+        if (lazyLoad !== 1) {
+            images.forEach(function(img) {
+                img.removeAttribute("loading");
+            });
+        } else {
+            images.forEach(function(img) {
+                img.setAttribute("loading", "lazy");
+            });
+        }
+    });
+</script>
+
+<style>
+    <?php if ($sliderDesign['dots'] === '0') : ?>
+    .glide__bullet {
+        display: none !important;
+    }
+    <?php endif; ?>
+
+    .glide__slide {
+        margin-right: <?= (int) $sliderDesign['margin'] . 'px' ?> !important;
+    }
+</style>
+<?php endif; ?>
+

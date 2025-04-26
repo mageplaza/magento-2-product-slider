@@ -1,0 +1,116 @@
+/**
+ * Mageplaza
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the Mageplaza.com license that is
+ * available through the world-wide-web at this URL:
+ * https://www.mageplaza.com/LICENSE.txt
+ *
+ * DISCLAIMER
+ *
+ * Do not edit or add to this file if you wish to upgrade this extension to newer
+ * version in the future.
+ *
+ * @category    Mageplaza
+ * @package     Mageplaza_Productslider
+ * @copyright   Copyright (c) Mageplaza (https://www.mageplaza.com/)
+ * @license     https://www.mageplaza.com/LICENSE.txt
+ */
+
+.mp-product-slider-title {
+    font-size: 2.4rem;
+    position: relative;
+    z-index: 1;
+    text-align: center;
+    display: block;
+    margin: 20px 0;
+}
+
+.mp-ps-info {
+    font-size: 1.2rem;
+    position: relative;
+    z-index: 1;
+    text-align: center;
+    display: block;
+    color: #bbbbbb;
+    margin-bottom: 10px;
+}
+
+.glide {
+  visibility: visible;
+  display: block;
+  overflow: hidden;
+  position: relative;
+}
+
+.glide__slides {
+    display: flex;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.glide__slide {
+    flex-shrink: 0;
+    width: 100%;
+    text-align: center;
+}
+
+.glide__arrows {
+    display: flex;
+    justify-content: space-between;
+    position: absolute;
+    top: 50%;
+    width: 100%;
+    transform: translateY(-50%);
+    z-index: 10;
+}
+
+.glide__arrow {
+    background: #000;
+    border: none;
+    color: #fff;
+    padding: 5px 12px;
+    cursor: pointer;
+    border-radius: 50%;
+    opacity: 0.3;
+}
+
+.glide__arrow:hover {
+    opacity: 0.65;
+}
+
+.glide__arrow.disabled:hover {
+    opacity: 0.3 !important;
+}
+
+.glide__arrow--prev {
+    left: 10px;
+}
+
+.glide__arrow--next {
+    right: 10px;
+}
+
+.glide__bullets {
+    display: flex;
+    justify-content: center;
+    margin-top: 30px;
+    height: 100px;
+}
+
+.glide__bullet {
+    width: 12px;
+    height: 12px;
+    background: #000;
+    border-radius: 50%;
+    margin: 0 5px;
+    cursor: pointer;
+    opacity: 0.3;
+}
+
+.glide__bullet--active {
+    background: #000;
+    opacity: 1;
+}

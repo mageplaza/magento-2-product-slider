@@ -51,6 +51,8 @@ use Mageplaza\Productslider\Model\Config\Source\Additional;
  */
 abstract class AbstractSlider extends AbstractProduct implements BlockInterface, IdentityInterface
 {
+    protected $_template = "Mageplaza_Productslider::productslider.phtml";
+
     /**
      * @var DateTime
      */
@@ -161,12 +163,14 @@ abstract class AbstractSlider extends AbstractProduct implements BlockInterface,
     {
         parent::_construct();
 
-        $this->addData([
-            'cache_lifetime' => $this->getSlider() ? $this->getSlider()->getTimeCache() : 86400,
-            'cache_tags'     => [Product::CACHE_TAG]
-        ]);
-
-        $this->setTemplate('Mageplaza_Productslider::productslider.phtml');
+        if ($this->_helperData->isHyvaTheme()) {
+            $this->_template = 'Mageplaza_Productslider::hyva/productslider.phtml';
+        } else {
+            $this->addData([
+                'cache_lifetime' => $this->getSlider() ? $this->getSlider()->getTimeCache() : 86400,
+                'cache_tags'     => [Product::CACHE_TAG]
+            ]);
+        }
     }
 
     /**
@@ -407,12 +411,12 @@ abstract class AbstractSlider extends AbstractProduct implements BlockInterface,
             $responsiveOptions = '';
             foreach ($responsiveConfig as $config) {
                 if (!empty($config['size']) && !empty($config['items'])) {
-                    $responsiveOptions .= $config['size'] . ':{items:' . $config['items'] . '},';
+                    $responsiveOptions .= $config['size'] . ':{'. ($this->_helperData->isHyvaTheme() ? 'perView' : 'items') . ':' . $config['items'] . '},';
                 }
             }
             $responsiveOptions = rtrim($responsiveOptions, ',');
 
-            return 'responsive:{' . $responsiveOptions . '}';
+            return ($this->_helperData->isHyvaTheme() ? 'breakpoints' : 'responsive') . ':{' . $responsiveOptions . '}';
         }
 
         return '';
